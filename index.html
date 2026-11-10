@@ -218,21 +218,6 @@ dialog.theater::backdrop{background:#0b0908}
 .th-stage iframe{width:100%;height:100%;border:0;border-radius:10px;background:#fff}
 @media (max-width:700px){.th-tabs{order:3;width:100%}.th-bar .th-title small{display:none}}
 
-/* 作り方：AIに任せること／自分で決めること、と4つの進め方 */
-.split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;max-width:900px}
-.split-col{background:var(--board);border:1px solid var(--line);border-radius:14px;padding:16px 20px}
-.split-col.me{border-color:color-mix(in srgb,var(--light) 55%,var(--line));background:linear-gradient(160deg,rgba(255,197,107,.08),var(--board) 60%)}
-.split-col h3{font-family:var(--gothic);font-size:15px;margin:0 0 6px;color:var(--fg)}
-.split-col.me h3{color:var(--light)}
-.split-col ul{margin:0;padding-left:1.1em;font-size:14.5px;color:var(--muted);line-height:1.8}
-.how-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:16px;counter-reset:hs}
-.how-steps li{counter-increment:hs;background:var(--board);border:1px solid var(--line);border-radius:16px;padding:20px 22px;position:relative}
-.how-steps h3{font-family:var(--gothic);font-size:17px;margin:0 0 8px;line-height:1.5;display:flex;gap:10px;align-items:baseline}
-.how-steps h3::before{content:counter(hs);font-family:var(--mincho);font-weight:900;font-size:26px;color:var(--light);line-height:1}
-.how-steps p{margin:0;font-size:14.5px;color:var(--muted);line-height:1.8}
-.how-steps b{color:var(--fg)}
-.how-note{margin:22px 0 0;font-size:14px;color:var(--muted);border-left:3px solid var(--light);padding-left:14px;max-width:820px}
-@media (max-width:820px){.split,.how-steps{grid-template-columns:1fr}}
 
 /* 前日譚：これまでを新しい順に短く */
 .pre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -395,29 +380,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   </div>
 </section>
 
-<!-- 作り方：生成AIとの進め方 -->
-<section class="act" id="how">
-  <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">M3</span><div class="ctx"><p class="ctx-top"><b class="act-name">作り方</b><span class="when">2026年8月〜</span></p><p class="what">生成AI（ChatGPT・Claude Code・Gemini）と一緒に、上の作品をどう作ったか</p></div></div>
-    <h2 class="line-big reveal">AIは、速く作る相棒。<span class="lit">決めて、確かめるのは自分</span>です。</h2>
-    <div class="split reveal">
-      <div class="split-col"><h3>AIに任せること</h3><ul><li>画面とコードの試作</li><li>教材や解説の下書き</li><li>データの整形と、繰り返しの作業</li></ul></div>
-      <div class="split-col me"><h3>自分で決めること</h3><ul><li>何のために作るか（目的と優先順位）</li><li>どこまで作るか（やらないこと）</li><li>正しいかどうか、公開してよいか</li></ul></div>
-    </div>
-    <ol class="how-steps">
-      <li class="reveal"><h3>現場の声から、目的を1つに絞る</h3><p>受講生の「解説で言葉の意味は分かっても、問題のどこを見て答えればよいか分からない」という声から、問題別解説サイトの目的を<b>「答えを選ぶまでの考え方を追えること」</b>に決めました。</p></li>
-      <li class="reveal"><h3>要件と「やってよいこと」を先に書く</h3><p>eラーニングの改修では、目的3つ・対象外・5つの役割を要件定義書に先にまとめました。AIへの指示書にも<b>「正答は無断で変えない」「原文にない条件や図を想像で補わない」「公開は別途承認」</b>と、権限まで書いて渡しています。</p></li>
-      <li class="reveal"><h3>小さく作らせて、確かめてから広げる</h3><p>解説サイトは、<b>まず1問、次に3問だけ</b>試作させ、説明と動作を自分で確認して承認してから全章へ広げる進め方にしました。</p></li>
-      <li class="reveal"><h3>公開の前に、目と仕組みで点検する</h3><p>問題・選択肢・画像を点検して<b>要確認の24問</b>を洗い出し、「原文の修正提案」「解説の修正」「保留」に分けてAIへの対応を指示しました。社外公開用のデモは、社名や実データの<b>削除漏れをビルド時に自動でチェック</b>しています。</p></li>
-    </ol>
-    <p class="how-note reveal">このポートフォリオも、Claude Code と一緒に作りました。何を伝えるか・何を載せないかは自分で決め、事実と違う表現がないかを確かめながら仕上げています。</p>
-  </div>
-</section>
-
 <!-- 第2幕：次の舞台 -->
 <section class="act" id="next">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">M4</span><div class="ctx"><p class="ctx-top"><b class="act-name">次の舞台</b><span class="when">2026年10月〜</span></p><p class="what">社内DX・業務自動化と、社外FDE案件（2026年11月から参加予定）</p></div></div>
+    <div class="act-head reveal"><span class="act-no">M3</span><div class="ctx"><p class="ctx-top"><b class="act-name">次の舞台</b><span class="when">2026年10月〜</span></p><p class="what">社内DX・業務自動化と、社外FDE案件（2026年11月から参加予定）</p></div></div>
     <h2 class="line-big reveal">入社4か月で、<span class="lit">社内初のFDE</span>に選ばれました。</h2>
     <div class="act-body">
       <div class="act-text reveal">
@@ -431,7 +397,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 <!-- 1位の記録 -->
 <section class="act" id="trophies">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">M5</span><div class="ctx"><p class="ctx-top"><b class="act-name">1位の記録</b><span class="when">大学時代〜現在</span></p><p class="what">これまでに取った1位をまとめました</p></div></div>
+    <div class="act-head reveal"><span class="act-no">M4</span><div class="ctx"><p class="ctx-top"><b class="act-name">1位の記録</b><span class="when">大学時代〜現在</span></p><p class="what">これまでに取った1位をまとめました</p></div></div>
     <h2 class="line-big reveal">人の前に立つたびに、<span class="lit">1位</span>を取ってきました。</h2>
     <div class="trophies">
       <div class="trophy reveal"><div class="rank">1<small>位</small></div><h3>講師評価</h3><p>受講生による評価<br>13人中</p></div>
@@ -610,8 +576,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   /* ヘッダーと現在地 */
   /* ヘッダー・メニューの現在地・「いま何幕か」の帯：スクロールのたびに、画面中央にある節を計算する */
   const header = $('#top'), navLinks = $$('.nav ul a'), nowbar = $('#nowbar');
-  const SECTIONS = ['hero', 'now', 'stage', 'how', 'next', 'trophies', 'prequel', 'call'].map(id => document.getElementById(id));
-  const NAV = { now: '#now', next: '#now', stage: '#stage', how: '#stage', trophies: '#prequel', prequel: '#prequel', call: '#call' };
+  const SECTIONS = ['hero', 'now', 'stage', 'next', 'trophies', 'prequel', 'call'].map(id => document.getElementById(id));
+  const NAV = { now: '#now', next: '#now', stage: '#stage', trophies: '#prequel', prequel: '#prequel', call: '#call' };
   let current = null;
   function onScroll() {
     header.classList.toggle('scrolled', scrollY > 30);
