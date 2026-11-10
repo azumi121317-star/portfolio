@@ -182,20 +182,41 @@ header.top.scrolled{background:rgba(17,14,12,.85);backdrop-filter:blur(8px);-web
 .tab{font:inherit;font-size:14px;font-weight:700;padding:9px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s var(--ease)}
 .tab[aria-selected="true"]{background:var(--fg);color:var(--stage);border-color:var(--fg)}
 .tab:hover{border-color:var(--light)}
-.screen{display:grid;grid-template-columns:1.65fr 1fr;gap:28px;align-items:start}
-.frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff;aspect-ratio:16/10;box-shadow:0 30px 80px -30px rgba(0,0,0,.8),0 0 0 6px var(--board)}
+.screen{display:grid;gap:24px}
+.frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff;aspect-ratio:16/9;box-shadow:0 30px 80px -30px rgba(0,0,0,.8),0 0 0 6px var(--board)}
 .frame img,.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;object-position:top}
 .frame .play{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(transparent 30%,rgba(17,14,12,.75));border:0;cursor:pointer;font:inherit;color:var(--fg)}
-.frame .play span{display:inline-flex;align-items:center;gap:8px;background:var(--light);color:#1c140b;font-weight:700;padding:12px 22px;border-radius:999px;box-shadow:0 10px 40px -8px rgba(255,197,107,.7);transition:transform .2s var(--ease)}
+.frame .play span{display:inline-flex;align-items:center;gap:10px;background:var(--light);color:#1c140b;font-weight:700;font-size:17px;padding:16px 30px;border-radius:999px;box-shadow:0 10px 40px -8px rgba(255,197,107,.7);transition:transform .2s var(--ease)}
 .frame .play:hover span{transform:scale(1.05)}
-.info h3{font-family:var(--mincho);font-weight:900;font-size:26px;line-height:1.35;margin:0 0 10px}
-.info .tagline{color:var(--light);font-weight:700;margin:0 0 14px;font-size:15px}
-.info dl{margin:0 0 18px;display:grid;gap:10px}
-.info dt{font-size:12.5px;color:var(--dim);font-weight:700}
-.info dd{margin:0;font-size:14.5px;color:var(--muted);line-height:1.7}
+.frame .play small{display:block;margin-top:10px;font-size:13px;color:var(--fg);opacity:.85}
+.info{display:grid;grid-template-columns:1fr 2.4fr;gap:28px;align-items:start}
+.info h3{font-family:var(--mincho);font-weight:900;font-size:26px;line-height:1.35;margin:0 0 8px}
+.info .tagline{color:var(--light);font-weight:700;margin:0 0 12px;font-size:15px}
+.info dl{margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.info dl div{background:var(--board);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.info dt{font-size:12.5px;color:var(--light);font-weight:700;margin-bottom:4px}
+.info dd{margin:0;font-size:14px;color:var(--muted);line-height:1.7}
 .info .open{font-size:14px;color:var(--light);font-weight:700;text-decoration:none}
 .info .open:hover{text-decoration:underline}
-@media (max-width:900px){.screen{grid-template-columns:1fr}}
+.info .note{margin:8px 0 0;font-size:12.5px;color:var(--dim)}
+@media (max-width:900px){.info{grid-template-columns:1fr;gap:16px}.info dl{grid-template-columns:1fr}}
+
+/* 上映モード：作品を画面いっぱいで操作する */
+dialog.theater{width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:#0b0908;color:var(--fg);display:none;flex-direction:column}
+dialog.theater[open]{display:flex;animation:showIn .35s var(--ease)}
+dialog.theater::backdrop{background:#0b0908}
+@keyframes showIn{from{opacity:0;transform:scale(.97)}}
+.th-bar{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.th-bar .th-title{font-family:var(--mincho);font-weight:900;font-size:17px;margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.th-bar .th-title small{font-family:var(--body);font-weight:500;font-size:12.5px;color:var(--dim);margin-left:10px}
+.th-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.th-tabs .tab{padding:6px 12px;font-size:13px}
+.th-btn{font:inherit;font-size:13.5px;font-weight:700;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;text-decoration:none;white-space:nowrap}
+.th-btn:hover{border-color:var(--light)}
+.th-btn.close{background:var(--fg);color:var(--stage);border-color:var(--fg)}
+.th-stage{flex:1;padding:12px;min-height:0}
+.th-stage iframe{width:100%;height:100%;border:0;border-radius:10px;background:#fff}
+@media (max-width:700px){.th-tabs{order:3;width:100%}.th-bar .th-title small{display:none}}
 
 /* 前日譚：これまでを新しい順に短く */
 .pre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -427,6 +448,16 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 </section>
 </main>
 
+<dialog class="theater" id="theater" aria-labelledby="thTitle">
+  <div class="th-bar">
+    <p class="th-title" id="thTitle"></p>
+    <div class="th-tabs" id="thTabs" aria-label="作品を切り替える"></div>
+    <a class="th-btn" id="thOpen" href="#" target="_blank" rel="noopener">新しいタブ ↗</a>
+    <button class="th-btn close" id="thClose" type="button">閉じる ✕</button>
+  </div>
+  <div class="th-stage"><iframe id="thFrame" title="作品のデモ" src="about:blank"></iframe></div>
+</dialog>
+
 <footer>
   <div class="wrap">
     <span>© 2026 安住 龍祐</span>
@@ -540,17 +571,37 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   ];
   const tabs = $('#tabs'), frame = $('#frame'), info = $('#info');
   tabs.innerHTML = WORKS.map((w, i) => `<button class="tab" role="tab" type="button" id="tab-${w.id}" aria-selected="${i === 0}" aria-controls="screen">${w.tab}</button>`).join('');
+  let cur = 0;
   function show(i) {
-    const w = WORKS[i];
+    const w = WORKS[i]; cur = i;
     $$('.tab', tabs).forEach((t, k) => t.setAttribute('aria-selected', k === i));
-    frame.innerHTML = `<img src="${w.img}" alt="${w.title}の画面" loading="lazy"><button class="play" type="button"><span>
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>ここで操作する</span></button>`;
-    $('.play', frame).addEventListener('click', () => { frame.innerHTML = `<iframe src="${w.src}" title="${w.title}のデモ" loading="lazy"></iframe>`; });
-    info.innerHTML = `<h3>${w.title}</h3><p class="tagline">${w.tagline}</p>
-      <dl><dt>課題</dt><dd>${w.problem}</dd><dt>工夫</dt><dd>${w.craft}</dd><dt>成果</dt><dd>${w.result}</dd></dl>
-      <a class="open" href="${w.src}" target="_blank" rel="noopener">新しいタブで大きく開く ↗</a>
-      <p style="margin:10px 0 0;font-size:12.5px;color:var(--dim)">人物やデータはすべて架空です。</p>`;
+    frame.innerHTML = `<img src="${w.img}" alt="${w.title}の画面" loading="lazy"><button class="play" type="button" aria-haspopup="dialog"><div><span>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg>画面いっぱいで操作する</span><small>このページのまま、実際のデモを動かせます</small></div></button>`;
+    $('.play', frame).addEventListener('click', () => openTheater(i));
+    info.innerHTML = `<div><h3>${w.title}</h3><p class="tagline">${w.tagline}</p>
+      <a class="open" href="${w.src}" target="_blank" rel="noopener">新しいタブで開く ↗</a><p class="note">人物やデータはすべて架空です。</p></div>
+      <dl><div><dt>課題</dt><dd>${w.problem}</dd></div><div><dt>工夫</dt><dd>${w.craft}</dd></div><div><dt>成果</dt><dd>${w.result}</dd></div></dl>`;
   }
+
+  /* 上映モード */
+  const th = $('#theater'), thFrame = $('#thFrame'), thTabs = $('#thTabs');
+  thTabs.innerHTML = WORKS.map(w => `<button class="tab" type="button">${w.tab}</button>`).join('');
+  function loadTheater(i) {
+    const w = WORKS[i];
+    $('#thTitle').innerHTML = `${w.title}<small>人物やデータはすべて架空です</small>`;
+    $('#thOpen').href = w.src;
+    $$('.tab', thTabs).forEach((t, k) => t.setAttribute('aria-selected', k === i));
+    thFrame.src = w.src; thFrame.title = w.title + 'のデモ';
+  }
+  function openTheater(i) {
+    loadTheater(i);
+    th.showModal();
+    document.documentElement.style.overflow = 'hidden';
+  }
+  thTabs.addEventListener('click', e => { const t = e.target.closest('.tab'); if (!t) return; const i = $$('.tab', thTabs).indexOf(t); loadTheater(i); show(i); });
+  const cleanupTheater = () => { document.documentElement.style.overflow = ''; thFrame.src = 'about:blank'; };
+  $('#thClose').addEventListener('click', () => { th.close(); cleanupTheater(); });
+  th.addEventListener('close', cleanupTheater); // Escキーで閉じたとき
   tabs.addEventListener('click', e => { const t = e.target.closest('.tab'); if (t) show($$('.tab', tabs).indexOf(t)); });
   tabs.addEventListener('keydown', e => {
     const list = $$('.tab', tabs), i = list.indexOf(document.activeElement);
