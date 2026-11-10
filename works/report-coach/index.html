@@ -1,0 +1,927 @@
+<title>report-coach デモ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: app shell. Left rail (role switch + screens) on desktop, top bar + tabs on phone. Work area shows one screen at a time. */
+:root {
+  --bg: #f4f6f5;
+  --surface: #ffffff;
+  --sunk: #eef1ef;
+  --fg: #1c2320;
+  --muted: #5e6863;
+  --line: #d8dedb;
+  --accent: #1f6b57;
+  --accent-fg: #ffffff;
+  --accent-soft: #e1eee8;
+  --good: #1f6b57; --good-bg: #e1eee8;
+  --warn: #8a6a12; --warn-bg: #f5edd2;
+  --bad: #a3402f; --bad-bg: #f6e3de;
+  --info: #35558a; --info-bg: #e3e9f4;
+  --chart: #1f6b57; --chart-2: #9aa7a1;
+  --av-1: #3f7f6b; --av-2: #4a6796; --av-3: #8a5a3c; --av-4: #6a4f8f; --av-5: #9a5a78; --av-fg: #ffffff;
+  --font-display: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-body: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121715; --surface: #1a211e; --sunk: #161c19; --fg: #e5ebe8; --muted: #9ba6a1; --line: #2d3632;
+    --accent: #6cc3a6; --accent-fg: #0f1a16; --accent-soft: #1e3830;
+    --good: #6cc3a6; --good-bg: #1e3830; --warn: #e0c766; --warn-bg: #3a3220; --bad: #ec9a88; --bad-bg: #45261f; --info: #94b3e8; --info-bg: #222f47;
+    --chart: #6cc3a6; --chart-2: #5b6661;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121715; --surface: #1a211e; --sunk: #161c19; --fg: #e5ebe8; --muted: #9ba6a1; --line: #2d3632;
+  --accent: #6cc3a6; --accent-fg: #0f1a16; --accent-soft: #1e3830;
+  --good: #6cc3a6; --good-bg: #1e3830; --warn: #e0c766; --warn-bg: #3a3220; --bad: #ec9a88; --bad-bg: #45261f; --info: #94b3e8; --info-bg: #222f47;
+  --chart: #6cc3a6; --chart-2: #5b6661;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { min-height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 14px; line-height: 1.65; }
+h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.35; text-wrap: balance; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.banner { background: var(--warn-bg); color: var(--warn); font-size: 12px; text-align: center; padding: 6px max(16px, env(safe-area-inset-right, 0px)) 6px max(16px, env(safe-area-inset-left, 0px)); }
+
+.shell { display: grid; grid-template-columns: 212px minmax(0, 1fr); min-height: calc(100vh - 30px); }
+.rail { background: var(--surface); border-right: 1px solid var(--line); padding: 20px 14px 20px max(14px, env(safe-area-inset-left, 0px)); display: grid; gap: 22px; align-content: start; }
+.brand { font-family: var(--font-display); font-weight: 900; font-size: 17px; padding: 0 6px; }
+.brand small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 11px; color: var(--muted); }
+.group { display: grid; gap: 6px; }
+.glabel { font-size: 11px; color: var(--muted); letter-spacing: .1em; padding: 0 6px; }
+.acct { position: relative; }
+.acct-btn { width: 100%; display: grid; grid-template-columns: 36px minmax(0, 1fr) 16px; gap: 10px; align-items: center; text-align: left; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 8px 10px; }
+.acct-btn:hover { background: var(--sunk); }
+.av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--av-fg); }
+.av.sm { width: 32px; height: 32px; font-size: 13px; }
+.av-member { background: var(--av-1); } .av-manager { background: var(--av-2); } .av-head { background: var(--av-3); } .av-exe { background: var(--av-4); } .av-exem { background: var(--av-5); }
+.alerts { display: grid; gap: 8px; }
+.alert { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); font-size: 13px; }
+.alert .when { font-family: var(--font-mono); font-size: 12px; color: var(--muted); white-space: nowrap; }
+.notes { margin: 0; padding-left: 1.2em; font-size: 13px; display: grid; gap: 4px; }
+@media (max-width: 520px) { .alert { grid-template-columns: minmax(0,1fr); gap: 6px; } .alert .pill { justify-self: start; } }
+.acct-name { display: grid; min-width: 0; line-height: 1.35; }
+.acct-name strong { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.acct-name span { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chev { color: var(--muted); font-size: 12px; }
+.acct-menu { position: absolute; left: 0; top: calc(100% + 6px); z-index: 20; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 8px 24px rgb(0 0 0 / .14); padding: 6px; display: grid; gap: 2px; min-width: 288px; max-width: calc(100vw - 32px); }
+.acct-menu .mh { font-size: 11px; color: var(--muted); padding: 6px 8px 4px; }
+.acct-item { display: grid; grid-template-columns: 32px minmax(0, 1fr) 16px; gap: 10px; align-items: center; border: 0; background: transparent; text-align: left; padding: 8px; border-radius: 8px; }
+.acct-item:hover, .acct-item:focus-visible { background: var(--sunk); }
+.acct-item .ck { color: var(--accent); font-weight: 700; }
+.acct-item .acct-name span.scope { color: var(--accent); }
+.nav { display: grid; gap: 2px; }
+.nav a { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; border-radius: 6px; text-decoration: none; color: var(--fg); font-size: 14px; }
+.nav a:hover { background: var(--sunk); }
+.nav a[aria-current="page"] { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+.nav .tag { font-size: 10px; color: var(--muted); font-weight: 500; }
+
+.main { padding: 24px max(16px, env(safe-area-inset-right, 0px)) 48px 28px; min-width: 0; display: grid; gap: 20px; align-content: start; }
+.pagehead { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: flex-end; justify-content: space-between; }
+.pagehead h1 { font-size: 22px; font-weight: 900; }
+.pagehead .sub { color: var(--muted); font-size: 13px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; background: var(--sunk); border-radius: 8px; padding: 3px; gap: 3px; }
+.seg button { border: 0; background: transparent; padding: 4px 12px; border-radius: 6px; font-size: 13px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--fg); font-weight: 700; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 12px; min-width: 0; }
+.card h2 { font-size: 16px; font-weight: 700; }
+.card .ch { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.hint { font-size: 12px; color: var(--muted); }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.stack { display: grid; gap: 16px; min-width: 0; }
+
+.pill { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 999px; white-space: nowrap; }
+.p-good { color: var(--good); background: var(--good-bg); }
+.p-warn { color: var(--warn); background: var(--warn-bg); }
+.p-bad { color: var(--bad); background: var(--bad-bg); }
+.p-info { color: var(--info); background: var(--info-bg); }
+.p-mute { color: var(--muted); background: var(--sunk); }
+
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: 7px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; font-size: 13px; }
+th:first-child, td:first-child { text-align: left; }
+th { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .04em; background: var(--sunk); }
+tbody tr:last-child td { border-bottom: 0; }
+td input { width: 4.2em; text-align: right; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); font-family: var(--font-mono); }
+td input.ext { border-color: var(--info); }
+.rate { display: inline-flex; align-items: center; gap: 6px; justify-content: flex-end; }
+.bar { width: 36px; height: 6px; border-radius: 3px; background: var(--sunk); overflow: hidden; display: inline-block; }
+.bar i { display: block; height: 100%; background: var(--good); }
+.bar i.w { background: var(--warn); }
+.bar i.b { background: var(--bad); }
+tr.click { cursor: pointer; }
+tr.click:hover td { background: var(--sunk); }
+tr.inner td:first-child { padding-left: 26px; color: var(--muted); }
+
+.extnote { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; font-size: 12px; color: var(--info); background: var(--info-bg); border-radius: 8px; padding: 8px 12px; }
+.fields { display: grid; gap: 12px; }
+.field { display: grid; gap: 4px; }
+.field label { font-size: 12px; font-weight: 700; }
+.field label span { font-weight: 400; color: var(--muted); margin-left: 6px; }
+textarea { width: 100%; min-height: 64px; resize: vertical; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); line-height: 1.6; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn { border: 1px solid var(--line); background: var(--surface); padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; }
+.btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.btn:disabled { opacity: .5; cursor: default; }
+
+.coach { border-left: 3px solid var(--accent); padding-left: 14px; display: grid; gap: 8px; }
+.coach p { margin: 0; }
+.coach ol, .coach ul { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.thinking { color: var(--muted); font-size: 13px; display: flex; gap: 8px; align-items: center; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 1s infinite ease-in-out; }
+@keyframes pulse { 50% { opacity: .25; } }
+@media (prefers-reduced-motion: reduce) { .dot { animation: none; } }
+
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
+.kpi .l { font-size: 12px; color: var(--muted); }
+.kpi .v { font-family: var(--font-mono); font-size: 24px; font-weight: 500; line-height: 1.2; }
+.kpi .v small { font-family: var(--font-body); font-size: 12px; color: var(--muted); margin-left: 2px; }
+.kpi .d { font-size: 12px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.kpi .ref { font-size: 11px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 4px; margin-top: 2px; }
+.up { color: var(--good); } .down { color: var(--bad); }
+
+.mini { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.mini div { padding: 12px 14px; border-right: 1px solid var(--line); display: grid; gap: 2px; }
+.mini div:last-child { border-right: 0; }
+.mini .l { font-size: 11px; color: var(--muted); }
+.mini .v { font-family: var(--font-mono); font-size: 18px; }
+
+.advice { display: grid; gap: 14px; }
+.advice h3 { font-size: 13px; color: var(--muted); font-weight: 700; letter-spacing: .06em; }
+.advice .concl { font-size: 15px; line-height: 1.8; margin: 0; }
+.advice ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.adopt { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.adopt select, .adopt input { padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); }
+.adopt input { flex: 1; min-width: 12em; }
+
+/* About (はじめに) */
+.hero { display: grid; gap: 10px; }
+.hero h1 { font-size: 26px; font-weight: 900; }
+.hero p { margin: 0; max-width: 46em; font-size: 15px; line-height: 1.85; }
+.hero .actions { margin-top: 4px; }
+.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; counter-reset: f; }
+.flow li { counter-increment: f; background: var(--sunk); border-radius: 8px; padding: 10px 12px 12px; display: grid; gap: 4px; align-content: start; font-size: 12px; color: var(--muted); }
+.flow li::before { content: counter(f); font-family: var(--font-mono); color: var(--accent); font-size: 12px; }
+.flow li b { color: var(--fg); font-size: 13px; }
+.flow li .w { font-size: 11px; }
+.who3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.whoc { border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 8px; align-content: start; background: var(--bg); }
+.whoc .h { display: flex; gap: 10px; align-items: center; }
+.whoc .h strong { font-family: var(--font-display); font-size: 15px; }
+.whoc p { margin: 0; font-size: 13px; }
+.whoc ul { margin: 0; padding-left: 1.2em; font-size: 12px; color: var(--muted); display: grid; gap: 2px; }
+.whoc .btn { justify-self: start; }
+
+.tourbtn { width: 100%; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 700; padding: 9px 10px; border-radius: 8px; text-align: left; display: grid; gap: 1px; }
+.tourbtn.sm { background: var(--surface); border-color: var(--line); color: var(--fg); padding: 6px 10px; }
+.tourbtn.sm > span { display: flex; align-items: center; gap: 8px; }
+.tourbtn[aria-pressed="true"] { outline: 2px solid var(--accent); outline-offset: 1px; }
+.av.xs { width: 22px; height: 22px; font-size: 11px; }
+.story { display: grid; gap: 8px; }
+.story .sq { font-family: var(--font-display); font-size: 17px; font-weight: 700; line-height: 1.6; border-left: 3px solid var(--accent); padding-left: 12px; }
+.story .pp { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 10px; }
+.story .pp div { background: var(--sunk); border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.6; }
+.story .pp b { display: block; font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+.story .pp ul { margin: 0; padding-left: 1.1em; }
+@media (max-width: 520px) { .story .pp { grid-template-columns: 1fr; } }
+.tourbtn small { font-weight: 400; font-size: 11px; color: var(--muted); }
+.spot { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 10px; }
+body.touring .main { padding-bottom: 260px; }
+.tour { position: fixed; z-index: 30; left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); width: min(680px, calc(100% - 32px)); max-height: 70vh; overflow-y: auto; background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: 12px; box-shadow: 0 12px 40px rgb(0 0 0 / .22); padding: 14px 18px 12px; display: grid; gap: 8px; }
+.tour .tm { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 12px; color: var(--muted); }
+.tour .tm .no { font-family: var(--font-mono); color: var(--accent); font-weight: 500; }
+.tour h2 { font-size: 18px; }
+.tour p { margin: 0; font-size: 14px; }
+.tour .tn { display: flex; gap: 8px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.dots { display: flex; gap: 4px; flex-wrap: wrap; }
+.dots button { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); font-family: var(--font-mono); font-size: 10px; color: var(--muted); padding: 0; }
+.dots button[aria-current="step"] { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
+.tour .nb { display: flex; gap: 6px; }
+.toast { position: fixed; z-index: 40; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 8px 16px; border-radius: 8px; font-size: 13px; max-width: calc(100% - 32px); }
+
+@media (max-width: 960px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .who3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .shell { grid-template-columns: 1fr; }
+  .rail { border-right: 0; border-bottom: 1px solid var(--line); padding: 14px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px)); gap: 10px; }
+  .rail .glabel, .rail .tourbtn.sm { display: none; }
+  .acct-btn { max-width: 340px; }
+  .nav { display: flex; overflow-x: auto; gap: 4px; }
+  .nav a { white-space: nowrap; }
+  .nav .tag { display: none; }
+  .main { padding: 18px max(16px, env(safe-area-inset-right, 0px)) 40px max(16px, env(safe-area-inset-left, 0px)); }
+  .mini { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mini div:nth-child(2) { border-right: 0; }
+  .mini div:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 420px) { .kpis, .flow { grid-template-columns: 1fr; } }
+</style>
+
+<div class="banner">デモ版です。会社名・氏名・数字・AI の文章はすべて架空のサンプルで、実在のものとは関係ありません</div>
+<div class="shell">
+  <aside class="rail">
+    <div class="brand">report-coach<small id="brandSub">業務報告と KPI の AI コーチ</small></div>
+    <div class="group">
+      <div class="glabel">ログイン中のアカウント（切り替えできます）</div>
+      <div class="acct" id="acct"></div>
+    </div>
+    <div class="group">
+      <div class="glabel">紙芝居で見る</div>
+      <button class="tourbtn" type="button" data-tour="all">▶ 1 日の流れ（全体）<small>手順 1〜11 を役割をまたいで</small></button>
+      <button class="tourbtn sm" type="button" data-tour="member"><span><span class="av xs av-member">A</span>メンバー目線</span></button>
+      <button class="tourbtn sm" type="button" data-tour="manager"><span><span class="av xs av-manager">B</span>マネージャー目線</span></button>
+      <button class="tourbtn sm" type="button" data-tour="head"><span><span class="av xs av-head">C</span>事業部長目線</span></button>
+      <button class="tourbtn sm" type="button" data-tour="exem"><span><span class="av xs av-exem">D</span>別事業 メンバー</span></button>
+      <button class="tourbtn sm" type="button" data-tour="exe"><span><span class="av xs av-exe">E</span>別事業 マネージャー</span></button>
+    </div>
+    <div class="group">
+      <div class="glabel">画面</div>
+      <nav class="nav" id="nav"></nav>
+    </div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+<div class="tour" id="tour" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(function () {
+  // すべて架空のサンプルデータ。氏名はアルファベット、会社名は「〇 社」で表記
+  const ROLES = {
+    member:  { name: "メンバー A", ini: "A", title: "営業メンバー", unit: "人材紹介 第1チーム", scope: "自分の数字", screens: ["about", "report", "personal"], home: "report" },
+    manager: { name: "マネージャー B", ini: "B", title: "マネージャー", unit: "人材紹介 第1チーム", scope: "自分 + チーム", screens: ["about", "team", "report", "personal", "overview"], home: "team" },
+    head:    { name: "事業部長 C", ini: "C", title: "事業部長", unit: "人材サービス事業部", scope: "事業部の全体", screens: ["about", "overview", "advice", "team", "personal"], home: "overview" },
+    exem:    { name: "メンバー D", ini: "D", title: "営業メンバー", unit: "顧問マッチング事業", scope: "自分の数字と担当の契約", screens: ["about", "report", "contracts"], home: "report" },
+    exe:     { name: "マネージャー E", ini: "E", title: "マネージャー", unit: "顧問マッチング事業", scope: "事業の契約 + チーム", screens: ["about", "exeteam", "contracts", "report"], home: "exeteam" }
+  };
+  const SCREENS = {
+    about:    { name: "はじめに", tag: "デモ" },
+    report:   { name: "業務報告", tag: "毎日" },
+    team:     { name: "チーム一覧", tag: "上長" },
+    overview: { name: "概要", tag: "3 層" },
+    personal: { name: "個人数字", tag: "見込み" },
+    advice:   { name: "AI 提言", tag: "毎朝" },
+    contracts: { name: "顧問契約", tag: "契約" },
+    exeteam: { name: "チームの数字", tag: "月次" }
+  };
+  // 顧問マッチングの契約（架空）。1 行 = 企業と顧問 1 人の契約。end は今の契約期間の終了日、cycle は更新の周期（月・0 = 自動更新なし）
+  const CONTRACTS = [
+    { co: "A 社", adv: "顧問 1", own: true, kind: "既存", route: "紹介",     fee: 35, start: "2025-12-01", end: "2026-11-30", cycle: 3,  auto: true,  cancel: null },
+    { co: "A 社", adv: "顧問 2", own: true, kind: "新規", route: "紹介",     fee: 30, start: "2026-09-01", end: "2026-11-30", cycle: 3,  auto: false, cancel: null },
+    { co: "B 社", adv: "顧問 3", own: true, kind: "新規", route: "架電",     fee: 40, start: "2026-11-01", end: "2027-01-31", cycle: 3,  auto: true,  cancel: null },
+    { co: "C 社", adv: "顧問 4", kind: "既存", route: "問合せ",   fee: 30, start: "2025-06-01", end: "2026-11-30", cycle: 6,  auto: true,  cancel: "2026-11-30" },
+    { co: "D 社", adv: "顧問 5", kind: "既存", route: "提携先",   fee: 50, start: "2024-12-01", end: "2026-11-30", cycle: 12, auto: true,  cancel: null },
+    { co: "E 社", adv: "顧問 6", own: true, kind: "新規", route: "紹介",     fee: 35, start: "2026-10-01", end: "2026-12-31", cycle: 3,  auto: true,  cancel: null },
+    { co: "F 社", adv: "顧問 7", kind: "既存", route: "既存顧客", fee: 25, start: "2026-05-01", end: "2027-04-30", cycle: 6,  auto: true,  cancel: null },
+    { co: "G 社", adv: "顧問 8", kind: "新規", route: "問合せ",   fee: 30, start: "2026-11-01", end: "2027-01-31", cycle: 3,  auto: false, cancel: null },
+    { co: "H 社", adv: "顧問 9", own: true, kind: "既存", route: "紹介",     fee: 45, start: "2026-02-01", end: "2027-01-31", cycle: 6,  auto: true,  cancel: null },
+    { co: "I 社", adv: "顧問 10", kind: "既存", route: "架電",    fee: 30, start: "2026-08-01", end: "2026-10-31", cycle: 0,  auto: false, cancel: null }
+  ];
+  const TODAY = "2026-11-04";
+  const daysTo = (d) => Math.round((Date.parse(d) - Date.parse(TODAY)) / 86400000);
+  function cStatus(c) {
+    if (c.start > TODAY) return { k: "wait", label: "開始前", cls: "p-mute" };
+    if (c.end < TODAY || (c.cancel && c.cancel < TODAY)) return { k: "ended", label: "終了", cls: "p-mute" };
+    if (c.cancel) return { k: "act", label: "解約予定 " + c.cancel.slice(5).replace("-", "/"), cls: "p-bad" };
+    const left = daysTo(c.end);
+    if (left <= 30 && !c.auto) return { k: "act", label: "満了まで " + left + " 日", cls: "p-warn" };
+    if (left <= 30) return { k: "act", label: "自動更新まで " + left + " 日", cls: "p-info" };
+    return { k: "live", label: "稼働中", cls: "p-good" };
+  }
+  const BD_TOTAL = 19, BD_ELAPSED = 2;
+
+  const ITEMS = [
+    { key: "call",  name: "架電数",     day: 42, dayGoal: 40, prev: 38, goal: 800, ext: true },
+    { key: "conn",  name: "接続数",     day: 11, dayGoal: 10, prev: 9,  goal: 200, ext: true },
+    { key: "apo",   name: "アポ獲得数", day: 3,  dayGoal: 2,  prev: 1,  goal: 40,  ext: true },
+    { key: "mtg",   name: "面談数",     day: 2,  dayGoal: 2,  prev: 2,  goal: 36 },
+    { key: "deal",  name: "案件化数",   day: 1,  dayGoal: 1,  prev: 0,  goal: 16 },
+    { key: "prop",  name: "提案数",     day: 4,  dayGoal: 3,  prev: 3,  goal: 60 },
+    { key: "meal",  name: "会食数",     day: 0,  dayGoal: null, prev: 1, goal: 4 }
+  ];
+
+  // 事業ごとに報告項目を変えられる例（顧問マッチング事業）
+  const EXE_ITEMS = [
+    { key: "xcall", name: "架電数",           day: 35, dayGoal: 30, prev: 28, goal: 600, ext: true },
+    { key: "xapo",  name: "アポ獲得数",       day: 2,  dayGoal: 1,  prev: 1,  goal: 20,  ext: true },
+    { key: "xmtg",  name: "企業との商談数",   day: 1,  dayGoal: 1,  prev: 2,  goal: 20 },
+    { key: "xask",  name: "顧問への打診数",   day: 3,  dayGoal: 2,  prev: 2,  goal: 40 },
+    { key: "xok",   name: "顧問の承諾数",     day: 1,  dayGoal: 1,  prev: 0,  goal: 16 },
+    { key: "xord",  name: "受注数",           day: 0,  dayGoal: null, prev: 1, goal: 6 },
+    { key: "xreg",  name: "企業定例の参加数", day: 2,  dayGoal: null, prev: 3, goal: 30 }
+  ];
+  // 契約ごとの売上を担当の枠（10 点）で配る例。pts は担当の枠のうち本人の数
+  const EXE_SALES = [
+    { co: "A 社", adv: "顧問 1", kind: "営業支援", st: "継続", yomi: "S", sales: 35, role: "営業 4 · 既存 2", pts: 6 },
+    { co: "A 社", adv: "顧問 2", kind: "営業支援", st: "継続", yomi: "S", sales: 30, role: "営業 6", pts: 6 },
+    { co: "B 社", adv: "顧問 3", kind: "スポット", st: "消化中", yomi: "S", sales: 40, role: "営業 6 · 既存 2 · 面談 2", pts: 10 },
+    { co: "E 社", adv: "顧問 6", kind: "営業支援", st: "継続", yomi: "S", sales: 35, role: "既存 2", pts: 2 },
+    { co: "H 社", adv: "顧問 9", kind: "業務委託", st: "継続", yomi: "計上休み", sales: 0, role: "営業 4", pts: 4 }
+  ];
+  // 顧問マッチングのチーム（架空）。万円。sum は確度を広げた累計 [F+S, 〜A, 〜C, 〜D]
+  const EXE_TEAM = [
+    { name: "マネージャー E", title: "マネージャー", start: 520, budget: 1300, sum: [1180, 1240, 1320, 1350], gross: 690 },
+    { name: "メンバー P",     title: "リーダー",     start: 410, budget: 1000, sum: [760, 820, 900, 960], gross: 430 },
+    { name: "メンバー D",     title: "メンバー",     start: 150, budget: 600,  sum: [310, 360, 420, 470], gross: 160 },
+    { name: "メンバー Q",     title: "メンバー",     start: 120, budget: 400,  sum: [180, 210, 260, 300], gross: 90 },
+    { name: "メンバー R",     title: "新人",         start: 20,  budget: 250,  sum: [40, 60, 90, 120], gross: 18, note: "育成期間で減額" }
+  ];
+  const isExe = () => state.role === "exe" || state.role === "exem";
+  const curItems = () => (isExe() ? EXE_ITEMS : ITEMS);
+  const DOM = {
+    tech: { member: "メンバー A", setting: "人材紹介（共通）", ext: "架電 42 · 接続 11 · アポ 3",
+      f: ["アポは取れているが、面談に進む前に先方の要件が固まらず止まる案件が 2 件ある。", "午前に架電 40 件。午後は A 社・B 社の要件の再確認。", "【S】C 社 Java 1 名（11 月開始）\n【A】D 社 PM 1 名\n【B】E 社 インフラ 2 名", "新規のアポが 3 件。うち 1 件は来週の面談まで決まった。"],
+      coach: '<p><strong>今日の評価:</strong> アポ獲得は日次目標を上回り、行動量は十分です。止まっているのは「アポ → 面談」の移行です。</p>' +
+        '<ol><li>要件が固まらない 2 件は、面談の前に 15 分の要件確認の電話を入れ、候補者像を 2 案で先に見せる</li>' +
+        '<li>面談は当月 4 件で、月次目標 36 件の日割りでは 105% のペース。このペースを崩さないよう、面談枠を週の前半に寄せる</li>' +
+        '<li>見込みの【A】D 社は、今週中に単価の目線を確認すると【S】に上げられる可能性があります</li></ol>' +
+        '<p class="hint">根拠: 本日の報告・当月の KPI・直近 5 回の報告と指導。数字は報告の値だけを使っています</p>',
+      boss: "例: D 社は私も同席します", self: "例: 要件確認の電話は木曜に入れます" },
+    exe: { member: "メンバー D", setting: "顧問マッチング（共通）", ext: "架電 35 · アポ 2",
+      f: ["F 社の課題（営業組織の立ち上げ）に合う顧問を 3 人打診したが、承諾は 1 人。業界経験の条件が厳しく、候補が少ない。", "午前に架電 30 件。午後は F 社に承諾した顧問のプロフィールを送り、面談日を決める。A 社の定例で顧問 1 の継続を確かめる。", "【S】F 社 営業支援 顧問 1 名（12 月開始）\n【A】J 社 事業支援 顧問 2 名\n【B】K 社 営業支援（紹介）", "顧問の打診 3 件・承諾 1 件。A 社の定例は順調。"],
+      coach: '<p><strong>今日の評価:</strong> 架電とアポは日次目標を上回っています。詰まっているのは「顧問への打診 → 承諾」で、当月の承諾率は 20% です。</p>' +
+        '<ol><li>F 社は業界経験の条件をいったん「近い業界」まで広げ、明日の打診を 2 人増やす。承諾した 1 人は面談日を今週中に決める</li>' +
+        '<li><strong>担当の契約で 11/30 に終わるものが 2 件</strong>（A 社 × 顧問 1 は自動更新、A 社 × 顧問 2 は自動更新なし）。今日の定例で継続の意向を確かめ、顧問 2 は更新の申込を起こす</li>' +
+        '<li>受注は当月 1 件で、月次目標 6 件の日割りでは 158% のペース。見込みの【S】F 社を今月中に申込まで進める</li></ol>' +
+        '<p class="hint">根拠: 本日の報告・当月の KPI・担当の契約・直近 5 回の報告と指導</p>',
+      boss: "例: 顧問 2 の更新は私から先方の役員に話します", self: "例: F 社の打診先を木曜までに 2 人増やす" }
+  };
+  const dom = () => DOM[isExe() ? "exe" : "tech"];
+
+  const TEAM = [
+    { name: "メンバー A", role: "営業", sub: false, call: 80,  callG: 800, apo: 4, apoG: 40, mtg: 4, mtgG: 36, deal: 1, dealG: 16, days: 1, coach: "接続率は良い。アポから面談への移行を今週 2 件確保する" },
+    { name: "メンバー F", role: "営業", sub: true,  call: 96,  callG: 800, apo: 5, apoG: 40, mtg: 3, mtgG: 36, deal: 2, dealG: 16, days: 2, coach: "案件化が先行。提案先の候補を 3 社まで広げる" },
+    { name: "メンバー G", role: "営業", sub: true,  call: 44,  callG: 800, apo: 1, apoG: 40, mtg: 1, mtgG: 36, deal: 0, dealG: 16, days: 2, coach: "架電が日次目標の半分。午前の架電枠を固定する" },
+    { name: "メンバー H", role: "CA", sub: true,  call: 30,  callG: 400, apo: 3, apoG: 24, mtg: 5, mtgG: 30, deal: 1, dealG: 10, days: 2, coach: "面談数は順調。推薦の質を上げるため要件の聞き取りを深める" },
+    { name: "メンバー I", role: "CA", sub: false, call: 12,  callG: 400, apo: 0, apoG: 24, mtg: 2, mtgG: 30, deal: 0, dealG: 10, days: 1, coach: "11/02 の報告のみ。本日の報告が未提出" },
+    { name: "マネージャー B", role: "マネージャー", sub: true, call: 40, callG: 400, apo: 2, apoG: 20, mtg: 2, mtgG: 18, deal: 1, dealG: 8, days: 2, coach: "自分の数字は順調。チームの架電の偏りを週次で見る" }
+  ];
+
+  const MONTHS = ["6月", "7月", "8月", "9月", "10月", "11月"];
+  const SEGNAME = { engineer: "IT 人材", marketer: "営業人材" };
+  const TREND = {
+    engineer: [
+      { name: "売上（万円）", v: [1682, 1711, 1724, 1768, 1805, null], goal: 1830, inner: [201, 209, 215, 224, 233, null] },
+      { name: "継続中の売上（万円）", v: [1540, 1572, 1591, 1618, 1652, null], goal: 1660, inner: [188, 194, 199, 206, 214, null] },
+      { name: "新規受注（件）", v: [3, 2, 3, 4, 3, 1], goal: 4, inner: [1, 0, 1, 1, 1, 0] },
+      { name: "解約（件）", v: [2, 2, 1, 2, 2, 0], goal: null, inner: [0, 1, 0, 0, 1, 0] },
+      { name: "稼働人数（人）", v: [23, 23, 24, 24, 25, 25], goal: 26, inner: [3, 3, 3, 3, 4, 4] },
+      { name: "平均単価（万円）", v: [73.1, 74.4, 71.8, 73.7, 72.2, 74.3], goal: 74.0, inner: [67.0, 69.7, 71.7, 74.7, 58.3, 60.1] },
+      { name: "継続中の粗利（万円）", v: [302, 308, 311, 319, 326, null], goal: 330, inner: [30, 31, 32, 34, 35, null] }
+    ],
+    marketer: [
+      { name: "売上（万円）", v: [521, 534, 528, 546, 559, null], goal: 580, inner: [61, 64, 65, 69, 72, null] },
+      { name: "継続中の売上（万円）", v: [488, 496, 501, 512, 523, null], goal: 540, inner: [56, 59, 60, 63, 66, null] },
+      { name: "新規受注（件）", v: [2, 2, 1, 2, 2, 1], goal: 3, inner: [0, 1, 0, 0, 1, 0] },
+      { name: "解約（件）", v: [1, 1, 1, 1, 1, 0], goal: null, inner: [0, 0, 0, 0, 0, 0] },
+      { name: "稼働人数（人）", v: [8, 9, 9, 9, 9, 9], goal: 10, inner: [1, 1, 1, 1, 1, 1] },
+      { name: "平均単価（万円）", v: [65.1, 59.3, 58.7, 60.7, 62.1, 61.6], goal: 62.0, inner: [61.0, 64.0, 65.0, 69.0, 72.0, 70.0] },
+      { name: "継続中の粗利（万円）", v: [93, 95, 95, 98, 101, null], goal: 104, inner: [9, 9, 10, 10, 11, null] }
+    ]
+  };
+  const CARDS = {
+    engineer: [
+      { l: "稼働人数", v: "25", u: "人", goal: "26", rate: 96.2, diff: "+1", ref: "契約上の稼働 26 人（参考）" },
+      { l: "当月売上（見込み）", v: "1,842", u: "万円", goal: "1,890", rate: 97.5, diff: "+37", ref: "見込み S〜A の合計" },
+      { l: "平均単価", v: "74.3", u: "万円", goal: "74.0", rate: 100.4, diff: "+2.1", ref: "稼働者の単価の平均" },
+      { l: "前年同月比（売上）", v: "108.2", u: "%", goal: "110", rate: 98.4, diff: "+1.1pt", ref: "前年 11 月の確定値と比べた値" }
+    ],
+    marketer: [
+      { l: "稼働人数", v: "9", u: "人", goal: "10", rate: 90.0, diff: "±0", ref: "契約上の稼働 10 人（参考）" },
+      { l: "当月売上（見込み）", v: "567", u: "万円", goal: "590", rate: 96.1, diff: "+8", ref: "見込み S〜A の合計" },
+      { l: "平均単価", v: "61.6", u: "万円", goal: "62.0", rate: 99.4, diff: "-0.5", ref: "稼働者の単価の平均" },
+      { l: "前年同月比（売上）", v: "104.6", u: "%", goal: "108", rate: 96.9, diff: "-0.4pt", ref: "前年 11 月の確定値と比べた値" }
+    ]
+  };
+  const MOVES = { engineer: { start: 2, end: 1, net: "+1", churn: "4.0%" }, marketer: { start: 1, end: 0, net: "+1", churn: "0.0%" } };
+
+  const PERSONAL = [
+    { name: "メンバー A", team: "第1チーム", goal: 520, S: 310, A: 120, B: 90 },
+    { name: "メンバー F", team: "第1チーム", goal: 600, S: 420, A: 150, B: 60 },
+    { name: "メンバー G", team: "第1チーム", goal: 480, S: 180, A: 90,  B: 140 },
+    { name: "メンバー H", team: "第1チーム", goal: 300, S: 210, A: 60, B: 30 },
+    { name: "メンバー I", team: "第1チーム", goal: 300, S: 90,  A: 70,  B: 80 },
+    { name: "マネージャー B", team: "第1チーム", goal: 400, S: 300, A: 80,  B: 20 },
+    { name: "メンバー J", team: "第2チーム", goal: 560, S: 380, A: 140, B: 70 },
+    { name: "メンバー K", team: "第2チーム", goal: 520, S: 260, A: 150, B: 110 },
+    { name: "メンバー L", team: "第2チーム", goal: 480, S: 330, A: 110, B: 40 }
+  ];
+
+  const TOURS = {};
+  const STORIES = {};
+  TOURS.all = [
+    { role: "head", screen: "overview", spot: "t-src", when: "毎朝 7:00", who: "システム", t: "元データを取り込んで集計する", d: "確定した売上・案件の見込み・架電の記録を毎朝読み、チーム・事業部に集計して保存します。元の表計算シートは今のまま使い、書き戻しはしません。画面を開くたびにシートを読まないので軽く動きます。" },
+    { role: "head", screen: "advice", spot: "t-concl", when: "毎朝 7:00", who: "システム", t: "AI が事業部への提言を書く", d: "集計した数字の要点から、区分ごとに結論・重点アクション・要確認を書きます。数字は集計済みの値だけを使い、AI には計算させません。" },
+    { role: "head", screen: "overview", spot: "t-kpis", when: "朝 9:00〜", who: "事業部長", t: "概要で今月の状況をつかむ", d: "稼働人数・売上の見込み・平均単価・前年同月比を、目標と前月差つきで見ます。下の推移で 6 か月の流れと内数も確認できます。" },
+    { role: "head", screen: "advice", spot: "t-actions", when: "朝 9:00〜", who: "事業部長", t: "提言に採否を付け、重点アクションをチームに振る", d: "「誰が・何を・いつまでに」を朝会で伝えます。採否とコメントは翌日以降の提言が読みます。" },
+    { role: "manager", screen: "team", spot: "t-team", when: "朝 9:00〜", who: "マネージャー", t: "チームの進捗と提出状況を見る", d: "部下ごとの日割り達成率と、最新の AI 指導の要点が 1 画面に並びます。未提出や遅れている人に声をかけます。" },
+    { role: "member", screen: "report", spot: "t-ext", when: "日中", who: "メンバー", t: "営業活動をする（入力は不要）", d: "架電・接続・アポは架電システムが記録し、業務報告に自動で入ります。日中にこの画面で入力することはありません。" },
+    { role: "member", screen: "report", spot: "t-kpi", when: "夕方 18:00〜", who: "メンバー", t: "業務報告を書く", d: "自動で入った数字を確かめ、面談・案件化などの残りと本文を入れます。当月累計・日割り達成率・ペース着地はその場で計算されます。", reset: true },
+    { role: "member", screen: "report", spot: "t-coach", when: "夕方 18:00〜", who: "システム", t: "保存すると AI が指導を返す", d: "「報告する」を押すと、今日の報告・当月の進捗・直近の報告から数秒で指導が返ります。", save: true },
+    { role: "member", screen: "report", spot: "t-memo-self", when: "夕方 18:00〜", who: "メンバー", t: "指導を読み、本人メモを書く", d: "明日やることを決めて本人メモに残します。次回からの指導はこのメモを踏まえます。", done: true },
+    { role: "manager", screen: "report", open: "メンバー A", spot: "t-memo-boss", when: "夜〜翌朝", who: "マネージャー", t: "部下の報告と指導を読み、上長メモを書く", d: "チーム一覧から部下の報告を開きます。上長メモも次の指導に効きます。数字と本文は本人だけが直せます。" },
+    { role: "head", screen: "advice", spot: "t-hist", when: "翌朝 7:00", who: "システム", t: "メモと採否を翌日に反映する", d: "本人メモ・上長メモ・提言の採否を読み、翌日の指導と提言を変えます。ここで 1 に戻り、毎日この順で回ります。" }
+  ];
+  STORIES.member = { who: "営業メンバー（メンバー A）",
+    story: "営業メンバーとして、毎日の報告を 5 分で済ませ、月の目標に届くペースかどうかと、明日何をすればいいかを知りたい。",
+    now: ["報告を書いても返事が来るのは翌日以降", "月の進捗は自分でシートを見て計算している", "架電数を手で数えて書き写している"],
+    goal: ["行動の数字は自動で入り、夕方に 1 回書くだけ", "保存した瞬間に指導が返る", "月の見込みと足りない分が一目で分かる"] };
+  STORIES.manager = { who: "プレイングマネージャー（マネージャー B）",
+    story: "プレイングマネージャーとして、自分の数字を追いながら、部下の誰が遅れていて何に詰まっているかを朝 5 分でつかみ、その日のうちに声をかけたい。",
+    now: ["全員の報告を 1 件ずつ読まないと状況が分からない", "遅れに気づくのが週次の会議になる", "AI の指導が何を言ったか上長には見えない"],
+    goal: ["提出状況と達成率がチームの 1 画面に並ぶ", "遅れている人が色で分かり、押すと報告と指導が開く", "上長メモが次の指導に効く"] };
+  STORIES.head = { who: "事業部長（事業部長 C）",
+    story: "事業部長として、毎朝 10 分で事業部の着地見込みと危ない兆しをつかみ、今日どこに手を打つかを決めたい。",
+    now: ["売上の確定値・見込み・報告がばらばらで、マネージャーに聞かないと分からない", "今の集計画面は開くのが重い", "第三者の目で見た提言が無い"],
+    goal: ["主要指標と推移が最初の画面に出る", "毎朝 AI が結論と重点アクションを出す", "採否を付けると翌日の提言に効く"] };
+  TOURS.member = [
+    { story: "member", role: "member", screen: "report", reset: true },
+    { role: "member", screen: "personal", spot: "t-pers", when: "朝", who: "メンバー", t: "今月の見込みを確かめる", d: "案件の確度（S・A・B）別に、目標に対する見込みが出ます。S〜A で 430 万円、目標は 520 万円。足りない 90 万円を、どの案件を上げて埋めるかを考えます。" },
+    { role: "member", screen: "report", spot: "t-ext", when: "夕方", who: "メンバー", t: "自動で入った数字を確かめる", d: "架電・接続・アポは架電システムの記録から入っています（青枠）。違っていれば直せます。直した日は手入力の値を使います。", reset: true },
+    { role: "member", screen: "report", spot: "t-kpi", when: "夕方", who: "メンバー", t: "残りの数字を入れる", d: "面談・案件化・提案などを入れると、当月累計・日割り達成率・ペース着地がその場で出ます。赤い項目が今月の弱いところです。" },
+    { role: "member", screen: "report", spot: "t-coach", when: "夕方", who: "メンバー", t: "報告すると、すぐ指導が返る", d: "本文（課題・明日やること・見込み・所感）を書いて「報告する」。今日の数字・当月の進捗・直近の報告を踏まえた指導が数秒で返ります。", save: true },
+    { role: "member", screen: "report", spot: "t-memo-self", when: "夕方", who: "メンバー", t: "本人メモで明日を決める", d: "指導を読んで、やることを本人メモに残します。次の指導はこのメモを踏まえます。", done: true },
+    { role: "member", screen: "report", spot: "t-send", when: "夕方", who: "メンバー", t: "報告文をコピーして、いつもの場所に貼る", d: "今の運用（チャットツールへの投稿など）を変えずに済むよう、報告文を作ってコピーできます。", done: true }
+  ];
+  TOURS.manager = [
+    { story: "manager", role: "manager", screen: "team" },
+    { role: "manager", screen: "team", spot: "t-mini", when: "朝", who: "マネージャー", t: "提出状況を一目で見る", d: "本日の提出・提出率・経過営業日・要フォローの人数が上に並びます。" },
+    { role: "manager", screen: "team", spot: "t-team", when: "朝", who: "マネージャー", t: "誰が遅れているかを見る", d: "部下ごとの日割り達成率が色で出ます。メンバー G は架電もアポも赤、メンバー I は未提出。右端に最新の AI 指導の要点が並ぶので、全部読まなくても何に詰まっているかが分かります。" },
+    { role: "manager", screen: "report", open: "メンバー A", spot: "t-coach", when: "朝〜夜", who: "マネージャー", t: "部下の報告と指導を開く", d: "一覧の行を押すと、その人の報告と AI の指導が開きます。数字と本文は本人だけが直せます。" },
+    { role: "manager", screen: "report", open: "メンバー A", spot: "t-memo-boss", when: "夜", who: "マネージャー", t: "上長メモを書く", d: "「D 社は私も同席する」のように書くと、次の指導がそれを踏まえます。部下への声かけの記録にもなります。" },
+    { role: "manager", screen: "personal", spot: "t-pers", when: "週次", who: "マネージャー", t: "チームの見込みを見る", d: "見える範囲は自分のチーム（第1チーム）だけ。誰の見込みが目標に届かないかを、確度別に確かめます。" },
+    { role: "manager", screen: "overview", spot: "t-kpis", when: "週次", who: "マネージャー", t: "自分のチームの概要を見る", d: "概要も自分の範囲で出ます。事業部全体は事業部長だけが見ます。" }
+  ];
+  TOURS.head = [
+    { story: "head", role: "head", screen: "overview" },
+    { role: "head", screen: "overview", spot: "t-kpis", when: "朝", who: "事業部長", t: "主要指標をつかむ", d: "稼働人数・売上の見込み・平均単価・前年同月比を、目標と前月差つきで見ます。参考の数字（契約上の稼働など）も小さく添えます。" },
+    { role: "head", screen: "overview", spot: "t-trend", when: "朝", who: "事業部長", t: "推移と内数を見る", d: "6 か月の流れと前月比。「うち協力会社」の内数と全体に占める割合も出せます。当月の金額は確定まで「集計中」で、0 にはしません。", inner: true },
+    { role: "head", screen: "advice", spot: "t-concl", when: "朝", who: "事業部長", t: "AI 提言の結論を読む", d: "毎朝 7 時に、集計した数字から区分ごとの結論が出ています。今日は「新規より更新を先に固める」。" },
+    { role: "head", screen: "advice", spot: "t-actions", when: "朝会", who: "事業部長", t: "重点アクションをチームに振る", d: "「誰が・何を・いつまでに」がそのまま朝会の指示になります。" },
+    { role: "head", screen: "advice", spot: "t-adopt", when: "朝会のあと", who: "事業部長", t: "採否とコメントを付ける", d: "採用・一部採用・見送りなどを付けます。翌日以降の提言はこれを読み、見送った方向の提案を繰り返しません。" },
+    { role: "head", screen: "team", spot: "t-team", when: "必要なとき", who: "事業部長", t: "気になるチームに降りる", d: "チーム一覧でチームを選び、個人の報告と指導まで降りられます。" },
+    { role: "head", screen: "advice", spot: "t-hist", when: "振り返り", who: "事業部長", t: "これまでの提言と採否を見返す", d: "提言と採否の履歴が残るので、打った手と結果を後から追えます。" }
+  ];
+  STORIES.exe = { who: "別事業のマネージャー（マネージャー E・顧問マッチング）",
+    story: "顧問マッチングのマネージャーとして、どの契約がいつ更新・満了・解約になるかを前もって知り、取りこぼさずに次の提案につなげたい。",
+    now: ["予算と見込みは月ごとの大きなシートを開かないと分からない", "契約は 1 枚の大きな表にあり、満了や更新は自分で日付を追っている", "今動いている契約がどれか、すぐには分からない", "月額の合計を出すのに手計算が要る"],
+    goal: ["チームの予算と見込みが、確度を広げながら 1 画面で見られる", "稼働中の契約と月額の合計が出る", "30 日以内の更新・満了・解約が毎朝アラートで並ぶ", "解約の兆しがあれば、後任の顧問の提案に動ける"] };
+  STORIES.exem = { who: "別事業のメンバー（メンバー D・顧問マッチング）",
+    story: "顧問マッチングのメンバーとして、企業の課題に合う顧問を早く見つけて承諾をもらい、担当の契約を更新の前に取りこぼさないようにしたい。",
+    now: ["顧問への打診・承諾・断られた記録が手元のメモに散らばっている", "担当の契約の満了日を自分で表から探している", "報告を書いても、打診の進め方への助言が返らない"],
+    goal: ["架電・アポは自動で入り、打診・承諾・定例を夕方に入れるだけ", "保存すると、打診の詰まりと担当の契約の期限を踏まえた指導が返る", "担当の契約と更新アラートを自分の範囲で見られる"] };
+  TOURS.exem = [
+    { story: "exem", role: "exem", screen: "report", reset: true },
+    { role: "exem", screen: "report", spot: "t-ext", when: "夕方", who: "メンバー", t: "自動で入った数字を確かめる", d: "架電とアポは架電システムの記録から入ります（青枠）。報告の項目は事業ごとに設定できます。", reset: true },
+    { role: "exem", screen: "report", spot: "t-kpi", when: "夕方", who: "メンバー", t: "打診・承諾・定例を入れる", d: "企業との商談、顧問への打診と承諾、受注、企業定例の参加を入れると、当月累計と日割り達成率が出ます。断られた打診も数に入れます。" },
+    { role: "exem", screen: "report", spot: "t-coach", when: "夕方", who: "メンバー", t: "報告すると、すぐ指導が返る", d: "今日の数字と本文に加えて、担当の契約の期限も読んだ指導が返ります。今日は「11/30 に終わる 2 件を定例で確かめる」。", save: true },
+    { role: "exem", screen: "report", spot: "t-memo-self", when: "夕方", who: "メンバー", t: "本人メモで明日を決める", d: "やることを本人メモに残します。次の指導はこのメモを踏まえます。", done: true },
+    { role: "exem", screen: "report", spot: "t-xsales", when: "夕方", who: "メンバー", t: "今月の個人成績を見る", d: "契約ごとの売上を担当の枠の数で配った合計が出ます。どの契約でいくら積めているかが分かります。", done: true },
+    { role: "exem", screen: "contracts", spot: "t-calert", when: "翌朝", who: "メンバー", t: "担当の契約のアラートを見る", d: "自分が担当の契約だけが出ます。更新・満了・解約が近いものから手を打ちます。" }
+  ];
+  TOURS.exe = [
+    { story: "exe", role: "exe", screen: "exeteam" },
+    { role: "exe", screen: "exeteam", spot: "t-xteam", when: "朝", who: "マネージャー", t: "チームの予算と見込みを見る", d: "担当者ごとの月初の継続売上・予算・見込み・達成率が並びます。右上で、売上に数える確度（F+S〜D）を広げられます。" },
+    { role: "exe", screen: "exeteam", spot: "t-xrule", when: "月初", who: "マネージャー", t: "予算の決め方を確かめる", d: "役職ごとの既定値と月初の継続売上から初期値を出し、事情のある人は理由つきで調整します。" },
+    { role: "exe", screen: "contracts", spot: "t-cmini", when: "朝", who: "マネージャー", t: "稼働中の契約と月額の合計を見る", d: "契約の表を日付で判定し、今動いている契約の数と月額の合計を出します。今月の新規と、30 日以内に手を打つ件数も並びます。" },
+    { role: "exe", screen: "contracts", spot: "t-calert", when: "朝", who: "マネージャー", t: "更新・満了・解約のアラートを見る", d: "自動更新の予定・自動更新なしの満了・解約の連絡ありを、終了日の近い順に出します。それぞれ次に何をするかの目安つき。" },
+    { role: "exe", screen: "report", open: "メンバー D", spot: "t-coach", when: "夜", who: "マネージャー", t: "メンバーの報告と指導を読む", d: "メンバーの報告と AI の指導を開きます。打診の詰まりや契約の期限について、上長メモで手を貸します。", done: true },
+    { role: "exe", screen: "contracts", spot: "t-ctable", when: "必要なとき", who: "マネージャー", t: "契約一覧で企業と顧問をたどる", d: "1 行 = 企業と顧問 1 人の契約。同じ企業に複数の顧問が付くこともあります。「要対応」で絞り込めます。" },
+    { role: "exe", screen: "contracts", spot: "t-cnote", when: "導入時", who: "システム", t: "今ある表をそのまま読み込む", d: "契約の表は今の形のまま取り込み、状態や合計はシステム側で計算します。現場の入力の手間は増やしません。" }
+  ];
+  const TOUR_NAME = { all: "1 日の流れ（全体）", member: "メンバー目線", manager: "マネージャー目線", head: "事業部長目線", exem: "別事業 メンバー目線", exe: "別事業 マネージャー目線" };
+  const state = { menu: false, role: "member", screen: "about", tour: null, tourKey: "all", seg: "engineer", inner: false, saved: false, coaching: false, coachDone: false, open: null, rank: "SA", cf: "all", xr: 0 };
+
+  const $ = (s) => document.querySelector(s);
+  const pct = (a, b) => (b ? (a / b) * 100 : null);
+  const fmt = (n) => (n == null ? "—" : Number(n).toLocaleString("ja-JP"));
+  const barCls = (r) => (r == null ? "" : r >= 100 ? "" : r >= 80 ? "w" : "b");
+  function rateCell(r) {
+    if (r == null) return '<span class="hint">—</span>';
+    const w = Math.max(0, Math.min(100, r));
+    return '<span class="rate"><span class="bar"><i class="' + barCls(r) + '" style="width:' + w + '%"></i></span><span class="num">' + r.toFixed(0) + '%</span></span>';
+  }
+  function toast(t) {
+    const el = $("#toast"); el.textContent = t; el.hidden = false;
+    clearTimeout(toast._t); toast._t = setTimeout(() => (el.hidden = true), 1800);
+  }
+  function spark(vals) {
+    const v = vals.filter((x) => x != null);
+    if (v.length < 2) return "";
+    const W = 96, H = 26, P = 3;
+    const min = Math.min(...v), max = Math.max(...v), span = max - min || 1;
+    const pts = v.map((x, i) => [P + (i * (W - 2 * P)) / (v.length - 1), H - P - ((x - min) / span) * (H - 2 * P)]);
+    const d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ");
+    const last = pts[pts.length - 1];
+    return '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + " " + H + '" aria-hidden="true"><path d="' + d + '" fill="none" stroke="var(--chart)" stroke-width="1.6" stroke-linejoin="round"/><circle cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.6" fill="var(--chart)"/></svg>';
+  }
+
+  // ---------- screens ----------
+  function screenAbout() {
+    const who = [
+      { k: "member", go: "member:report", t: "営業メンバー", p: "夕方に報告を書くと、その場で AI が明日の打ち手を返します。", li: ["架電・アポの数は自動で入る", "月の目標に届くペースかが分かる", "本人メモが次の指導に効く"] },
+      { k: "manager", go: "manager:team", t: "マネージャー", p: "誰が遅れていて何に詰まっているかを、朝 5 分でつかめます。", li: ["提出状況と達成率が 1 画面に並ぶ", "部下の報告と AI 指導をすぐ開ける", "上長メモが次の指導に効く"] },
+      { k: "head", go: "head:overview", t: "事業部長", p: "事業部の着地見込みと、毎朝の AI 提言で手を打つ場所を決めます。", li: ["主要指標と 6 か月の推移", "結論・重点アクション・要確認", "採否が翌日の提言に効く"] }
+    ];
+    return '' +
+      '<div class="hero"><span class="hint">営業組織向け · 業務報告と KPI の AI コーチ</span><h1>毎日の報告に、その場で AI が指導を返す</h1>' +
+      '<p>report-coach は、営業メンバーの毎日の業務報告と、チーム・事業部の数字を 1 か所にまとめるシステムです。報告を保存すると AI が当月の進捗と直近の報告を読んで指導を返し、上長のメモや事業部長の判断が翌日の指導に反映されます。</p>' +
+      '<div class="actions"><button class="btn primary" type="button" data-tour="all">▶ 紙芝居で 1 日の流れを見る（約 2 分）</button><button class="btn" type="button" data-go="member:report">自分で触ってみる</button></div></div>' +
+      '<div class="card"><div class="ch"><h2>毎日この順で回ります</h2><span class="hint">報告とメモが翌日の指導に効くので、使うほど指導が具体的になります</span></div>' +
+      '<ol class="flow">' +
+        '<li><b>数字が自動で入る</b>架電・アポは記録から取り込み<span class="w">日中 · システム</span></li>' +
+        '<li><b>夕方に報告する</b>残りの数字と本文を入れて保存<span class="w">夕方 · メンバー</span></li>' +
+        '<li><b>AI が指導を返す</b>数秒で評価と明日の打ち手<span class="w">夕方 · システム</span></li>' +
+        '<li><b>上長がメモを書く</b>部下の報告を読んで声かけ<span class="w">夜〜朝 · マネージャー</span></li>' +
+        '<li><b>毎朝の集計と提言</b>事業部の数字と AI の提言<span class="w">翌朝 · 事業部長</span></li>' +
+      "</ol></div>" +
+      '<div class="card"><div class="ch"><h2>役割ごとに体験する</h2><span class="hint">左上のアカウントでも切り替えられます。役割で見える範囲が変わります</span></div><div class="who3">' +
+      who.map((w) => '<div class="whoc"><div class="h"><span class="av sm av-' + w.k + '">' + ROLES[w.k].ini + "</span><strong>" + w.t + "</strong></div><p>" + w.p + "</p><ul>" + w.li.map((x) => "<li>" + x + "</li>").join("") + '</ul><button class="btn" type="button" data-go="' + w.go + '">' + w.t + "で開く →</button></div>").join("") +
+      "</div></div>" +
+      '<div class="grid2"><div class="card"><h2>事業ごとに報告の項目を変えられます</h2><p style="margin:0">同じ仕組みで、別の事業（例: 企業と顧問をつなぐ顧問マッチング）にも合わせられます。報告項目を入れ替え、契約の更新・満了・解約のアラートを足した例を用意しています。</p>' +
+      '<div class="actions"><button class="btn" type="button" data-go="exem:report">別事業のメンバーで開く →</button><button class="btn" type="button" data-go="exe:contracts">契約アラートを見る →</button></div></div>' +
+      '<div class="card"><h2>このデモについて</h2><ul class="notes">' +
+        "<li>会社名・氏名・金額はすべて架空のサンプルです</li>" +
+        "<li>AI の指導と提言は、実際の出力を模したデモ用の固定文です</li>" +
+        "<li>報告画面の数字を変えると、達成率とペース着地がその場で計算し直されます</li>" +
+        "<li>入力した内容は保存されず、ページを開き直すと元に戻ります</li>" +
+      "</ul></div></div>";
+  }
+
+  function screenReport() {
+    const readonly = state.role !== "member" && state.role !== "exem";
+    const D = dom();
+    const name = !readonly ? D.member : (state.open || D.member);
+    const rows = curItems().map((it) => {
+      const cum = it.prev + it.day;
+      const pace = it.goal * BD_ELAPSED / BD_TOTAL;
+      const dayGoal = it.dayGoal == null ? +(it.goal / BD_TOTAL).toFixed(1) : it.dayGoal;
+      const landing = Math.round(cum / BD_ELAPSED * BD_TOTAL);
+      const input = readonly ? '<span class="num">' + it.day + "</span>" :
+        '<input id="in-' + it.key + '" class="' + (it.ext ? "ext" : "") + '" type="number" min="0" value="' + it.day + '" aria-label="' + it.name + ' 本日">';
+      return "<tr><td>" + it.name + "</td><td>" + input + '</td><td class="num">' + dayGoal + "</td><td>" + rateCell(pct(it.day, dayGoal)) +
+        '</td><td class="num">' + cum + '</td><td class="num">' + it.goal + "</td><td>" + rateCell(pct(cum, pace)) + '</td><td class="num">' + landing + "</td></tr>";
+    }).join("");
+    const status = state.saved || readonly ? '<span class="pill p-good">提出済み</span>' : '<span class="pill p-warn">未提出</span>';
+    const coachCard = coachBlock(readonly);
+    return '' +
+      '<div class="pagehead"><div><h1>業務報告</h1><div class="sub">' + name + " · 2026-11-04（水） " + status + ' · 項目設定「' + D.setting + '」</div></div>' +
+      '<div class="toolbar"><span class="hint">経過 <span class="num">' + BD_ELAPSED + " / " + BD_TOTAL + "</span> 営業日</span></div></div>" +
+      (readonly ? '<div class="extnote">上長として ' + name + ' の報告を見ています。数字と本文は本人だけが直せます。</div>' :
+        '<div class="extnote" id="t-ext"><strong>架電システムの記録から入れました</strong><span>' + D.ext + '（青枠の欄）。直すとこの日は手入力の値を使います</span></div>') +
+      '<div class="grid2"><div class="stack">' +
+        '<div class="card" id="t-kpi"><div class="ch"><h2>今日の数字と当月の進捗</h2><span class="hint">日割り達成率 = 当月累計 ÷（月次目標 × 経過営業日 ÷ 当月営業日）</span></div>' +
+        '<div class="scroll"><table><thead><tr><th>項目</th><th>本日</th><th>日次目標</th><th>本日の達成</th><th>当月累計</th><th>月次目標</th><th>日割り達成率</th><th>ペース着地</th></tr></thead><tbody>' + rows + "</tbody></table></div></div>" +
+        (isExe() ? exeSalesCard() : "") +
+        '<div class="card"><h2>本文</h2><div class="fields">' +
+          field("課題・困っていること", "AI の指導でいちばん使う欄です", D.f[0], readonly) +
+          field("明日やること", "", D.f[1], readonly) +
+          field("案件の見込み", "前回の報告から引き継いでいます", D.f[2], readonly, 92) +
+          field("今日の成果（所感）", "", D.f[3], readonly) +
+        "</div>" +
+        (readonly ? "" : '<div class="actions" id="t-send"><button class="btn primary" id="save" type="button"' + (state.coaching ? " disabled" : "") + ">" + (state.saved ? "報告を更新する" : "報告する") + '</button><button class="btn" id="copy" type="button">報告文をコピー</button></div>') +
+        "</div>" +
+      '</div><div class="stack">' + coachCard + "</div></div>";
+  }
+  function screenExeTeam() {
+    const k = state.xr, labels = ["F+S", "〜A", "〜C", "〜D"];
+    let tb = 0, ts = 0, tst = 0;
+    const rows = EXE_TEAM.map((p) => {
+      tb += p.budget; ts += p.sum[k]; tst += p.start;
+      return '<tr class="click" data-xperson="' + p.name + '" tabindex="0"><td>' + p.name + ' <span class="hint">' + p.title + '</span></td><td class="num">' + p.start + '</td><td class="num">' + p.budget + (p.note ? '<br><span class="hint">' + p.note + "</span>" : "") +
+        '</td><td class="num"><strong>' + p.sum[k] + "</strong></td><td>" + rateCell(pct(p.sum[k], p.budget)) + '</td><td class="num">' + p.gross + "</td></tr>";
+    }).join("");
+    return '' +
+      '<div class="pagehead"><div><h1>チームの数字</h1><div class="sub">顧問マッチング 第1チーム · 2026 年 11 月 · 単位: 万円</div></div>' +
+      '<div class="toolbar"><span class="hint">売上に数える確度</span><div class="seg" id="xrsw">' + labels.map((l, i) => '<button type="button" data-xr="' + i + '" aria-pressed="' + (i === k) + '">' + l + "</button>").join("") + "</div></div></div>" +
+      '<div class="mini" id="t-xmini"><div><span class="l">チームの予算</span><span class="v">' + tb + ' 万円</span></div><div><span class="l">見込み（' + labels[k] + '）</span><span class="v">' + ts + ' 万円</span></div><div><span class="l">達成率</span><span class="v">' + (ts / tb * 100).toFixed(1) + '%</span></div><div><span class="l">月初の継続売上の比率</span><span class="v">' + Math.round(tst / tb * 100) + "%</span></div></div>" +
+      '<div class="card" id="t-xteam"><div class="ch"><h2>担当者ごとの予算と見込み</h2><span class="hint">行を押すとその人の報告と指導を開きます</span></div><div class="scroll"><table><thead><tr><th>担当者</th><th>月初の継続売上</th><th>予算</th><th>見込み</th><th>達成率</th><th>粗利</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
+      '<p class="hint">見込みは、契約ごとの売上を担当の枠の数で配った合計です。確度を広げるほど見込みが増えます。</p></div>' +
+      '<div class="card" id="t-xrule"><div class="ch"><h2>予算の決め方</h2><span class="pill p-info">設定で変えられます</span></div><ul class="notes">' +
+        "<li>役職ごとの既定値から初期値を出します</li>" +
+        "<li>月初の継続売上が予算の 6 割以上の人は、純増の目安で決めます</li>" +
+        "<li>育成期間や兼務などの減額は、理由つきで上長が調整します（例: メンバー R）</li></ul></div>";
+  }
+  function exeSalesCard() {
+    let ts = 0;
+    const rows = EXE_SALES.map((x) => {
+      const ss = x.sales * x.pts / 10; ts += ss;
+      return "<tr><td>" + x.co + " × " + x.adv + '<br><span class="hint">' + x.kind + " · " + x.st + '</span></td><td>' + (x.yomi === "S" ? '<span class="pill p-good">S</span>' : '<span class="pill p-mute">' + x.yomi + "</span>") +
+        '</td><td class="num">' + x.sales + '</td><td><span class="hint">' + x.role + '</span><br><span class="num">' + x.pts + ' / 10 点</span></td><td class="num">' + ss.toFixed(1) + "</td></tr>";
+    }).join("");
+    return '<div class="card" id="t-xsales"><div class="ch"><h2>今月の個人成績（売上の配分）</h2><span class="hint">契約ごとの売上を担当の枠で配分</span></div>' +
+      '<div class="mini"><div><span class="l">今月の予算</span><span class="v">600 万円</span></div><div><span class="l">見込み（F+S）</span><span class="v">310 万円</span></div><div><span class="l">達成率</span><span class="v">51.7%</span></div><div><span class="l">月初の継続売上</span><span class="v">150 万円</span></div></div>' +
+      '<div class="scroll"><table><thead><tr><th>契約</th><th>確度</th><th>売上（万円）</th><th>担当の枠</th><th>配分（万円）</th></tr></thead><tbody>' + rows + '</tbody><tfoot><tr><td colspan="4" class="hint">上の 5 件の配分の合計（抜粋）</td><td class="num">' + ts.toFixed(1) + "</td></tr></tfoot></table></div>" +
+      '<p class="hint">1 つの契約に「営業・既存フォロー・面談」の 10 枠があり、本人が受け持つ枠の数で売上を配ります。配分のルールは設定で変えられます。</p></div>';
+  }
+  function field(label, hint, val, ro, h) {
+    const id = "f-" + label.length + "-" + label.charCodeAt(0);
+    return '<div class="field"><label for="' + id + '">' + label + (hint ? "<span>" + hint + "</span>" : "") + '</label><textarea id="' + id + '"' + (ro ? " readonly" : "") + (h ? ' style="min-height:' + h + 'px"' : "") + ">" + val + "</textarea></div>";
+  }
+  function coachBlock(readonly) {
+    let body;
+    if (state.coaching) body = '<div class="thinking"><span class="dot"></span>AI が指導を書いています（数秒）</div>';
+    else if (state.coachDone || readonly) body =
+      '<div class="coach">' + dom().coach + '</div>' +
+      '<div class="fields"><div class="field" id="t-memo-self"><label for="memo-self">本人メモ<span>次回からの指導がこのメモを踏まえます</span></label><textarea id="memo-self" placeholder="' + dom().self + '"></textarea></div>' +
+      '<div class="field" id="t-memo-boss"><label for="memo-boss">上長メモ</label><textarea id="memo-boss" ' + (state.role === "member" || state.role === "exem" ? "readonly placeholder=\"上長が書きます\"" : "placeholder=\"" + dom().boss + "\"") + "></textarea></div></div>";
+    else body = '<p class="hint" style="margin:0">「報告する」を押すと、今日の報告と当月の進捗から AI が指導を返します。</p>';
+    return '<div class="card" id="t-coach"><div class="ch"><h2>AI の指導</h2><span class="pill p-info">保存時に生成</span></div>' + body + "</div>";
+  }
+
+  function screenTeam() {
+    const all = state.role === "head";
+    const rows = TEAM.map((p) => {
+      const st = p.sub ? '<span class="pill p-good">提出済み</span>' : '<span class="pill p-bad">未提出</span>';
+      const pace = (g) => g * BD_ELAPSED / BD_TOTAL;
+      return '<tr class="click" data-person="' + p.name + '" tabindex="0"><td>' + p.name + ' <span class="hint">' + p.role + "</span></td><td>" + st +
+        '</td><td class="num">' + p.days + " / " + BD_ELAPSED + "</td><td>" + rateCell(pct(p.call, pace(p.callG))) + "</td><td>" + rateCell(pct(p.apo, pace(p.apoG))) +
+        "</td><td>" + rateCell(pct(p.mtg, pace(p.mtgG))) + "</td><td>" + rateCell(pct(p.deal, pace(p.dealG))) + '</td><td style="text-align:left;white-space:normal;min-width:16em">' + p.coach + "</td></tr>";
+    }).join("");
+    const subs = TEAM.filter((p) => p.sub).length;
+    return '' +
+      '<div class="pagehead"><div><h1>チーム一覧</h1><div class="sub">' + (all ? "人材サービス事業部 · 第1チーム（チームを選べます）" : "人材紹介 第1チーム") + " · 2026-11-04（水）</div></div>" +
+      '<div class="toolbar">' + (all ? '<div class="seg" id="teamsw"><button type="button" aria-pressed="true">第1チーム</button><button type="button" aria-pressed="false">第2チーム</button><button type="button" aria-pressed="false">営業人材</button></div>' : "") + "</div></div>" +
+      '<div class="mini" id="t-mini"><div><span class="l">本日の提出</span><span class="v">' + subs + " / " + TEAM.length + '</span></div><div><span class="l">提出率</span><span class="v">' + Math.round(subs / TEAM.length * 100) + '%</span></div><div><span class="l">経過営業日</span><span class="v">' + BD_ELAPSED + " / " + BD_TOTAL + '</span></div><div><span class="l">要フォロー</span><span class="v">2 人</span></div></div>' +
+      '<div class="card" id="t-team"><div class="ch"><h2>人 × 項目（当月累計の日割り達成率）</h2><span class="hint">行を押すとその人の報告と AI の指導を開きます</span></div>' +
+      '<div class="scroll"><table><thead><tr><th>メンバー</th><th>本日</th><th>提出日数</th><th>架電</th><th>アポ</th><th>面談</th><th>案件化</th><th style="text-align:left">最新の AI 指導</th></tr></thead><tbody>' + rows + "</tbody></table></div></div>";
+  }
+
+  function screenOverview() {
+    const seg = state.seg;
+    const scope = state.role === "manager" ? "人材紹介 第1チーム（自分のチーム）" : "人材サービス事業部";
+    const cards = CARDS[seg].map((c) =>
+      '<div class="kpi"><span class="l">' + c.l + '</span><span class="v">' + c.v + "<small>" + c.u + '</small></span><span class="d"><span>目標 <span class="num">' + c.goal + "</span></span>" +
+      '<span class="pill ' + (c.rate >= 100 ? "p-good" : c.rate >= 95 ? "p-warn" : "p-bad") + '">達成 ' + c.rate.toFixed(1) + '%</span><span class="' + (c.diff.startsWith("-") ? "down" : "up") + '">前月差 ' + c.diff + '</span></span><span class="ref">' + c.ref + "</span></div>").join("");
+    const rows = TREND[seg].map((r) => {
+      const last = r.v[4];
+      const prev = r.v[3];
+      const mom = prev ? ((last - prev) / prev * 100) : null;
+      const cells = r.v.map((x) => '<td class="num">' + (x == null ? '<span class="hint">集計中</span>' : fmt(x)) + "</td>").join("");
+      let html = "<tr><td>" + r.name + "</td>" + cells + "<td>" + spark(r.v) + '</td><td class="num ' + (mom == null ? "" : mom >= 0 ? "up" : "down") + '">' + (mom == null ? "—" : (mom >= 0 ? "+" : "") + mom.toFixed(1) + "%") +
+        '</td><td class="num">' + fmt(r.goal) + "</td><td>" + rateCell(r.goal ? pct(last, r.goal) : null) + "</td></tr>";
+      if (state.inner) {
+        const share = r.v.map((x, i) => (x && r.inner[i] != null ? r.inner[i] / x * 100 : null));
+        const icells = r.inner.map((x, i) => '<td class="num">' + (x == null ? "" : fmt(x)) + (share[i] != null && !r.name.includes("単価") ? ' <span class="hint">' + share[i].toFixed(0) + "%</span>" : "") + "</td>").join("");
+        html += '<tr class="inner"><td>うち協力会社</td>' + icells + "<td>" + spark(r.inner) + "</td><td></td><td></td><td></td></tr>";
+      }
+      return html;
+    }).join("");
+    const m = MOVES[seg];
+    return '' +
+      '<div class="pagehead"><div><h1>概要</h1><div class="sub">' + scope + " · 2026 年 11 月（経過 " + BD_ELAPSED + " / " + BD_TOTAL + " 営業日）</div></div>" +
+      '<div class="toolbar"><div class="seg" id="segsw"><button type="button" data-seg="engineer" aria-pressed="' + (seg === "engineer") + '">' + SEGNAME.engineer + '</button><button type="button" data-seg="marketer" aria-pressed="' + (seg === "marketer") + '">' + SEGNAME.marketer + "</button></div></div></div>" +
+      '<div class="kpis" id="t-kpis">' + cards + "</div>" +
+      '<div class="mini"><div><span class="l">今月の新規開始</span><span class="v">' + m.start + '</span></div><div><span class="l">今月の解約</span><span class="v">' + m.end + '</span></div><div><span class="l">純増</span><span class="v">' + m.net + '</span></div><div><span class="l">解約率</span><span class="v">' + m.churn + "</span></div></div>" +
+      '<div class="card" id="t-trend"><div class="ch"><h2>指標の推移（直近 6 か月）</h2><label class="hint" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="innerSw"' + (state.inner ? " checked" : "") + '> 内数（うち協力会社）を出す</label></div>' +
+      '<div class="scroll"><table><thead><tr><th>指標</th>' + MONTHS.map((x) => "<th>" + x + "</th>").join("") + "<th>推移</th><th>前月比（10月）</th><th>目標</th><th>達成率（10月）</th></tr></thead><tbody>" + rows + "</tbody></table></div>" +
+      '<p class="hint" id="t-src">出どころ: 売上・粗利は月次の確定値（確定後に取り込み）、件数と稼働人数は契約の台帳、当月の売上は案件の見込み。当月の金額は確定まで「集計中」と出し、0 にしません。</p></div>';
+  }
+
+  function screenPersonal() {
+    let list = PERSONAL;
+    if (state.role === "member") list = PERSONAL.filter((p) => p.name === "メンバー A");
+    else if (state.role === "manager") list = PERSONAL.filter((p) => p.team === "第1チーム");
+    const rk = state.rank;
+    const rows = list.map((p) => {
+      const sales = rk === "S" ? p.S : rk === "SA" ? p.S + p.A : p.S + p.A + p.B;
+      return "<tr><td>" + p.name + ' <span class="hint">' + p.team + '</span></td><td class="num">' + fmt(p.goal) + '</td><td class="num">' + fmt(p.S) + '</td><td class="num">' + fmt(p.A) + '</td><td class="num">' + fmt(p.B) +
+        '</td><td class="num"><strong>' + fmt(sales) + "</strong></td><td>" + rateCell(pct(sales, p.goal)) + "</td></tr>";
+    }).join("");
+    const scopeText = state.role === "member" ? "自分の行だけが見えます" : state.role === "manager" ? "自分のチーム（第1チーム）が見えます" : "事業部の全員が見えます";
+    return '' +
+      '<div class="pagehead"><div><h1>個人数字</h1><div class="sub">2026 年 11 月 · 売上の見込み（案件の確度別） · ' + scopeText + "</div></div>" +
+      '<div class="toolbar"><span class="hint">売上に数える範囲</span><div class="seg" id="ranksw"><button type="button" data-rank="S" aria-pressed="' + (rk === "S") + '">S</button><button type="button" data-rank="SA" aria-pressed="' + (rk === "SA") + '">S〜A</button><button type="button" data-rank="SB" aria-pressed="' + (rk === "SB") + '">S〜B</button></div></div></div>' +
+      '<div class="card" id="t-pers"><div class="scroll"><table><thead><tr><th>担当者</th><th>目標（万円）</th><th>S</th><th>A</th><th>B</th><th>見込み売上</th><th>達成率</th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
+      '<p class="hint">案件の見込み（1 行 = 1 案件）を担当者ごとに集計した値です。確定した売上とは一致しません。</p></div>';
+  }
+
+  function screenAdvice() {
+    return '' +
+      '<div class="pagehead"><div><h1>AI 提言</h1><div class="sub">人材サービス事業部 · ' + SEGNAME.engineer + ' · 2026-11-04（水）7:00 に作成</div></div>' +
+      '<div class="toolbar"><div class="seg"><button type="button" aria-pressed="false">← 11/02</button><button type="button" aria-pressed="true">11/04</button></div></div></div>' +
+      '<div class="grid2"><div class="card advice">' +
+        '<div id="t-concl"><h3>結論</h3><p class="concl">稼働人数は目標の 96% で、純増 +1 と上向き。一方で新規受注は 10 月に目標を下回り、10 月の解約 2 件のうち 1 件が「単価の不一致」でした。今月は新規の案件化を増やすより、<strong>11〜12 月に満了する稼働者の更新を先に固める</strong>方が着地への効きが大きい状況です。</p></div>' +
+        '<div id="t-actions"><h3>重点アクション</h3><div class="scroll"><table><thead><tr><th>誰が</th><th style="text-align:left">何を</th><th>いつまでに</th></tr></thead><tbody>' +
+          '<tr><td>第1チーム</td><td style="text-align:left;white-space:normal">12 月満了の 4 名の更新意向を確認し、単価改定の要否を一覧にする</td><td class="num">11/11</td></tr>' +
+          '<tr><td>第2チーム</td><td style="text-align:left;white-space:normal">アポ → 面談の移行率が 48% と低い 2 名の、面談前の要件確認を同行で見直す</td><td class="num">11/13</td></tr>' +
+          '<tr><td>事業部長</td><td style="text-align:left;white-space:normal">解約理由「単価の不一致」の事例を、更新時の単価提示の基準として共有する</td><td class="num">11/09</td></tr>' +
+        "</tbody></table></div></div>" +
+        '<div><h3>要確認</h3><ul><li>メンバー G の架電が 2 日続けて日次目標の半分。報告の本文には理由が無い（材料だけでは分からない）</li><li>' + SEGNAME.marketer + 'の平均単価が下がっている。案件の単価と人の単価のどちらが原因か、材料からは切り分けられない</li></ul></div>' +
+        '<div id="t-adopt"><h3>採否</h3><div class="adopt"><label for="adopt" class="hint">この提言を</label><select id="adopt"><option>未設定</option><option>採用</option><option>一部採用</option><option>見送り</option><option>対応済み</option></select><input id="adopt-note" type="text" placeholder="コメント（翌日以降の提言が読みます）"><button class="btn" id="adoptSave" type="button">保存</button></div></div>' +
+        '<p class="hint" style="margin:0">数字は毎朝の材料（概要・推移・チーム一覧・個人数字の要点）にある値だけを使っています。AI に計算はさせません。</p>' +
+      "</div>" +
+      '<div class="card" id="t-hist"><h2>これまでの提言</h2><div class="scroll"><table><thead><tr><th>日付</th><th style="text-align:left">結論</th><th>採否</th></tr></thead><tbody>' +
+        '<tr><td class="num">11/02</td><td style="text-align:left;white-space:normal">月初の架電量は前月同時点の 112%。面談枠の確保を先に</td><td><span class="pill p-good">採用</span></td></tr>' +
+        '<tr><td class="num">10/31</td><td style="text-align:left;white-space:normal">10 月着地は目標の 98.6%。差は新規受注 1 件分</td><td><span class="pill p-info">対応済み</span></td></tr>' +
+        '<tr><td class="num">10/30</td><td style="text-align:left;white-space:normal">解約予定の 1 件は単価が理由。更新の前に提示を</td><td><span class="pill p-warn">一部採用</span></td></tr>' +
+        '<tr><td class="num">10/29</td><td style="text-align:left;white-space:normal">' + SEGNAME.marketer + 'の稼働人数が目標に 1 人届かない見込み</td><td><span class="pill p-mute">見送り</span></td></tr>' +
+      "</tbody></table></div></div></div>";
+  }
+
+  function screenContracts() {
+    const mine = state.role === "exem";
+    const cs = CONTRACTS.filter((c) => !mine || c.own).map((c) => Object.assign({ st: cStatus(c) }, c));
+    const live = cs.filter((c) => c.st.k === "live" || c.st.k === "act");
+    const stock = live.reduce((a, c) => a + c.fee, 0);
+    const news = cs.filter((c) => c.start.slice(0, 7) === "2026-11").length;
+    const act = cs.filter((c) => c.st.k === "act");
+    const list = state.cf === "act" ? act : state.cf === "live" ? live : cs;
+    const cyc = (c) => (c.cycle ? c.cycle + " か月" + (c.auto ? "自動更新" : "更新（協議）") : "自動更新なし");
+    const rows = list.map((c) => "<tr><td>" + c.co + '</td><td>' + c.adv + '</td><td><span class="hint">' + c.kind + " · " + c.route + '</span></td><td class="num">' + c.fee + '</td><td class="num">' + c.start.replace(/-/g, "/") + '</td><td class="num">' + c.end.replace(/-/g, "/") +
+      "</td><td>" + cyc(c) + '</td><td><span class="pill ' + c.st.cls + '">' + c.st.label + "</span></td></tr>").join("");
+    const alerts = act.slice().sort((a, b) => a.end.localeCompare(b.end)).map((c) => {
+      const what = c.cancel ? "解約の連絡あり。後任の顧問を提案するか、同じ企業の別の課題を当たる" : !c.auto ? "自動更新なし。更新の意向を確かめ、続けるなら新しい契約を起こす" : "自動更新の予定。単価改定や顧問の入れ替えの要否を確かめる";
+      return '<div class="alert"><span class="pill ' + c.st.cls + '">' + c.st.label + "</span><span><strong>" + c.co + " × " + c.adv + "</strong>（月額 " + c.fee + ' 万円）<br><span class="hint">' + what + '</span></span><span class="when">' + c.end.replace(/-/g, "/") + " まで</span></div>";
+    }).join("");
+    return '' +
+      '<div class="pagehead"><div><h1>顧問契約</h1><div class="sub">' + (mine ? "メンバー D が担当の契約" : "顧問マッチング事業") + ' · 2026-11-04（水）</div></div>' +
+      '<div class="toolbar"><div class="seg" id="cfsw"><button type="button" data-cf="all" aria-pressed="' + (state.cf === "all") + '">すべて</button><button type="button" data-cf="live" aria-pressed="' + (state.cf === "live") + '">稼働中</button><button type="button" data-cf="act" aria-pressed="' + (state.cf === "act") + '">要対応</button></div></div></div>' +
+      '<div class="mini" id="t-cmini"><div><span class="l">稼働中の契約</span><span class="v">' + live.length + ' 件</span></div><div><span class="l">月額の合計</span><span class="v">' + stock + ' 万円</span></div><div><span class="l">今月の新規</span><span class="v">' + news + ' 件</span></div><div><span class="l">30 日以内に要対応</span><span class="v">' + act.length + " 件</span></div></div>" +
+      '<div class="card" id="t-calert"><div class="ch"><h2>更新・満了・解約のアラート</h2><span class="hint">終了日と更新の周期から毎朝出します</span></div><div class="alerts">' + alerts + "</div></div>" +
+      '<div class="card" id="t-ctable"><div class="ch"><h2>契約一覧</h2><span class="hint">1 行 = 企業と顧問 1 人の契約</span></div><div class="scroll"><table><thead><tr><th>企業</th><th>顧問</th><th>新規・既存 · 経路</th><th>月額（万円）</th><th>開始</th><th>今の期間の終了</th><th>更新</th><th>状態</th></tr></thead><tbody>' + rows + "</tbody></table></div></div>" +
+      '<div class="card" id="t-cnote"><div class="ch"><h2>今ある契約の表をそのまま使います</h2><span class="pill p-info">導入の考え方</span></div><ul class="notes">' +
+        "<li>稼働中かどうかは、開始日・終了日・更新の周期・解約日からシステムが判定します。手で印を付ける必要はありません</li>" +
+        "<li>月額の合計は契約ごとの月額から自動で出します</li>" +
+        "<li>元の表は今の形のまま毎朝取り込み、こちらから書き戻しはしません</li>" +
+      "</ul></div>";
+  }
+
+  // ---------- render ----------
+  function render() {
+    const r = ROLES[state.role];
+    if (!r.screens.includes(state.screen)) state.screen = r.home;
+    renderAcct();
+    $("#nav").innerHTML = r.screens.map((s) => '<a href="#' + s + '"' + (s === state.screen ? ' aria-current="page"' : "") + ">" + SCREENS[s].name + '<span class="tag">' + SCREENS[s].tag + "</span></a>").join("");
+    document.querySelectorAll("#nav a").forEach((a) => a.addEventListener("click", (e) => {
+      e.preventDefault(); const s = a.getAttribute("href").slice(1);
+      state.screen = s; state.tour = null; state.open = null; history.replaceState(null, "", "#" + s); render(); window.scrollTo(0, 0);
+    }));
+    const fn = { about: screenAbout, report: screenReport, team: screenTeam, overview: screenOverview, personal: screenPersonal, advice: screenAdvice, contracts: screenContracts, exeteam: screenExeTeam }[state.screen];
+    $("#brandSub").textContent = isExe() ? "別事業の例 · 契約と更新" : "業務報告と KPI の AI コーチ";
+    $("#main").innerHTML = fn();
+    bind();
+    renderTour();
+  }
+  function bind() {
+    const save = $("#save");
+    if (save) save.addEventListener("click", () => {
+      state.saved = true; state.coaching = true; state.coachDone = false; render(); toast("報告を保存しました");
+      setTimeout(() => { state.coaching = false; state.coachDone = true; if (state.screen === "report") render(); }, 1400);
+    });
+    const copy = $("#copy");
+    if (copy) copy.addEventListener("click", () => {
+      const lines = ["＜本日の行動 KPI＞"].concat(curItems().filter((i) => i.dayGoal).map((i) => {
+        const el = document.getElementById("in-" + i.key); const v = el ? Number(el.value) : i.day;
+        return i.name + "：" + v + "/" + i.dayGoal + "件（" + Math.round(v / i.dayGoal * 100) + "%）";
+      }));
+      const text = lines.join("\n");
+      try {
+        navigator.clipboard.writeText(text).then(() => toast("報告文をコピーしました"), () => toast("この環境ではコピーできませんでした"));
+      } catch (e) { toast("この環境ではコピーできませんでした"); }
+    });
+    curItems().forEach((i) => {
+      const el = document.getElementById("in-" + i.key);
+      if (el) el.addEventListener("change", () => { const n = Number(el.value); if (!Number.isNaN(n) && n >= 0) { i.day = n; i.ext = false; render(); toast(i.name + " を " + n + " にして計算し直しました"); } });
+    });
+    document.querySelectorAll("#segsw button").forEach((b) => b.addEventListener("click", () => { if (b.dataset.seg) { state.seg = b.dataset.seg; render(); } }));
+    document.querySelectorAll("#teamsw button").forEach((b) => b.addEventListener("click", () => toast("デモでは第1チームだけ表示します")));
+    document.querySelectorAll("#xrsw button").forEach((b) => b.addEventListener("click", () => { state.xr = Number(b.dataset.xr); render(); }));
+    document.querySelectorAll("tr[data-xperson]").forEach((tr) => {
+      const go = () => { state.open = "メンバー D"; state.screen = "report"; location.hash = "report"; render(); toast(tr.dataset.xperson === "メンバー D" ? "メンバー D の報告を開きました" : "デモではメンバー D の報告だけ開けます"); };
+      tr.addEventListener("click", go); tr.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+    });
+    document.querySelectorAll("#cfsw button").forEach((b) => b.addEventListener("click", () => { state.cf = b.dataset.cf; render(); }));
+    document.querySelectorAll("#ranksw button").forEach((b) => b.addEventListener("click", () => { state.rank = b.dataset.rank; render(); }));
+    const inner = $("#innerSw"); if (inner) inner.addEventListener("change", () => { state.inner = inner.checked; render(); });
+    document.querySelectorAll("#main [data-go]").forEach((b) => b.addEventListener("click", () => {
+      const [role, scr] = b.dataset.go.split(":");
+      state.role = role; state.screen = scr; state.open = null; state.tour = null; location.hash = scr; render(); window.scrollTo(0, 0);
+      toast(ROLES[role].name + "（" + ROLES[role].title + "）で開きました");
+    }));
+    document.querySelectorAll("#main [data-tour]").forEach((b) => b.addEventListener("click", () => goTour(0, b.dataset.tour)));
+    const adoptSave = $("#adoptSave"); if (adoptSave) adoptSave.addEventListener("click", () => toast("採否「" + $("#adopt").value + "」を保存しました（デモ）"));
+    document.querySelectorAll("tr[data-person]").forEach((tr) => {
+      const go = () => { state.open = tr.dataset.person; state.screen = "report"; location.hash = "report"; render(); };
+      tr.addEventListener("click", go);
+      tr.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+    });
+  }
+  const curTour = () => TOURS[state.tourKey];
+  const tourHash = (k, i) => (k === "all" ? "tour" + (i + 1) : k + "-" + (i + 1));
+  function renderTour() {
+    const el = $("#tour");
+    document.body.classList.toggle("touring", state.tour != null);
+    document.querySelectorAll(".rail [data-tour]").forEach((b) => b.setAttribute("aria-pressed", String(state.tour != null && b.dataset.tour === state.tourKey)));
+    if (state.tour == null) { el.hidden = true; return; }
+    const T = curTour(), st = T[state.tour], n = state.tour + 1;
+    el.hidden = false;
+    let body;
+    if (st.story) {
+      const S = STORIES[st.story];
+      body = '<div class="tm"><span class="no">' + n + ' / ' + T.length + '</span><span>' + TOUR_NAME[state.tourKey] + '</span><span>ユーザーストーリー</span></div>' +
+        '<div class="story"><div class="hint">' + S.who + '</div><div class="sq">' + S.story + '</div>' +
+        '<div class="pp"><div><b>今の困りごと</b><ul>' + S.now.map((x) => '<li>' + x + '</li>').join("") + '</ul></div><div><b>このシステムで</b><ul>' + S.goal.map((x) => '<li>' + x + '</li>').join("") + '</ul></div></div></div>';
+    } else {
+      body = '<div class="tm"><span class="no">' + n + ' / ' + T.length + '</span><span>' + TOUR_NAME[state.tourKey] + '</span><span>' + st.when + '</span><span>' + st.who + '</span><span>画面: ' + SCREENS[st.screen].name + '</span></div>' +
+        '<h2>' + st.t + '</h2><p>' + st.d + '</p>';
+    }
+    el.innerHTML = body +
+      '<div class="tn"><div class="dots">' + T.map((x, i) => '<button type="button" data-step="' + i + '"' + (i === state.tour ? ' aria-current="step"' : '') + ' aria-label="' + (x.story ? 'ユーザーストーリー' : '手順 ' + (state.tourKey === "all" ? i + 1 : i)) + '">' + (x.story ? "★" : (state.tourKey === "all" ? i + 1 : i)) + '</button>').join("") + '</div>' +
+      '<div class="nb"><button class="btn" type="button" id="tPrev"' + (state.tour === 0 ? " disabled" : "") + '>← 前へ</button><button class="btn primary" type="button" id="tNext">' + (n === T.length ? "最初に戻る" : "次へ →") + '</button><button class="btn" type="button" id="tEnd">終了</button></div></div>';
+    $("#tPrev").addEventListener("click", () => goTour(state.tour - 1));
+    $("#tNext").addEventListener("click", () => goTour(n === T.length ? 0 : state.tour + 1));
+    $("#tEnd").addEventListener("click", endTour);
+    el.querySelectorAll("[data-step]").forEach((b) => b.addEventListener("click", () => goTour(Number(b.dataset.step))));
+    const sp = st.spot && document.getElementById(st.spot);
+    if (sp) { sp.classList.add("spot"); setTimeout(() => sp.scrollIntoView({ block: "center", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }), 30); }
+    else window.scrollTo(0, 0);
+  }
+  function goTour(i, key) {
+    if (key) state.tourKey = key;
+    const T = curTour();
+    if (i < 0 || i >= T.length) return;
+    const st = T[i];
+    state.tour = i; state.menu = false; state.role = st.role; state.screen = st.screen; state.open = st.open || null;
+    if (st.inner) state.inner = true;
+    if (st.reset) { state.saved = false; state.coaching = false; state.coachDone = false; }
+    if (st.done) { state.saved = true; state.coaching = false; state.coachDone = true; }
+    if (st.save) {
+      state.saved = true; state.coaching = true; state.coachDone = false;
+      clearTimeout(goTour._t);
+      const k = state.tourKey;
+      goTour._t = setTimeout(() => { state.coaching = false; state.coachDone = true; if (state.tour === i && state.tourKey === k) render(); }, 1400);
+    }
+    const h = "#" + tourHash(state.tourKey, i);
+    if (location.hash !== h) history.replaceState(null, "", h);
+    render();
+  }
+  function endTour() { state.tour = null; history.replaceState(null, "", "#" + state.screen); render(); }
+  document.querySelectorAll(".rail [data-tour]").forEach((b) => b.addEventListener("click", () => goTour(0, b.dataset.tour)));
+  document.addEventListener("keydown", (e) => {
+    if (state.tour == null || e.target.closest("input, textarea, select")) return;
+    if (e.key === "ArrowRight") goTour(state.tour + 1);
+    else if (e.key === "ArrowLeft") goTour(state.tour - 1);
+    else if (e.key === "Escape" && !state.menu) endTour();
+  });
+  function renderAcct() {
+    const r = ROLES[state.role];
+    let html = '<button class="acct-btn" id="acctBtn" type="button" aria-haspopup="menu" aria-expanded="' + state.menu + '">' +
+      '<span class="av av-' + state.role + '">' + r.ini + '</span><span class="acct-name"><strong>' + r.name + '</strong><span>' + r.title + ' · ' + r.unit + '</span></span><span class="chev">▾</span></button>';
+    if (state.menu) {
+      html += '<div class="acct-menu" role="menu"><div class="mh">アカウントを切り替える（デモ用）</div>' +
+        Object.keys(ROLES).map((k) => {
+          const a = ROLES[k];
+          return '<button class="acct-item" type="button" role="menuitemradio" aria-checked="' + (k === state.role) + '" data-role="' + k + '"><span class="av sm av-' + k + '">' + a.ini + '</span>' +
+            '<span class="acct-name"><strong>' + a.name + '</strong><span>' + a.title + ' · ' + a.unit + '</span><span class="scope">見える範囲: ' + a.scope + '</span></span><span class="ck">' + (k === state.role ? "✓" : "") + '</span></button>';
+        }).join("") + '</div>';
+    }
+    $("#acct").innerHTML = html;
+    $("#acctBtn").addEventListener("click", (e) => { e.stopPropagation(); state.menu = !state.menu; renderAcct(); if (state.menu) { const f = document.querySelector('.acct-item[aria-checked="true"]'); if (f) f.focus(); } });
+    document.querySelectorAll(".acct-item").forEach((b) => b.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const changed = b.dataset.role !== state.role;
+      state.menu = false; state.role = b.dataset.role; state.open = null; state.tour = null;
+      if (changed) { state.screen = ROLES[state.role].home; location.hash = state.screen; toast(ROLES[state.role].name + "（" + ROLES[state.role].title + "）に切り替えました"); }
+      render();
+    }));
+  }
+  document.addEventListener("click", (e) => { if (state.menu && !e.target.closest("#acct")) { state.menu = false; renderAcct(); } });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && state.menu) { state.menu = false; renderAcct(); const b = $("#acctBtn"); if (b) b.focus(); } });
+  function fromHash() {
+    const h = location.hash.replace("#", "");
+    const m = /^tour(\d+)$/.exec(h) || /^(member|manager|head|exem|exe)-(\d+)$/.exec(h);
+    if (m) {
+      const key = m.length === 3 ? m[1] : "all", num = Number(m.length === 3 ? m[2] : m[1]);
+      const i = Math.min(Math.max(num - 1, 0), TOURS[key].length - 1);
+      if (state.tour !== i || state.tourKey !== key) goTour(i, key);
+      return;
+    }
+    if (SCREENS[h]) {
+      state.tour = null;
+      if (!ROLES[state.role].screens.includes(h)) { state.role = Object.keys(ROLES).find((k) => ROLES[k].screens.includes(h)) || state.role; }
+      state.screen = h;
+    }
+    render();
+  }
+  window.addEventListener("hashchange", fromHash);
+  fromHash();
+})();
+</script>

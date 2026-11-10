@@ -1,0 +1,1861 @@
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>社内ラーニング</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@700;900&family=Noto+Sans+JP:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: 上部ヘッダー＋左メニュー＋本文。スマホではメニューが上部の横スクロールになる。
+   明るい単一テーマ（意図的にライトのみ。すべての色を明示） */
+:root{
+  color-scheme:light;
+  --navy:#0f2b2a; --navy-2:#134140; --navy-3:#0b5d52;
+  --blue:#0e7c6b; --cyan:#3fb6a8;
+  --bg:#f4f6f5; --surface:#ffffff; --line:#dbe3e0; --soft:#ecf2f0;
+  --text:#14201d; --muted:#5b6b66; --success:#13804f; --danger:#b93a32; --warn:#a15c00;
+  --topbar:60px; --radius:14px;
+  --f-display:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+  --f-body:"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:var(--f-body);font-size:14.5px;line-height:1.7}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.4;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ヘッダー */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;height:var(--topbar);background:var(--surface);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand b{font-family:var(--f-display);font-size:16px;font-weight:900;display:block;line-height:1.2}
+.brand small{display:block;font-size:11.5px;color:var(--muted)}
+.logo{width:34px;height:34px;border-radius:10px;background:var(--navy-3);color:#fff;display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:16px;flex:0 0 auto}
+.me{display:flex;align-items:center;gap:10px;min-width:0}
+.me b{display:block;font-size:13.5px;line-height:1.2}
+.me small{display:block;font-size:11.5px;color:var(--muted)}
+.av{width:32px;height:32px;border-radius:50%;background:var(--soft);color:var(--navy-3);display:grid;place-items:center;font-weight:900;flex:0 0 auto}
+
+/* 本体 */
+.body{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:calc(100vh - var(--topbar))}
+.side{background:var(--surface);border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:16px;position:sticky;top:var(--topbar);height:calc(100vh - var(--topbar));overflow:auto}
+.nav{display:grid;gap:2px}
+.nav-button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:transparent;border-radius:10px;padding:9px 12px;text-align:left;color:var(--text);font-size:14px;font-weight:600}
+.nav-button svg{width:18px;height:18px;flex:0 0 auto;color:var(--muted)}
+.nav-button:hover{background:var(--soft)}
+.nav-button.active{background:#dff0ec;color:var(--navy-3);font-weight:800}
+.nav-button.active svg{color:var(--navy-3)}
+.side-note{margin-top:auto;font-size:11.5px;color:var(--muted);line-height:1.6;padding:0 6px}
+main{padding:24px max(16px,env(safe-area-inset-right,0px)) 120px 28px;min-width:0;max-width:1240px}
+.view{display:none}
+.view.active{display:grid;gap:18px;align-content:start}
+
+/* 見出し */
+.vh{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;justify-content:space-between}
+.vh h1{font-size:clamp(22px,2.6vw,28px);font-weight:900}
+.vh p{color:var(--muted);font-size:13.5px;margin-top:4px;max-width:48em}
+
+/* 部品 */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:grid;gap:12px;align-content:start;min-width:0}
+.card h2{font-size:16px;font-weight:900;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.card h3{font-size:14px;font-weight:800}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.grid2 .wide{grid-column:1/-1}
+.stack{display:grid;gap:14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.small{font-size:12.5px}
+.muted{color:var(--muted)}
+.ok-text{color:var(--success);font-weight:700}
+.bad-text{color:var(--danger)}
+.pre{white-space:pre-wrap;word-break:break-word}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 14px;font-weight:800;font-size:13px;color:var(--text)}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--navy-3);color:#fff}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+.btn.danger{color:var(--danger)}
+.link{border:0;background:none;padding:0;color:var(--blue);font-weight:800;font-size:13px;justify-self:start}
+.pill{display:inline-block;border-radius:999px;padding:1px 9px;font-size:11.5px;font-weight:800;background:var(--soft);color:var(--muted);white-space:nowrap}
+.pill.ok{background:#e1f3ea;color:#126b45}
+.pill.warn{background:#fdf0d9;color:#8a5200}
+.pill.bad{background:#fbe5e3;color:#a32b2b}
+.pill.info{background:#e0eefc;color:#1c4f8a}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.list li{display:grid;gap:2px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.list li:last-child{border-bottom:0;padding-bottom:0}
+.list li.unread b::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warn);margin-right:6px;vertical-align:2px}
+.list .btn{justify-self:start;margin-top:4px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid var(--line)}
+.tab{border:0;background:transparent;padding:9px 12px;font-weight:800;font-size:13.5px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--navy-3);border-bottom-color:var(--navy-3)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:2px}
+.tile span{font-size:12px;color:var(--muted);font-weight:700}
+.tile strong{font-size:26px;font-weight:900;font-variant-numeric:tabular-nums}
+.tile strong small{font-size:13px;color:var(--muted);margin-left:2px}
+.tile.alert{border-color:#efc0bc;background:#fff7f6}
+.rate{display:inline-flex;align-items:center;gap:6px}
+.rate b{font-variant-numeric:tabular-nums;font-size:12.5px}
+.rbar{width:56px;height:7px;border-radius:4px;background:var(--soft);overflow:hidden;display:inline-block}
+.rbar i{display:block;height:100%;background:var(--success)}
+.rbar i.w{background:#d9822b}
+.rbar i.b{background:var(--danger)}
+.bars{display:grid;gap:8px}
+.hbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;font-size:13px}
+.hbar .rbar{width:120px}
+.acc{display:grid;gap:8px}
+.acc details{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.acc summary{cursor:pointer;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.acc details[open]{display:grid;gap:6px}
+.rank{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.rank li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px;border-radius:8px}
+.rank li.me{background:#e6f3ef;font-weight:800}
+.rank .rk{width:24px;height:24px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:12px;font-weight:900}
+.groups{column-count:2;column-gap:16px}
+.groups .group{break-inside:avoid;margin-bottom:16px;width:100%;display:grid}
+.gh{display:flex;gap:12px;align-items:center}
+.num{width:34px;height:34px;border-radius:10px;background:#dff0ec;color:var(--navy-3);display:grid;place-items:center;font-weight:900;font-size:13px;flex:0 0 auto}
+.gi{display:grid;gap:4px;border-top:1px solid var(--line);padding-top:10px}
+.gi .btn{justify-self:start}
+.hw-h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.quote{background:#f5f8f7;border-radius:10px;padding:10px 12px;display:grid;gap:2px;font-size:13.5px}
+.comment{background:#e8f4f0;border-radius:10px;padding:10px 12px;display:grid;gap:2px;font-size:13.5px;color:#16453c}
+.form{display:grid;gap:10px}
+.form label{display:grid;gap:4px;font-size:12.5px;font-weight:800;color:var(--muted);min-width:0}
+.form input,.form select,.form textarea{width:100%;max-width:100%;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;color:var(--text);background:var(--surface);font-weight:400}
+.form textarea{min-height:76px;resize:vertical}
+.grid-form{grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid-form .wide{grid-column:1/-1}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:13px}
+th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:800;padding:9px 12px;background:#f6f9f8;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.wrap{white-space:normal;min-width:12em}
+td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:var(--surface)}
+.line{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:800;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--navy-3);border-color:var(--navy-3);color:#fff}
+.search{border:1px solid var(--line);border-radius:10px;padding:7px 12px;background:var(--surface);width:min(280px,100%);font-size:13.5px}
+.grid-board{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px;align-items:start}
+.posts{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.posts button{width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:10px 12px;display:grid;gap:4px;justify-items:start}
+.posts button:hover{border-color:var(--blue)}
+.posts button[aria-pressed="true"]{border-color:var(--navy-3);background:#f0f8f5}
+.posts .pill{margin-right:4px}
+.thread{position:sticky;top:calc(var(--topbar) + 16px)}
+.replies{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.replies li{background:#f6f9f8;border-radius:10px;padding:10px 12px;display:grid;gap:2px}
+.dl{display:grid;grid-template-columns:6em minmax(0,1fr);gap:6px 12px;margin:0;font-size:13.5px}
+.dl dt{color:var(--muted)}
+.dl dd{margin:0;font-weight:700}
+.toggles{display:grid;gap:8px}
+.tg{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.tg input{width:18px;height:18px}
+.grid-cal{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;align-items:start}
+.cal-h,.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal-h span{text-align:center;font-size:11.5px;color:var(--muted);font-weight:800}
+.cd{min-height:78px;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:4px;display:grid;align-content:start;gap:2px;text-align:left;min-width:0}
+.cd span{font-size:12px;font-weight:800}
+.cd.empty{border:0;background:transparent}
+.cd.today span{background:var(--navy-3);color:#fff;border-radius:999px;padding:0 6px;justify-self:start}
+.cd.sel{border-color:var(--navy-3);box-shadow:inset 0 0 0 1px var(--navy-3)}
+.ev{display:block;font-style:normal;font-size:11px;line-height:1.35;background:#e0eefc;color:#1c4f8a;border-radius:4px;padding:1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev.d{background:#fdf0d9;color:#8a5200}
+.ev.m{background:#fbe5e3;color:#a32b2b}
+.ev.p{background:#e1f3ea;color:#126b45}
+.more{font-style:normal;font-size:11px;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;color:var(--muted)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.legend .ev{width:14px;height:10px;padding:0}
+.slide{border-color:#b9d8cf}
+.slide-h{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.vbars{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;align-items:end;height:180px;padding-top:8px}
+.vb{display:grid;grid-template-rows:1fr auto auto;height:100%;align-items:end;justify-items:center;gap:2px;font-size:11.5px;min-width:0}
+.vb i{display:block;width:70%;max-width:36px;background:var(--blue);border-radius:4px 4px 0 0;align-self:end}
+.vb i.w{background:#d9822b}
+.vb span{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.bul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+/* 高さの違うカードで空白ができないよう、上から詰める段組みにする */
+.tp-grid{display:block!important;column-width:280px;column-gap:12px}
+.tp-grid>*{break-inside:avoid;margin:0 0 12px!important;width:100%}
+.home-cards{display:block;column-width:300px;column-gap:16px}
+.home-cards>*{break-inside:avoid;margin:0 0 16px;width:100%}
+.hero{background:linear-gradient(120deg,var(--navy) 0%,var(--navy-3) 100%);border-radius:16px;color:#fff}
+.hero-content{padding:22px 26px;display:grid;gap:4px}
+.kicker{font-size:12px;color:#bfe3da;font-weight:800;letter-spacing:.04em}
+.hero-vision{font-family:var(--f-display);font-size:clamp(19px,2.2vw,24px);font-weight:900}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:100001;box-shadow:0 8px 24px rgba(0,0,0,.2);max-width:calc(100% - 32px)}
+
+@media (max-width:1100px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){
+  .body{grid-template-columns:minmax(0,1fr)}
+  .side{position:sticky;top:var(--topbar);z-index:15;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:6px max(10px,env(safe-area-inset-right,0px)) 6px max(10px,env(safe-area-inset-left,0px));overflow-x:auto}
+  .nav{display:flex;gap:4px}
+  .nav-button{white-space:nowrap;width:auto;padding:7px 10px;font-size:13px}
+  .side-note{display:none}
+  main{padding:18px max(16px,env(safe-area-inset-right,0px)) 140px max(16px,env(safe-area-inset-left,0px))}
+  .grid2,.grid3,.grid-board,.grid-cal{grid-template-columns:minmax(0,1fr)}
+  .groups{column-count:1}
+  .grid-form{grid-template-columns:minmax(0,1fr)}
+  .thread{position:static}
+}
+@media (max-width:560px){
+  .me span:last-child{display:none}
+  .brand small{display:none}
+  .cd{min-height:52px}
+  .cd .ev{display:none}
+  .cd .more{display:none}
+  .cd:has(.ev)::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue);justify-self:center}
+  .vbars{height:150px}
+  .vb span{font-size:10.5px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+</style>
+<div id="app"></div>
+<script>
+/* 社内ラーニング（ポートフォリオ用モック）
+   会社のコードを使わずに作り直した学習基盤のモック。データはすべて架空。 */
+(function(){
+  /* ---------- ロールと共通 ---------- */
+  var LS_ROLE = 'mockRoleV1';
+  var ROLE = 'learner'; try{ ROLE = localStorage.getItem(LS_ROLE) || 'learner'; }catch(e){}
+  if(['learner','instructor','supervisor','admin'].indexOf(ROLE)<0) ROLE='learner';
+  window.__demoRole = ROLE; window.__demoCalls = [];
+  var STAFF = ROLE!=='learner', CAN_EDIT = ROLE==='instructor'||ROLE==='admin';
+  var ME = {learner:{name:'デモ 太郎',nick:'たろう',title:'受講者',id:'demo-s01'}, instructor:{name:'サンプル 講師',nick:'講師',title:'講師',id:'demo-t01'},
+            supervisor:{name:'サンプル 上長',nick:'上長',title:'上司',id:'demo-m01'}, admin:{name:'サンプル 管理',nick:'管理',title:'管理者',id:'demo-a01'}}[ROLE];
+  var NAV = {
+    learner:['home','paths','portal','learning','homework','calendar','board','settings'],
+    instructor:['home','ops','homework','paths','impact','admin','portal','reports','calendar','board','settings'],
+    supervisor:['home','impact','ops','paths','reports','portal','calendar','settings'],
+    admin:['home','ops','homework','paths','impact','admin','portal','reports','operations','calendar','board','settings']
+  }[ROLE];
+  window.__demoNavViews = NAV.slice();
+  var LABEL = {home:'ホーム',ops:'運営情報',homework:'宿題',paths:'コース',impact:'合否と効果',admin:'受講者管理',portal:'ポータル',reports:'レポート',operations:'運用',calendar:'予定',board:'掲示板',settings:'設定',learning:'学習'};
+  var ICON = {
+    home:'<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/>', ops:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>', homework:'<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+    paths:'<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H14a4 4 0 0 1 0 8h-4a4 4 0 0 0 0 8"/>', impact:'<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>',
+    admin:'<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3 3 0 0 1 0 6M21 20c0-2.6-1.7-4.8-4-5.6"/>', portal:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+    reports:'<path d="M5 3h14v18H5z"/><path d="M9 8h6M9 12h6M9 16h3"/>', operations:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>', board:'<path d="M4 5h16v11H9l-5 4z"/>', settings:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+    learning:'<path d="M3 6l9-3 9 3-9 3z"/><path d="M7 8v5c0 1.7 2.2 3 5 3s5-1.3 5-3V8"/>'
+  };
+  function svg(k){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICON[k]||ICON.home)+'</svg>'; }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function $(s,r){ return (r||document).querySelector(s); }
+  function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+  function toast(m){ var t=$('#toast'); if(!t) return; t.textContent=m; t.hidden=false; clearTimeout(t._h); t._h=setTimeout(function(){t.hidden=true;},2600); }
+  window.__demoToast = toast;
+  window.__demoSetRole = function(r){ try{ localStorage.setItem(LS_ROLE, r); }catch(e){} location.hash=''; location.reload(); };
+  function pill(text, cls){ return '<span class="pill '+(cls||'')+'">'+esc(text)+'</span>'; }
+  var STATUS = {'未提出':'warn','提出済み':'info','承認':'ok','再提出依頼':'warn','期限切れ':'bad'};
+  function bar(v){ var c=v>=80?'':(v>=60?'w':'b'); return '<span class="rate"><span class="rbar"><i class="'+c+'" style="width:'+v+'%"></i></span><b>'+v+'%</b></span>'; }
+  var TODAY = '2026-11-09';
+  function md(d){ var x=d.split('-'); return Number(x[1])+'/'+Number(x[2]); }
+  var WD = ['日','月','火','水','木','金','土'];
+  function wd(d){ return WD[new Date(d+'T00:00:00+09:00').getDay()]; }
+
+  /* ---------- データ（架空） ---------- */
+  var ANN = [
+    {id:'a1', title:'第8章の確認テストを公開しました', body:'OSPFの確認テストを公開しました。11/13（金）までに受けてください。', imp:'重要', date:'2026-11-08', read:false, target:'全受講者', readN:9},
+    {id:'a2', title:'模試（第2回）の日程', body:'11/20（金）13:00から本番形式の模試を行います。持ち物は掲示板を見てください。', imp:'通常', date:'2026-11-06', read:true, target:'全受講者', readN:13},
+    {id:'a3', title:'サブネット計算の練習会', body:'希望者向けに、放課後30分の練習会を開きます。', imp:'通常', date:'2026-11-04', read:true, target:'全受講者', readN:11}
+  ];
+  var EVENTS = [
+    {date:'2026-11-09', time:'10:00〜12:00', title:'第8章 OSPF（講義）', type:'研修'},
+    {date:'2026-11-11', time:'23:59', title:'宿題の締切：第8章 確認問題', type:'締切'},
+    {date:'2026-11-12', time:'10:00〜12:00', title:'第9章 IPv6（講義）', type:'研修'},
+    {date:'2026-11-16', time:'10:00〜12:00', title:'第10章 FHRP（講義）', type:'研修'},
+    {date:'2026-11-19', time:'10:00〜12:00', title:'第11章 NAT・DHCP（講義）', type:'研修'},
+    {date:'2026-11-20', time:'13:00〜14:10', title:'模試（第2回）', type:'模試'},
+    {date:'2026-11-26', time:'10:00〜12:00', title:'第12章 QoS（講義）', type:'研修'}
+  ];
+  var MY_EVENTS = [{date:'2026-11-10', time:'19:00', title:'サブネット計算 30問', type:'自分の予定'}];
+  var HW = [
+    {id:'h1', title:'第8章 OSPF 確認問題', desc:'講義で扱ったOSPFの設定と確認コマンドを復習し、show ip ospf neighbor の結果を貼ってください。', due:'2026-11-11', status:'未提出', comment:'', mine:null},
+    {id:'h2', title:'第5章 STP まとめノート', desc:'ルートブリッジ選出の流れを自分の言葉でまとめる。', due:'2026-11-06', status:'承認', comment:'流れが整理できています。コストの計算例も足すとさらに良いです。', mine:'ブリッジIDの比較 → ルートポート → 指定ポートの順に決まる。'},
+    {id:'h3', title:'第4章 VLAN 設定演習', desc:'CLIシミュレーターの課題3を解き、設定を貼ってください。', due:'2026-10-30', status:'承認', comment:'正しく設定できています。', mine:'vlan 10 / name SALES …'}
+  ];
+  var HW_STAFF = [
+    {id:'h1', title:'第8章 OSPF 確認問題', due:'2026-11-11', target:'全受講者'},
+    {id:'h2', title:'第5章 STP まとめノート', due:'2026-11-06', target:'全受講者'}
+  ];
+  var HW_STATUS = {}; /* 宿題ID → 受講者ID → 状態（第8章は運営情報と連動） */
+  var DASH = {attempted:286, mastery:78, first:64, weak:12, progress:36,
+    ch:[['ネットワーク基礎',90],['スイッチング',85],['IPv4・サブネット',70],['VLAN・トランク',82],['STP',75],['EtherChannel',80],['ルーティング',72],['OSPF',58]],
+    weakTopics:[['OSPF',58,4],['サブネット計算',70,4],['STP',75,3]]};
+  var WRONG = [
+    {t:'OSPFのDR選出', ch:'第8章', q:'優先度が同じとき、DRに選ばれるルーターはどれですか。', a:'ルーターIDが最も大きいルーター', exp:'優先度が同じなら、ルーターIDの大きいほうがDRになります。'},
+    {t:'同じサブネット', ch:'第3章', q:'172.16.5.70/27 と同じサブネットに属するアドレスはどれですか。', a:'172.16.5.95', exp:'/27 はブロックサイズ32。70 は 64〜95 の範囲です。'},
+    {t:'PortFast', ch:'第5章', q:'PortFastを設定する目的はどれですか。', a:'端末をつなぐポートを、すぐにフォワーディング状態にする', exp:'リスニングとラーニングを飛ばして、すぐに通信できるようにします。'}
+  ];
+  var RANK = {xp:[['たろう（あなた）',1240],['受講者 B',1180],['受講者 C',990],['受講者 D',940],['受講者 E',870]], mock:[['受講者 K',82],['たろう（あなた）',79],['受講者 C',76],['受講者 A',71],['受講者 G',68]]};
+
+  /* 問題演習の問題（courses-proto から使う） */
+  var Q = [
+    {id:'C1',ch:'ch01',c:1,ct:'ネットワーク基礎',body:'ルーターが主に動作するOSI参照モデルの層はどれですか。',o:{A:'第1層 物理層',B:'第2層 データリンク層',C:'第3層 ネットワーク層',D:'第4層 トランスポート層'},a:'C',e:'ルーターはIPアドレスを見て宛先ネットワークへ転送するため、第3層で動作します。'},
+    {id:'C2',ch:'ch01',c:1,ct:'ネットワーク基礎',body:'コネクションを確立し、届かなかったデータを再送するプロトコルはどれですか。',o:{A:'UDP',B:'TCP',C:'ICMP',D:'ARP'},a:'B',e:'TCPは確認応答が返らないデータを再送します。UDPは再送しません。'},
+    {id:'C3',ch:'ch03',c:3,ct:'IPv4・サブネット',body:'192.168.10.0/26 で、ホストに割り当てられるアドレスはいくつですか。',o:{A:'30',B:'62',C:'64',D:'126'},a:'B',e:'ホスト部6ビットで64。ネットワークとブロードキャストを除いて62です。'},
+    {id:'C4',ch:'ch03',c:3,ct:'IPv4・サブネット',body:'プライベートIPv4アドレスはどれですか。',o:{A:'172.32.1.1',B:'172.16.5.1',C:'192.169.1.1',D:'11.0.0.1'},a:'B',e:'172.16.0.0/12（172.16〜172.31）がプライベートです。'},
+    {id:'C5',ch:'ch04',c:4,ct:'VLAN・トランク',body:'802.1Q トランクで、タグを付けずに送られるVLANを何と呼びますか。',o:{A:'管理VLAN',B:'ネイティブVLAN',C:'音声VLAN',D:'デフォルトゲートウェイ'},a:'B',e:'ネイティブVLANのフレームはタグなしで送られます。'},
+    {id:'C6',ch:'ch04',c:4,ct:'VLAN・トランク',body:'スイッチのポートをアクセスポートにするコマンドはどれですか。',o:{A:'switchport mode access',B:'switchport trunk',C:'mode access vlan',D:'vlan access'},a:'A',e:'switchport mode access のあと、switchport access vlan で所属VLANを決めます。'},
+    {id:'C7',ch:'ch05',c:5,ct:'STP',body:'STPでルートブリッジに選ばれるスイッチの条件はどれですか。',o:{A:'ブリッジIDが最も小さい',B:'ポート数が最も多い',C:'MACアドレスが最も大きい',D:'最初に起動した'},a:'A',e:'ブリッジID（優先度＋MAC）が最も小さいスイッチがルートブリッジです。'},
+    {id:'C8',ch:'ch05',c:5,ct:'STP',body:'PortFastを設定する目的はどれですか。',o:{A:'トランクを高速化する',B:'端末をつなぐポートを、すぐにフォワーディング状態にする',C:'ルートブリッジを選び直す',D:'VLANを自動で作る'},a:'B',e:'端末用のアクセスポートで、リスニング・ラーニングを飛ばします。'},
+    {id:'C9',ch:'ch08',c:8,ct:'OSPF',body:'OSPFで経路を選ぶときに使う値はどれですか。',o:{A:'ホップ数',B:'コスト',C:'遅延と信頼性',D:'AS番号'},a:'B',e:'リンクのコストの合計が最小の経路を選びます。'},
+    {id:'C10',ch:'ch08',c:8,ct:'OSPF',body:'OSPFでネイバーになるために、一致している必要があるものはどれですか。',o:{A:'ルーターID',B:'エリアID',C:'インターフェースのIPアドレス',D:'プロセスID'},a:'B',e:'エリアIDやHello／Deadの間隔が一致している必要があります。ルーターIDは重複してはいけません。'},
+    {id:'C11',ch:'ch08',c:8,ct:'OSPF',body:'優先度がすべて1のとき、DRに選ばれるルーターはどれですか。',o:{A:'ルーターIDが最も大きい',B:'ルーターIDが最も小さい',C:'インターフェースが最も多い',D:'最後に起動した'},a:'A',e:'優先度が同じなら、ルーターIDが最も大きいルーターがDRです。'},
+    {id:'C12',ch:'ch09',c:9,ct:'IPv6',body:'2001:0db8:0000:0000:0000:0000:0000:0001 を正しく省略したものはどれですか。',o:{A:'2001:db8::1',B:'2001:db8:0::0:1::',C:'2001::db8::1',D:'2001:db8:1'},a:'A',e:'先頭の0は省略でき、連続する0は「::」で1回だけまとめられます。'},
+    {id:'C13',ch:'ch09',c:9,ct:'IPv6',body:'IPv6のリンクローカルアドレスの範囲はどれですか。',o:{A:'2001::/16',B:'FE80::/10',C:'FF00::/8',D:'FC00::/7'},a:'B',e:'FE80::/10 がリンクローカル、FF00::/8 はマルチキャストです。'},
+    {id:'C14',ch:'ch01',c:1,ct:'ネットワーク基礎',body:'同じネットワーク内で、IPアドレスからMACアドレスを調べるプロトコルはどれですか。',o:{A:'DNS',B:'DHCP',C:'ARP',D:'NTP'},a:'C',e:'ARPはIPアドレスに対応するMACアドレスを問い合わせます。'}
+  ];
+  var D = window.DEMO_DATA = window.DEMO_DATA || {};
+  D.getPracticeQuestions = function(){ return Q.map(function(q){ return {id:q.id, chapterId:q.ch, chapter:q.c, chapterTitle:q.ct, body:q.body, options:q.o}; }); };
+  D.gradeAndRecordQuizAnswer = function(t, ch, id, sel){ var q=Q.filter(function(x){return x.id===id;})[0]; if(!q) throw new Error('問題が見つかりません'); var ok=[].concat(sel)[0]===q.a; return {correct:ok, correctAnswer:[q.a], explanation:q.e}; };
+
+  /* ---------- 画面の枠 ---------- */
+  function shell(){
+    var app = document.getElementById('app');
+    app.innerHTML =
+      '<header class="top"><div class="brand"><span class="logo" aria-hidden="true">学</span><span><b>社内ラーニング</b><small>研修と自習の学習基盤</small></span></div>'+
+      '<div class="me"><span class="av">'+esc(ME.name.slice(-2,-1)||ME.name[0])+'</span><span><b>'+esc(ME.name)+'</b><small>'+esc(ME.title)+'</small></span></div></header>'+
+      '<div class="body"><nav class="side" aria-label="メニュー"><div id="navList" class="nav">'+NAV.map(function(v){ return '<button type="button" class="nav-button" data-view="'+v+'">'+svg(v)+'<span>'+esc(LABEL[v])+'</span></button>'; }).join('')+'</div>'+
+      '<p class="side-note">ポートフォリオ用のモックです。人物・数字はすべて架空です。</p></nav>'+
+      '<main id="main">'+['home','learning','homework','calendar','board','settings','admin','reports','operations'].map(function(v){ return '<section id="view-'+v+'" class="view" aria-label="'+esc(LABEL[v])+'"></section>'; }).join('')+'</main></div>'+
+      '<div id="toast" class="toast" role="status" hidden></div>';
+    $$('#navList .nav-button').forEach(function(b){ b.addEventListener('click', function(){ window.navigateTo(b.dataset.view); }); });
+  }
+  var RENDER = {home:renderHome, learning:renderLearning, homework:renderHomework, calendar:renderCalendar, board:renderBoard, settings:renderSettings, admin:renderAdmin, reports:renderReports, operations:renderOperations};
+  window.navigateTo = function(v){
+    if(NAV.indexOf(v)<0 && v!=='learning') v='home';
+    if(v==='learning' && NAV.indexOf('learning')<0) v='home';
+    $$('.view').forEach(function(s){ s.classList.toggle('active', s.id==='view-'+v); });
+    $$('#navList .nav-button').forEach(function(b){ var on=b.dataset.view===v; b.classList.toggle('active', on); if(on) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current'); });
+    window.currentView = v;
+    if(RENDER[v]) RENDER[v]();
+    try{ history.replaceState(null,'','#'+v); }catch(e){}
+    window.scrollTo(0,0);
+  };
+  function head(title, sub, right){ return '<div class="vh"><div><h1>'+esc(title)+'</h1>'+(sub?'<p>'+esc(sub)+'</p>':'')+'</div>'+(right||'')+'</div>'; }
+
+  /* ---------- ホーム ---------- */
+  function renderHome(){
+    var el=$('#view-home'); var unread=ANN.filter(function(a){return !a.read;}).length;
+    var upcoming = EVENTS.concat(ROLE==='learner'?MY_EVENTS:[]).filter(function(e){return e.date>=TODAY;}).sort(function(a,b){return a.date.localeCompare(b.date);}).slice(0,4);
+    el.innerHTML = '<div class="hero"><div class="hero-content"><span class="kicker">社内ラーニング</span><b class="hero-vision">研修も自習も、ひとつの場所で</b></div></div>'+
+      '<div class="grid3 home-cards">'+
+        '<section class="card"><h2>研修への参加</h2><p class="muted">今日のオンライン研修と、研修日の予約はこちらから。</p><div class="row"><button type="button" class="btn primary" data-toast="デモ版では会議には参加しません">オンライン研修に参加</button><button type="button" class="btn" data-toast="研修日の予約画面を開きます（デモ）">研修を予約</button></div><p class="small muted">会議ID：000 0000 0000（デモ）</p></section>'+
+        '<section class="card"><h2>お知らせ '+(unread?pill('未読 '+unread,'warn'):'')+'</h2><ul class="list">'+ANN.map(function(a){ return '<li class="'+(a.read?'':'unread')+'"><b>'+esc(a.title)+'</b><span class="small muted">'+esc(a.imp)+'・'+md(a.date)+'</span><span class="small">'+esc(a.body)+'</span>'+(a.read?'':'<button type="button" class="btn sm" data-read="'+a.id+'">確認済みにする</button>')+'</li>'; }).join('')+'</ul></section>'+
+        '<section class="card"><h2>直近の予定</h2><ul class="list">'+upcoming.map(function(e){ return '<li><b>'+esc(e.title)+'</b><span class="small muted">'+md(e.date)+'（'+wd(e.date)+'）'+esc(e.time)+'</span></li>'; }).join('')+'</ul><button type="button" class="link" data-go="calendar">予定をすべて見る →</button></section>'+
+      '</div>';
+    bindCommon(el);
+    $$('[data-read]', el).forEach(function(b){ b.addEventListener('click', function(){ ANN.forEach(function(a){ if(a.id===b.dataset.read) a.read=true; }); renderHome(); toast('確認済みにしました'); }); });
+  }
+  window.renderHome = renderHome;
+  function bindCommon(el){
+    $$('[data-toast]', el).forEach(function(b){ b.addEventListener('click', function(){ toast(b.dataset.toast); }); });
+    $$('[data-go]', el).forEach(function(b){ b.addEventListener('click', function(){ window.navigateTo(b.dataset.go); }); });
+  }
+
+  /* ---------- 学習 ---------- */
+  var learnTab = 'hub';
+  function renderLearning(){
+    var el=$('#view-learning');
+    var tabs=[['hub','学習の入口'],['status','学習状況'],['wrong','間違いノート'],['rank','ランキング']];
+    var body='';
+    if(learnTab==='hub'){
+      var G=[['教材で学ぶ','基礎から順番に理解する',[['デジタル教科書','全16章の教科書・講義を読み、マーカーを付けて学べます','教科書を開く'],['講義資料・動画','授業で使った資料と講義動画を、章ごとに見返せます','ライブラリを開く']]],
+        ['問題で確認・復習','学んだ内容と苦手を確かめる',[['確認問題','章ごとの確認問題で理解度を確かめます','確認問題を選ぶ'],['問題演習','研修や自習のコースで、問題を解いてすぐ採点します','コースで解く','paths'],['間違いノート','間違えた問題と解説を見直します','見直す','wrong']]],
+        ['実機で演習','コマンドを入力して身につける',[['CLIシミュレーター','機器の構成を見ながら、コマンドで設定を練習します','シミュレーターを開く'],['シミュレーション解説','本番想定の問題を、要件から設定まで解説します','解説を開く']]],
+        ['仕上げる','本番を想定して確かめる',[['模試','本番形式・70分の模試で、今の実力を確かめます','模試を確認する','paths'],['ランキング','学習量や模試の点数を、仲間と比べて励みにします','ランキングを見る','rank']]]];
+      body='<div class="groups">'+G.map(function(g,i){ return '<section class="card group"><div class="gh"><span class="num">0'+(i+1)+'</span><div><h2>'+esc(g[0])+'</h2><p class="small muted">'+esc(g[1])+'</p></div></div>'+g[2].map(function(x){ return '<div class="gi"><b>'+esc(x[0])+'</b><p class="small muted">'+esc(x[1])+'</p><button type="button" class="btn sm" '+(x[3]?(x[3]==='paths'?'data-go="paths"':'data-ltab="'+x[3]+'"'):'data-toast="デモ版では教材サイトは開きません。本番では新しいタブで開きます。"')+'>'+esc(x[2])+(x[3]?' →':' ↗')+'</button></div>'; }).join('')+'</section>'; }).join('')+'</div>';
+    } else if(learnTab==='status'){
+      body='<div class="tiles">'+tile('取り組んだ問題',DASH.attempted+'<small>問</small>')+tile('今の正答率',DASH.mastery+'<small>%</small>')+tile('初回の正答率',DASH.first+'<small>%</small>')+tile('要復習',DASH.weak+'<small>問</small>')+'</div>'+
+        '<div class="grid2"><section class="card"><h2>章別の正答率</h2><div class="bars">'+DASH.ch.map(function(c,i){ return '<div class="hbar"><span>第'+(i+1)+'章 '+esc(c[0])+'</span>'+bar(c[1])+'</div>'; }).join('')+'</div></section>'+
+        '<section class="card"><h2>苦手な分野</h2><ul class="list">'+DASH.weakTopics.map(function(w){ return '<li><b>'+esc(w[0])+'</b><span class="small muted">正答率 '+w[1]+'%・要復習 '+w[2]+'問</span></li>'; }).join('')+'</ul><button type="button" class="link" data-ltab="wrong">間違いノートで見直す →</button></section></div>';
+    } else if(learnTab==='wrong'){
+      body='<section class="card"><h2>間違いノート <span class="small muted">'+WRONG.length+'問</span></h2><div class="acc">'+WRONG.map(function(w){ return '<details><summary><b>'+esc(w.t)+'</b><span class="small muted">'+esc(w.ch)+'</span></summary><p>'+esc(w.q)+'</p><p class="ok-text">正解：'+esc(w.a)+'</p><p class="small muted">'+esc(w.exp)+'</p></details>'; }).join('')+'</div></section>';
+    } else {
+      function rt(title, rows, unit){ return '<section class="card"><h2>'+esc(title)+'</h2><ol class="rank">'+rows.map(function(r,i){ return '<li class="'+(r[0].indexOf('あなた')>=0?'me':'')+'"><span class="rk">'+(i+1)+'</span><span>'+esc(r[0])+'</span><b>'+r[1]+unit+'</b></li>'; }).join('')+'</ol></section>'; }
+      body='<div class="grid2">'+rt('学習量（今月のXP）',RANK.xp,' XP')+rt('模試の最高点（正答率）',RANK.mock,'%')+'</div><p class="small muted">ランキングはニックネームで表示します。表示したくない人は設定で外せます。</p>';
+    }
+    el.innerHTML = head('学習','まず教材で学び、確認問題へ。つまずいたら復習し、実機で確かめましょう。')+
+      '<div class="tabs" role="tablist">'+tabs.map(function(t){ return '<button type="button" role="tab" class="tab" data-learn-tab="'+t[0]+'" aria-selected="'+(learnTab===t[0])+'">'+esc(t[1])+'</button>'; }).join('')+'</div>'+body;
+    bindCommon(el);
+    $$('[data-learn-tab]', el).forEach(function(b){ b.addEventListener('click', function(){ learnTab=b.dataset.learnTab; renderLearning(); }); });
+    $$('[data-ltab]', el).forEach(function(b){ b.addEventListener('click', function(){ learnTab=b.dataset.ltab; renderLearning(); }); });
+  }
+  function tile(l,v,cls){ return '<div class="tile '+(cls||'')+'"><span>'+esc(l)+'</span><strong>'+v+'</strong></div>'; }
+
+  /* ---------- 宿題 ---------- */
+  var hwOpen = null, hwReview = null;
+  function learners(){ var o=window.__demoOps; return o ? o.scoped() : []; }
+  function hwState(hid, u){ if(!HW_STATUS[hid]) HW_STATUS[hid]={}; var s=HW_STATUS[hid][u.id]; if(s) return s; if(hid==='h1') return u.hw; return u.hw==='期限切れ'?'期限切れ':(u.rate<60?'再提出依頼':'承認'); }
+  function setHw(hid, u, s){ if(!HW_STATUS[hid]) HW_STATUS[hid]={}; HW_STATUS[hid][u.id]=s; if(hid==='h1') u.hw=s; }
+  function renderHomework(){
+    var el=$('#view-homework');
+    if(ROLE==='learner'){
+      el.innerHTML = head('宿題','締切と内容を確認し、テキストかURLで提出します。講師が確認すると、承認か再提出の依頼が届きます。')+
+        '<div class="stack">'+HW.map(function(h){ var open=hwOpen===h.id; return '<section class="card hw"><div class="hw-h"><div><h2>'+esc(h.title)+'</h2><span class="small muted">締切 '+md(h.due)+'（'+wd(h.due)+'）23:59・必須</span></div>'+pill(h.status, STATUS[h.status])+'</div><p>'+esc(h.desc)+'</p>'+
+          (h.mine?'<div class="quote"><span class="small muted">あなたの提出</span>'+esc(h.mine)+'</div>':'')+(h.comment?'<div class="comment"><span class="small">講師のコメント</span>'+esc(h.comment)+'</div>':'')+
+          (open?'<form class="form" data-hw-form="'+h.id+'"><label>提出する内容<textarea name="text" required placeholder="答えや設定を書いてください"></textarea></label><label>URL（任意）<input name="url" type="url" placeholder="https://"></label><div class="row"><button type="submit" class="btn primary">提出する</button><button type="button" class="btn" data-hw-cancel>やめる</button></div></form>':
+           (h.status==='承認'?'':'<button type="button" class="btn primary" data-hw-open="'+h.id+'">'+(h.status==='未提出'?'提出する':'再提出する')+'</button>'))+'</section>'; }).join('')+'</div>';
+      $$('[data-hw-open]', el).forEach(function(b){ b.addEventListener('click', function(){ hwOpen=b.dataset.hwOpen; renderHomework(); var t=$('textarea',el); if(t) t.focus(); }); });
+      $$('[data-hw-cancel]', el).forEach(function(b){ b.addEventListener('click', function(){ hwOpen=null; renderHomework(); }); });
+      $$('[data-hw-form]', el).forEach(function(f){ f.addEventListener('submit', function(e){ e.preventDefault(); var t=f.elements.text.value.trim(); if(!t){ toast('提出する内容を入力してください'); return; }
+        HW.forEach(function(h){ if(h.id===f.dataset.hwForm){ h.status='提出済み'; h.mine=t; } }); hwOpen=null; renderHomework(); toast('提出しました（デモのため保存されません）'); }); });
+      return;
+    }
+    var L = learners();
+    var list = HW_STAFF.map(function(h){ var c={'未提出':0,'提出済み':0,'承認':0,'再提出依頼':0,'期限切れ':0}; L.forEach(function(u){ c[hwState(h.id,u)]=(c[hwState(h.id,u)]||0)+1; });
+      return '<section class="card"><div class="hw-h"><div><h2>'+esc(h.title)+'</h2><span class="small muted">締切 '+md(h.due)+'（'+wd(h.due)+'）・対象 '+esc(h.target)+'（'+L.length+'名）</span></div>'+pill('公開中','ok')+'</div>'+
+        '<div class="row small">'+['提出済み','承認','再提出依頼','未提出','期限切れ'].map(function(k){ return pill(k+' '+c[k], STATUS[k]); }).join('')+'</div>'+
+        '<button type="button" class="btn" data-hw-review="'+h.id+'">'+(hwReview===h.id?'提出状況を閉じる':'提出状況を見る')+'</button>'+(hwReview===h.id?review(h,L):'')+'</section>'; }).join('');
+    el.innerHTML = head('宿題','宿題を作って公開し、受講者ごとの提出状況を確認します。')+
+      (CAN_EDIT?'<section class="card"><h2>宿題を作る</h2><form class="form grid-form" id="hwNew"><label>タイトル<input name="title" required placeholder="例：第9章 IPv6 確認問題"></label><label>締切<input name="due" type="date" required value="2026-11-16"></label><label>公開する相手<select name="target"><option>全受講者</option><option>担当の受講者</option><option>個人を選ぶ</option></select></label><label class="wide">内容<textarea name="desc" placeholder="取り組む内容と提出のしかた"></textarea></label><div class="row wide"><button type="submit" class="btn primary">宿題を公開</button></div></form></section>':'')+
+      '<div class="stack">'+list+'</div>';
+    var f=$('#hwNew'); if(f) f.addEventListener('submit', function(e){ e.preventDefault(); var t=f.elements.title.value.trim(); if(!t){ toast('タイトルを入力してください'); return; }
+      HW_STAFF.unshift({id:'h'+Date.now(), title:t, due:f.elements.due.value||'2026-11-16', target:f.elements.target.value}); renderHomework(); toast('宿題を公開しました（デモのため保存されません）'); });
+    $$('[data-hw-review]', el).forEach(function(b){ b.addEventListener('click', function(){ hwReview = hwReview===b.dataset.hwReview?null:b.dataset.hwReview; renderHomework(); }); });
+    $$('[data-hw-set]', el).forEach(function(b){ b.addEventListener('click', function(){ var p=b.dataset.hwSet.split('|'); var u=L.filter(function(x){return x.id===p[1];})[0]; if(!u) return; setHw(p[0],u,p[2]); renderHomework(); toast(u.name+'さんを「'+p[2]+'」にしました（デモ）'); }); });
+  }
+  function review(h, L){
+    return '<div class="tablewrap"><table><thead><tr><th>受講者</th><th>状態</th><th>提出内容</th>'+(CAN_EDIT?'<th>操作</th>':'')+'</tr></thead><tbody>'+L.map(function(u){ var s=hwState(h.id,u); var sub=(s==='提出済み'||s==='承認');
+      return '<tr><td><b>'+esc(u.name)+'</b></td><td>'+pill(s,STATUS[s])+'</td><td class="wrap small">'+(sub?'router ospf 1 を設定し、ネイバーが FULL になったことを確認しました。':'—')+'</td>'+
+        (CAN_EDIT?'<td>'+(s==='提出済み'?'<div class="row"><button type="button" class="btn sm primary" data-hw-set="'+h.id+'|'+u.id+'|承認">承認</button><button type="button" class="btn sm" data-hw-set="'+h.id+'|'+u.id+'|再提出依頼">再提出を依頼</button></div>':'<span class="small muted">—</span>')+'</td>':'')+'</tr>'; }).join('')+'</tbody></table></div>';
+  }
+
+  /* ---------- 予定 ---------- */
+  var calSel = TODAY;
+  function renderCalendar(){
+    var el=$('#view-calendar'); var all = EVENTS.concat(ROLE==='learner'?MY_EVENTS:[]);
+    var first = new Date('2026-11-01T00:00:00+09:00').getDay(), cells='';
+    for(var i=0;i<first;i++) cells+='<div class="cd empty"></div>';
+    for(var d=1; d<=30; d++){ var ds='2026-11-'+(d<10?'0'+d:d); var ev=all.filter(function(e){return e.date===ds;});
+      cells+='<button type="button" class="cd'+(ds===TODAY?' today':'')+(ds===calSel?' sel':'')+'" data-day="'+ds+'" aria-label="11月'+d+'日 予定'+ev.length+'件"><span>'+d+'</span>'+ev.slice(0,2).map(function(e){ return '<i class="ev '+(e.type==='模試'?'m':(e.type==='締切'?'d':(e.type==='自分の予定'?'p':'')))+'">'+esc(e.title)+'</i>'; }).join('')+(ev.length>2?'<i class="more">ほか'+(ev.length-2)+'件</i>':'')+'</button>'; }
+    var dayEv = all.filter(function(e){return e.date===calSel;});
+    el.innerHTML = head('予定','研修・宿題の締切・模試の予定と、自分で入れた予定をまとめて確認します。')+
+      '<div class="grid-cal"><section class="card"><h2>2026年11月</h2><div class="cal-h">'+WD.map(function(w){return '<span>'+w+'</span>';}).join('')+'</div><div class="cal">'+cells+'</div>'+
+      '<div class="legend small"><span><i class="ev"></i>研修</span><span><i class="ev d"></i>締切</span><span><i class="ev m"></i>模試</span><span><i class="ev p"></i>自分の予定</span></div></section>'+
+      '<div class="stack"><section class="card"><h2>'+md(calSel)+'（'+wd(calSel)+'）の予定</h2>'+(dayEv.length?'<ul class="list">'+dayEv.map(function(e){ return '<li><b>'+esc(e.title)+'</b><span class="small muted">'+esc(e.time)+'・'+esc(e.type)+'</span></li>'; }).join('')+'</ul>':'<p class="muted">予定はありません。</p>')+'</section>'+
+      (ROLE==='learner'?'<section class="card"><h2>自分の予定を追加</h2><form class="form" id="calAdd"><label>内容<input name="title" required placeholder="例：模試の復習"></label><label>日付<input name="date" type="date" value="'+calSel+'" required></label><label>時間<input name="time" type="time" value="19:00"></label><button type="submit" class="btn primary">追加する</button></form></section>':'')+'</div></div>';
+    $$('[data-day]', el).forEach(function(b){ b.addEventListener('click', function(){ calSel=b.dataset.day; renderCalendar(); }); });
+    var f=$('#calAdd'); if(f) f.addEventListener('submit', function(e){ e.preventDefault(); var t=f.elements.title.value.trim(); if(!t){ toast('内容を入力してください'); return; }
+      MY_EVENTS.push({date:f.elements.date.value, time:f.elements.time.value, title:t, type:'自分の予定'}); calSel=f.elements.date.value; renderCalendar(); toast('予定を追加しました（デモのため保存されません）'); });
+  }
+
+  /* ---------- 掲示板 ---------- */
+  var bSel=null, bCat='すべて', bQ='', bNew=false;
+  function renderBoard(){
+    var el=$('#view-board'); var P = window.__demoBoard || [];
+    var list = P.filter(function(p){ return !p.hidden && (bCat==='すべて'||p.category===bCat) && (!bQ || (p.title+p.body).indexOf(bQ)>=0); })
+      .sort(function(a,b){ return (b.pinned?1:0)-(a.pinned?1:0) || b.createdAt.localeCompare(a.createdAt); });
+    var sel = P.filter(function(p){return p.postId===bSel;})[0];
+    el.innerHTML = head('掲示板','分からないことを質問したり、まとめを共有したりします。講師が回答します。', '<button type="button" class="btn primary" id="bNewBtn">投稿する</button>')+
+      (bNew?'<section class="card"><h2>新しい投稿</h2><form class="form grid-form" id="bForm"><label>種類<select name="cat"><option>質問</option><option>共有</option><option>自習</option>'+(STAFF?'<option>連絡</option>':'')+'</select></label><label class="wide">タイトル<input name="title" required></label><label class="wide">本文<textarea name="body" required></textarea></label><div class="row wide"><button type="submit" class="btn primary">投稿する</button><button type="button" class="btn" id="bCancel">やめる</button></div></form></section>':'')+
+      '<div class="toolbar"><div class="chips">'+['すべて','質問','連絡','共有','自習'].map(function(c){ return '<button type="button" class="chip" aria-pressed="'+(bCat===c)+'" data-bcat="'+c+'">'+c+'</button>'; }).join('')+'</div><input id="bSearch" class="search" type="search" placeholder="投稿を検索" value="'+esc(bQ)+'" aria-label="投稿を検索"></div>'+
+      '<div class="grid-board"><section class="card"><ul class="posts">'+(list.length?list.map(function(p){ return '<li><button type="button" data-post="'+p.postId+'" aria-pressed="'+(bSel===p.postId)+'">'+(p.pinned?pill('ピン留め','info'):'')+pill(p.category, p.category==='質問'?'warn':'')+'<b>'+esc(p.title)+'</b><span class="small muted">'+esc(p.author.nickname)+'・'+md(p.createdAt.slice(0,10))+'・返信 '+p.replies.length+'</span></button></li>'; }).join(''):'<li class="muted">合う投稿はありません。</li>')+'</ul></section>'+
+      '<section class="card thread" aria-live="polite">'+(sel?thread(sel):'<p class="muted">左の一覧から投稿を選ぶと、内容と返信が表示されます。</p>')+'</section></div>';
+    $('#bNewBtn').addEventListener('click', function(){ bNew=!bNew; renderBoard(); });
+    var c=$('#bCancel'); if(c) c.addEventListener('click', function(){ bNew=false; renderBoard(); });
+    var f=$('#bForm'); if(f) f.addEventListener('submit', function(e){ e.preventDefault(); var t=f.elements.title.value.trim(), b=f.elements.body.value.trim(); if(!t||!b){ toast('タイトルと本文を入力してください'); return; }
+      var id='bp'+Date.now(); P.unshift({postId:id, category:f.elements.cat.value, title:t, body:b, author:{nickname:ME.nick}, createdAt:'2026-11-09T12:00:00+09:00', replies:[]}); bNew=false; bSel=id; renderBoard(); toast('投稿しました（デモのため保存されません）'); });
+    $$('[data-bcat]', el).forEach(function(b){ b.addEventListener('click', function(){ bCat=b.dataset.bcat; renderBoard(); }); });
+    var s=$('#bSearch'); s.addEventListener('input', function(){ bQ=s.value.trim(); var pos=s.selectionStart; renderBoard(); var n=$('#bSearch'); n.focus(); try{n.setSelectionRange(pos,pos);}catch(e){} });
+    $$('[data-post]', el).forEach(function(b){ b.addEventListener('click', function(){ bSel=b.dataset.post; renderBoard(); var th=$('.thread',el); if(th && innerWidth<900) th.scrollIntoView({block:'start'}); }); });
+    var r=$('#bReply'); if(r) r.addEventListener('submit', function(e){ e.preventDefault(); var t=r.elements.body.value.trim(); if(!t){ toast('返信を入力してください'); return; } sel.replies.push({author:{nickname:ME.nick}, at:'2026-11-09T12:00:00+09:00', body:t}); renderBoard(); toast('返信しました（デモのため保存されません）'); });
+    var pin=$('#bPin'); if(pin) pin.addEventListener('click', function(){ sel.pinned=!sel.pinned; renderBoard(); toast(sel.pinned?'ピン留めしました':'ピン留めを外しました'); });
+    var hide=$('#bHide'); if(hide) hide.addEventListener('click', function(){ sel.hidden=true; bSel=null; renderBoard(); toast('投稿を非表示にしました（デモ）'); });
+  }
+  function thread(p){
+    return '<div class="small muted">'+esc(p.category)+'・'+esc(p.author.nickname)+'・'+md(p.createdAt.slice(0,10))+'</div><h2>'+esc(p.title)+'</h2><p class="pre">'+esc(p.body)+'</p>'+
+      (CAN_EDIT?'<div class="row"><button type="button" class="btn sm" id="bPin">'+(p.pinned?'ピン留めを外す':'ピン留め')+'</button><button type="button" class="btn sm danger" id="bHide">非表示</button></div>':'')+
+      '<h3>返信 '+p.replies.length+'件</h3><ul class="replies">'+p.replies.map(function(r){ return '<li><b>'+esc(r.author.nickname)+'</b><span class="small muted">'+md(r.at.slice(0,10))+' '+r.at.slice(11,16)+'</span><p class="pre">'+esc(r.body)+'</p></li>'; }).join('')+'</ul>'+
+      '<form class="form" id="bReply"><label>返信を書く<textarea name="body" placeholder="返信を書く"></textarea></label><button type="submit" class="btn primary">返信する</button></form>';
+  }
+
+  /* ---------- 設定 ---------- */
+  var NOTI = {ann:true, due:true, reply:false, rank:true};
+  function renderSettings(){
+    var el=$('#view-settings');
+    el.innerHTML = head('設定','表示名や通知、パスワードを変えます。')+
+      '<div class="grid2"><section class="card"><h2>プロフィール</h2><dl class="dl"><dt>氏名</dt><dd>'+esc(ME.name)+'</dd><dt>ロール</dt><dd>'+esc(ME.title)+'</dd><dt>ユーザーID</dt><dd>'+esc(ME.id)+'</dd></dl>'+
+      '<form class="form" id="nickForm"><label>表示名（ニックネーム）<input name="nick" maxlength="20" value="'+esc(ME.nick)+'"></label><button type="submit" class="btn primary">保存する</button></form></section>'+
+      '<section class="card"><h2>通知</h2><div class="toggles">'+[['ann','お知らせが届いたとき'],['due','宿題の締切の前日'],['reply','掲示板に返信があったとき'],['rank','ランキングに名前を出す']].map(function(n){ return '<label class="tg"><input type="checkbox" data-noti="'+n[0]+'"'+(NOTI[n[0]]?' checked':'')+'><span>'+esc(n[1])+'</span></label>'; }).join('')+'</div></section>'+
+      '<section class="card wide"><h2>パスワードを変える</h2><form class="form grid-form" id="pwForm"><label>今のパスワード<input name="cur" type="password" autocomplete="current-password"></label><label>新しいパスワード<input name="nw" type="password" autocomplete="new-password"></label><label>新しいパスワード（確認）<input name="cf" type="password" autocomplete="new-password"></label><p class="small muted wide">12文字以上で、英大文字・英小文字・数字・記号をそれぞれ1文字以上含めてください。</p><div class="row wide"><button type="submit" class="btn primary">変更する</button></div><p class="small wide" id="pwMsg" role="status"></p></form></section></div>';
+    $('#nickForm').addEventListener('submit', function(e){ e.preventDefault(); var v=e.target.elements.nick.value.trim(); if(!v){ toast('表示名を入力してください'); return; } ME.nick=v; toast('表示名を保存しました（デモ）'); });
+    $$('[data-noti]', el).forEach(function(c){ c.addEventListener('change', function(){ NOTI[c.dataset.noti]=c.checked; toast('通知の設定を変えました（デモ）'); }); });
+    $('#pwForm').addEventListener('submit', function(e){ e.preventDefault(); var f=e.target, n=f.elements.nw.value, m=$('#pwMsg');
+      var errs=[]; if(!f.elements.cur.value) errs.push('今のパスワードを入力してください'); if(n.length<12) errs.push('12文字以上にしてください'); if(!/[A-Z]/.test(n)) errs.push('英大文字を含めてください'); if(!/[a-z]/.test(n)) errs.push('英小文字を含めてください'); if(!/[0-9]/.test(n)) errs.push('数字を含めてください'); if(!/[^A-Za-z0-9]/.test(n)) errs.push('記号を含めてください'); if(n!==f.elements.cf.value) errs.push('確認用のパスワードが一致しません');
+      m.className='small wide '+(errs.length?'bad-text':'ok-text'); m.textContent = errs.length ? errs.join('／') : '変更しました（デモのため保存されません）'; });
+  }
+
+  /* ---------- 受講者管理 ---------- */
+  var adminTab = 'trainees', aQ='', annNew=false;
+  var USERS = null;
+  window.openAdminTab = function(t){ adminTab=t; renderAdmin(); };
+  function renderAdmin(){
+    var el=$('#view-admin'); var L=learners();
+    var tabs=[['trainees','研修生'],['learning','学習状況'],['hw','宿題'],['ann','お知らせ']].concat(ROLE==='admin'?[['acct','アカウント・権限']]:[]);
+    if(!tabs.some(function(t){return t[0]===adminTab;})) adminTab='trainees';
+    var body='';
+    if(adminTab==='trainees'){
+      var rows=L.filter(function(u){ return !aQ || u.name.indexOf(aQ)>=0; });
+      body='<div class="toolbar"><input id="aSearch" class="search" type="search" placeholder="名前で探す" value="'+esc(aQ)+'" aria-label="名前で探す"><span class="small muted">'+rows.length+'名</span></div><div class="tablewrap"><table><thead><tr><th>研修生</th><th>担当講師</th><th>最終ログイン</th><th>確認問題の得点率</th><th>宿題（第8章）</th><th>要フォロー</th></tr></thead><tbody>'+
+        rows.map(function(u,i){ return '<tr><td><b>'+esc(u.name)+'</b></td><td>'+esc(u.teacher)+'</td><td>11/'+(9-(i%3))+' '+(8+(i%2))+':1'+(i%6)+'</td><td>'+bar(u.rate)+'</td><td>'+pill(u.hw,STATUS[u.hw])+'</td><td class="wrap small">'+(u.reasons.length?'<span class="bad-text">'+u.reasons.map(esc).join('／')+'</span>':'—')+'</td></tr>'; }).join('')+'</tbody></table></div>';
+    } else if(adminTab==='learning'){
+      var names=['ネットワーク基礎','スイッチング','IPv4・サブネット','VLAN・トランク','STP','EtherChannel','ルーティング','OSPF'];
+      body='<div class="tablewrap"><table><thead><tr><th>章</th><th>平均の得点率</th><th>80%以上の人数</th><th>60%未満の人数</th></tr></thead><tbody>'+names.map(function(n,i){ var vs=L.map(function(u){return u.chapters[i];}); var avg=Math.round(vs.reduce(function(a,b){return a+b;},0)/Math.max(1,vs.length));
+        return '<tr><td>第'+(i+1)+'章 '+esc(n)+'</td><td>'+bar(avg)+'</td><td>'+vs.filter(function(v){return v>=80;}).length+'名</td><td>'+vs.filter(function(v){return v<60;}).length+'名</td></tr>'; }).join('')+'</tbody></table></div><p class="small muted">平均の得点率が低い章は、次の授業で復習の時間を取る目安になります。</p>';
+    } else if(adminTab==='hw'){
+      body='<div class="stack">'+HW_STAFF.map(function(h){ var c=0; L.forEach(function(u){ var s=hwState(h.id,u); if(s==='提出済み'||s==='承認') c++; }); return '<div class="line"><b>'+esc(h.title)+'</b><span class="small muted">締切 '+md(h.due)+'・提出 '+c+' / '+L.length+'名</span><button type="button" class="btn sm" data-go="homework">宿題の画面で確認 →</button></div>'; }).join('')+'</div>';
+    } else if(adminTab==='ann'){
+      body=(CAN_EDIT?'<button type="button" class="btn primary" id="annNewBtn">お知らせを書く</button>':'')+
+        (annNew?'<form class="form grid-form card" id="annForm"><label class="wide">タイトル<input name="title" required></label><label>重要度<select name="imp"><option>通常</option><option>重要</option></select></label><label>届ける相手<select name="target"><option>全受講者</option><option>担当の受講者</option><option>講師</option></select></label><label class="wide">本文<textarea name="body" required></textarea></label><div class="row wide"><button type="submit" class="btn primary">公開する</button></div></form>':'')+
+        '<div class="tablewrap"><table><thead><tr><th>タイトル</th><th>重要度</th><th>公開日</th><th>届ける相手</th><th>既読</th></tr></thead><tbody>'+ANN.map(function(a){ return '<tr><td><b>'+esc(a.title)+'</b></td><td>'+pill(a.imp,a.imp==='重要'?'warn':'')+'</td><td>'+md(a.date)+'</td><td>'+esc(a.target)+'</td><td>'+a.readN+' / 13名</td></tr>'; }).join('')+'</tbody></table></div>';
+    } else {
+      if(!USERS){ USERS=[{n:'サンプル 管理',r:'管理者',a:true},{n:'サンプル 講師',r:'講師',a:true},{n:'講師 B',r:'講師',a:true},{n:'サンプル 上長',r:'上司',a:true}].concat((window.__demoOps?window.__demoOps.learners:[]).map(function(u){return {n:u.name,r:'受講者',a:true};})); }
+      body='<div class="row"><button type="button" class="btn primary" data-toast="アカウントの発行画面を開きます（デモ）">アカウントを発行</button><span class="small muted">管理者を2人以上置くと、発行や再発行を一人に頼らずに済みます。</span></div><div class="tablewrap"><table><thead><tr><th>名前</th><th>ロール</th><th>状態</th><th>操作</th></tr></thead><tbody>'+
+        USERS.map(function(u,i){ return '<tr><td><b>'+esc(u.n)+'</b></td><td><label class="sr" for="role'+i+'">'+esc(u.n)+'のロール</label><select id="role'+i+'" data-urole="'+i+'">'+['受講者','講師','上司','管理者'].map(function(r){ return '<option'+(r===u.r?' selected':'')+'>'+r+'</option>'; }).join('')+'</select></td><td>'+pill(u.a?'有効':'停止',u.a?'ok':'')+'</td><td><div class="row"><button type="button" class="btn sm" data-toast="'+esc(u.n)+'さんのパスワードを再発行しました（デモ）">パスワード再発行</button><button type="button" class="btn sm" data-uact="'+i+'">'+(u.a?'停止':'有効にする')+'</button></div></td></tr>'; }).join('')+'</tbody></table></div>';
+    }
+    el.innerHTML = head('受講者管理', ROLE==='instructor'?'担当の受講者の一覧・学習状況・宿題・お知らせを管理します。':'研修生の一覧・学習状況・宿題・お知らせ・アカウントを管理します。')+
+      '<div class="tabs" role="tablist">'+tabs.map(function(t){ return '<button type="button" role="tab" class="tab" data-admin-tab="'+t[0]+'" aria-selected="'+(adminTab===t[0])+'">'+esc(t[1])+'</button>'; }).join('')+'</div>'+body;
+    bindCommon(el);
+    $$('[data-admin-tab]', el).forEach(function(b){ b.addEventListener('click', function(){ adminTab=b.dataset.adminTab; renderAdmin(); }); });
+    var s=$('#aSearch'); if(s) s.addEventListener('input', function(){ aQ=s.value.trim(); var pos=s.selectionStart; renderAdmin(); var n=$('#aSearch'); n.focus(); try{n.setSelectionRange(pos,pos);}catch(e){} });
+    var nb=$('#annNewBtn'); if(nb) nb.addEventListener('click', function(){ annNew=!annNew; renderAdmin(); });
+    var af=$('#annForm'); if(af) af.addEventListener('submit', function(e){ e.preventDefault(); var t=af.elements.title.value.trim(), b=af.elements.body.value.trim(); if(!t||!b){ toast('タイトルと本文を入力してください'); return; }
+      ANN.unshift({id:'a'+Date.now(), title:t, body:b, imp:af.elements.imp.value, date:TODAY, read:false, target:af.elements.target.value, readN:0}); annNew=false; renderAdmin(); toast('お知らせを公開しました（デモのため保存されません）'); });
+    $$('[data-urole]', el).forEach(function(sel){ sel.addEventListener('change', function(){ USERS[Number(sel.dataset.urole)].r=sel.value; toast(USERS[Number(sel.dataset.urole)].n+'さんのロールを「'+sel.value+'」にしました（デモ）'); }); });
+    $$('[data-uact]', el).forEach(function(b){ b.addEventListener('click', function(){ var u=USERS[Number(b.dataset.uact)]; u.a=!u.a; renderAdmin(); toast(u.n+'さんを'+(u.a?'有効':'停止')+'にしました（デモ）'); }); });
+  }
+
+  /* ---------- レポート ---------- */
+  var rep = {preset:'monthly', period:'2026年11月', made:false};
+  function renderReports(){
+    var el=$('#view-reports'); var L = window.__demoOps ? window.__demoOps.learners : [];
+    var avg = L.length ? Math.round(L.reduce(function(a,u){return a+u.rate;},0)/L.length) : 0;
+    var follow = L.filter(function(u){return u.reasons.length;}).length;
+    var names=['基礎','スイッチング','サブネット','VLAN','STP','EtherChannel','ルーティング','OSPF'];
+    var chAvg = names.map(function(n,i){ return Math.round(L.reduce(function(a,u){return a+u.chapters[i];},0)/Math.max(1,L.length)); });
+    el.innerHTML = head('レポート','研修の報告書をつくります。本番ではスライドとPDFで出力します。')+
+      '<div class="grid2"><section class="card"><h2>報告書をつくる</h2><form class="form" id="repForm"><label>種類<select name="preset"><option value="monthly"'+(rep.preset==='monthly'?' selected':'')+'>月次の研修報告（上司向け）</option><option value="person"'+(rep.preset==='person'?' selected':'')+'>受講者別の成績表（面談用）</option></select></label><label>期間<select name="period"><option>2026年11月</option><option>2026年10月</option><option>研修開始から</option></select></label>'+
+      (ROLE!=='supervisor'?'<button type="submit" class="btn primary">報告書をつくる</button>':'<p class="small muted">上司は、講師・管理者がつくった報告書を確認します。</p><button type="submit" class="btn primary">最新の報告書を見る</button>')+'</form></section>'+
+      '<section class="card"><h2>これまでの報告書</h2><ul class="list"><li><b>月次の研修報告 2026年10月</b><span class="small muted">11/2 作成・サンプル 講師</span></li><li><b>月次の研修報告 2026年9月</b><span class="small muted">10/1 作成・サンプル 講師</span></li></ul></section></div>'+
+      (rep.made?'<section class="card slide" aria-label="報告書のプレビュー"><div class="slide-h"><div><span class="small muted">'+esc(rep.preset==='monthly'?'月次の研修報告':'受講者別の成績表')+'</span><h2>ネットワーク研修（CCNA）'+esc(rep.period)+'</h2></div><button type="button" class="btn" data-toast="デモ版ではPDFは保存できません">PDFで保存</button></div>'+
+        '<div class="tiles">'+tile('研修生',L.length+'<small>名</small>')+tile('平均得点率',avg+'<small>%</small>')+tile('要フォロー',follow+'<small>名</small>','alert')+tile('受験目標日まで','72<small>日</small>')+'</div>'+
+        '<h3>章別の平均得点率</h3><div class="vbars">'+chAvg.map(function(v,i){ return '<div class="vb"><i style="height:'+v+'%" class="'+(v<70?'w':'')+'"></i><b>'+v+'</b><span>'+esc(names[i])+'</span></div>'; }).join('')+'</div>'+
+        '<h3>所見</h3><ul class="bul"><li>OSPF（第8章）の平均が最も低く、次回の授業の冒頭で復習を行います。</li><li>要フォローの'+follow+'名には、今週中に面談を行います。</li><li>第2回模試（11/20）で、合格の見込みを確かめます。</li></ul></section>':'');
+    $('#repForm').addEventListener('submit', function(e){ e.preventDefault(); rep.preset=e.target.elements.preset.value; rep.period=e.target.elements.period.value; rep.made=true; renderReports(); var s=$('.slide'); if(s) s.scrollIntoView({block:'start'}); });
+    bindCommon(el);
+  }
+
+  /* ---------- 運用 ---------- */
+  var LOG = [{d:'11/8', w:'サンプル 管理', t:'第2回模試の会場（オンライン）を予約。URLは前日にお知らせで配信する。'},{d:'11/5', w:'サンプル 講師', t:'受講者Jの課題量を調整。面談は11/11。'}];
+  function renderOperations(){
+    var el=$('#view-operations');
+    var RB=[['アカウントを発行する','受講者管理 → アカウント・権限 → 「アカウントを発行」。初回は仮パスワードを本人に手渡しし、最初のログインで変更してもらう。'],['宿題を出す','宿題 → 「宿題を作る」でタイトル・締切・相手を決めて公開。締切の前日に通知が届く。'],['模試を実施する','コースの「模試」を公開 → 当日は開始10分前に案内 → 終了後に結果を合否と効果に反映。'],['困ったときの連絡先','ログインできない・画面が開かない場合は、管理者2名のどちらかに連絡する。']];
+    el.innerHTML = head('運用','運営の手順書と引き継ぎの記録です。担当が替わっても同じように回せるようにします。')+
+      '<div class="grid2"><section class="card"><h2>手順書</h2><div class="acc">'+RB.map(function(r){ return '<details><summary><b>'+esc(r[0])+'</b></summary><p>'+esc(r[1])+'</p></details>'; }).join('')+'</div></section>'+
+      '<section class="card"><h2>引き継ぎの記録</h2><form class="form" id="logForm"><label>記録すること<textarea name="t" required placeholder="次の担当者に伝えること"></textarea></label><button type="submit" class="btn primary">記録する</button></form><ul class="list">'+LOG.map(function(l){ return '<li><b>'+esc(l.t)+'</b><span class="small muted">'+esc(l.d)+'・'+esc(l.w)+'</span></li>'; }).join('')+'</ul></section></div>';
+    $('#logForm').addEventListener('submit', function(e){ e.preventDefault(); var t=e.target.elements.t.value.trim(); if(!t){ toast('記録することを入力してください'); return; } LOG.unshift({d:'11/9', w:ME.name, t:t}); renderOperations(); toast('記録しました（デモのため保存されません）'); });
+  }
+
+  /* ---------- 起動 ---------- */
+  function boot(){
+    shell();
+    var h=(location.hash||'').replace('#','');
+    setTimeout(function(){ window.navigateTo(NAV.indexOf(h)>=0||h==='learning'?h:'home'); }, 0);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+
+</script>
+<script>
+/* 新機能プロトタイプ（要件定義書 v0.1 の F-01〜F-13・O-01〜O-10 をデモで先行実装）
+   - ポータル：講師用ポータルの入口をeラーニング内に移したもの
+   - 運営情報：スプレッドシートの運営情報を読み取り専用で表示
+   すべて架空データ。リンク先は開かない。 */
+(function(){
+  var ROLE = window.__demoRole || 'learner';
+  var STAFF = ROLE !== 'learner';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function toast(m){ if(window.__demoToast) window.__demoToast(m); }
+  function pad(n){ return (n<10?'0':'')+n; }
+  function stamp(d){ return (d.getMonth()+1)+'/'+d.getDate()+' '+pad(d.getHours())+':'+pad(d.getMinutes()); }
+
+  /* ---------- スタイル ---------- */
+  var css = [
+  '.dp-wrap{display:grid;gap:20px;max-width:1180px}',
+  '.dp-head{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between}',
+  '.dp-head h2{margin:0;font-size:clamp(22px,2.6vw,28px);font-weight:900;color:var(--text)}',
+  '.dp-head p{margin:6px 0 0;color:var(--muted);font-size:14px;max-width:46em}',
+  '.dp-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.04em;color:var(--navy-3);background:#e6f0ff;border:1px solid #c9dcff;border-radius:999px;padding:3px 10px}',
+  '.dp-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}',
+  '.dp-input{border:1px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--surface);min-width:0;width:min(360px,100%)}',
+  '.dp-select{border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:var(--surface);font-size:13px!important;width:auto!important;min-height:0!important}',
+  '.dp-btn{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:10px;padding:8px 14px;font-weight:700;font-size:13px}',
+  '.dp-btn:hover{border-color:var(--blue);color:var(--blue)}',
+  '.dp-btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}',
+  '.dp-btn.primary:hover{filter:brightness(1.06);color:#fff}',
+  '.dp-btn[aria-pressed="true"]{background:var(--navy-3);border-color:var(--navy-3);color:#fff}',
+  '.dp-btn:focus-visible,.dp-input:focus-visible,.dp-select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}',
+  '.dp-count{font-size:13px;color:var(--muted)}',
+  '.dp-group{display:grid;gap:12px}',
+  '.dp-group h3{margin:0;font-size:17px;font-weight:900;display:flex;gap:10px;align-items:baseline}',
+  '.dp-group h3 small{font-size:12.5px;color:var(--muted);font-weight:700}',
+  '.dp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}',
+  '.dp-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:8px;align-content:start;min-width:0}',
+  '.dp-card.off{opacity:.5;border-style:dashed}',
+  '.dp-meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px}',
+  '.dp-kind{font-weight:800;color:var(--navy-3);background:var(--soft);border-radius:6px;padding:2px 7px}',
+  '.dp-aud{color:var(--muted);font-weight:700}',
+  '.dp-admin{color:#8a4b00;background:#fff3df;border-radius:6px;padding:2px 7px;font-weight:800}',
+  '.dp-card h4{margin:0;font-size:15.5px;font-weight:900;color:var(--text);line-height:1.45}',
+  '.dp-card p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}',
+  '.dp-orig{font-size:11.5px;color:var(--muted)}',
+  '.dp-notice{font-size:12.5px;border-radius:10px;padding:8px 10px;line-height:1.55}',
+  '.dp-notice.restricted{background:#fff1f1;color:#8f2525;border:1px solid #f3cccc}',
+  '.dp-notice.info{background:#eef6ff;color:#174b85;border:1px solid #cfe3fb}',
+  '.dp-notice b{display:block}',
+  '.dp-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:2px}',
+  '.dp-edit{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-top:1px dashed var(--line);padding-top:8px;font-size:12px;color:var(--muted)}',
+  '.dp-empty{background:var(--surface);border:1px dashed var(--line);border-radius:14px;padding:24px;color:var(--muted);text-align:center}',
+  /* 運営情報 */
+  '.dp-asof{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 14px;align-items:center}',
+  '.dp-asof b{color:var(--text)}',
+  '.dp-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}',
+  '.dp-tile{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:4px}',
+  '.dp-tile span{font-size:12px;color:var(--muted);font-weight:700}',
+  '.dp-tile strong{font-size:28px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--text)}',
+  '.dp-tile strong small{font-size:13px;color:var(--muted);margin-left:3px}',
+  '.dp-tile.warn{border-color:#f0c98a;background:#fffaf0}',
+  '.dp-tile.alert{border-color:#efb4b4;background:#fff6f6}',
+  '.dp-tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:14px}',
+  '.dp-table{width:100%;border-collapse:collapse;font-size:13px;min-width:820px}',
+  '.dp-table th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:800;padding:10px 12px;border-bottom:1px solid var(--line);background:#f8fafc;white-space:nowrap}',
+  '.dp-table td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;font-variant-numeric:tabular-nums}',
+  '.dp-table tr:last-child td{border-bottom:0}',
+  '.dp-table tbody tr{cursor:pointer}',
+  '.dp-table tbody tr:hover td{background:#f6f9fd}',
+  '.dp-table tbody tr[aria-selected="true"] td{background:#eaf2ff}',
+  '.dp-rate{display:inline-flex;align-items:center;gap:6px}',
+  '.dp-rbar{width:42px;height:6px;border-radius:3px;background:var(--soft);overflow:hidden;display:inline-block}',
+  '.dp-rbar i{display:block;height:100%;background:var(--success)}',
+  '.dp-rbar i.w{background:#d9822b}',
+  '.dp-rbar i.b{background:var(--danger)}',
+  '.dp-pill{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11.5px;font-weight:800;white-space:nowrap}',
+  '.dp-pill.ok{background:#e4f5ec;color:#126b45}',
+  '.dp-pill.warn{background:#fff1d9;color:#8a5200}',
+  '.dp-pill.bad{background:#fde7e7;color:#a32b2b}',
+  '.dp-pill.mute{background:var(--soft);color:var(--muted)}',
+  '.dp-reason{font-size:12px;color:#a32b2b;line-height:1.5}',
+  '.dp-detail{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:16px}',
+  '.dp-detail h3{margin:0;font-size:18px;font-weight:900}',
+  '.dp-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}',
+  '.dp-box{display:grid;gap:8px;align-content:start}',
+  '.dp-box h4{margin:0;font-size:13px;color:var(--muted);font-weight:800;letter-spacing:.03em}',
+  '.dp-bars{display:grid;gap:5px}',
+  '.dp-bar{display:grid;grid-template-columns:10em minmax(0,1fr) 3em;gap:8px;align-items:center;font-size:12px}',
+  '.dp-bar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+  '.dp-bar i{display:block;height:8px;border-radius:4px;background:var(--soft);position:relative;overflow:hidden}',
+  '.dp-bar i b{position:absolute;inset:0 auto 0 0;background:var(--blue);border-radius:4px}',
+  '.dp-bar i b.low{background:#d9822b}',
+  '.dp-bar em{font-style:normal;text-align:right;color:var(--text);font-weight:700}',
+  '.dp-locked{font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:10px;padding:10px 12px}',
+  '.dp-list{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:13px}',
+  '.dp-list li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:6px}',
+  '.dp-note{font-size:12px;color:var(--muted)}',
+  '@media (max-width:640px){.dp-input{width:100%}.dp-tile strong{font-size:24px}}'
+  ].join('\n');
+  var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
+
+  /* ---------- ポータルのデータ（講師用ポータル 25件の移植＋受講者向け） ---------- */
+  var CH16 = []; for(var i=1;i<=16;i++) CH16.push(i);
+  var S=['instructor','supervisor','admin'], T=['instructor','admin'], A=['admin'], SV=['supervisor','admin'];
+  var PORTAL_STAFF = [
+    {group:'研修状況', items:[
+      {no:35,kind:'スプレッドシート',aud:'研修状況',title:'参加予定・担当講師シート',desc:'研修の参加予定と担当講師をシートで確認します。',orig:'参加予定・担当講師のスプレッドシート',action:'開く',roles:S},
+      {no:31,kind:'編集・管理画面',aud:'管理用',title:'研修日程申請フォームの編集・管理',desc:'研修日程申請フォームの編集・管理画面を開きます。',orig:'研修日程申請フォーム（編集・管理用）',action:'フォームを編集',roles:A,admin:true},
+      {no:'',kind:'集計シート',aud:'成績確認用',title:'模試成績・到達状況シート',desc:'模試の成績と到達状況をシートで確認します。',orig:'模試成績・到達状況スプシ',action:'成績を見る',roles:S},
+      {no:'',kind:'スプレッドシート',aud:'研修状況',title:'確認問題・宿題・実力の進捗表',desc:'確認問題、宿題、実力の進捗をシートで確認します。',orig:'確認問題・宿題・実力の進捗表',action:'開く',roles:S},
+      {no:'',kind:'スプレッドシート',aud:'上司向け',title:'上司向けの研修進捗表',desc:'上司向けにまとめた研修進捗シートを開きます。',orig:'上司向け研修進捗シート',action:'開く',roles:SV}
+    ]},
+    {group:'講義中', items:[
+      {no:1,kind:'参加リンク',aud:'研修参加用',title:'オンライン研修（Zoom）',desc:'オンライン研修のZoomに参加します。ID：000 0000 0000（デモ）',orig:'Zoom',action:'Zoomに参加',roles:T},
+      {no:5,kind:'サイト',aud:'講義用',title:'講義資料ライブラリー',desc:'講義で使う資料をライブラリーから探します。',orig:'授業資料ライブラリー',action:'講義資料を見る',roles:T},
+      {no:6,kind:'資料ファイル',aud:'章別資料',title:'章別講義資料（1〜16章）',desc:'講義に使う第1〜16章の資料を章ごとに選んで開きます。',orig:'章別講義資料',action:'選択した資料を見る',chapters:true,roles:T},
+      {no:10,kind:'サイト',aud:'講義用',title:'第1章の講義スライド（詳細版）',desc:'第1章の、章別資料より詳しいスライドを開きます。',orig:'第1章スライドサイト',action:'スライドを見る',roles:T},
+      {no:19,kind:'サイト',aud:'問題演習用',title:'模試・本番想定の問題演習',desc:'模試・本番想定の問題を演習します。',orig:'本番想定問題演習サイト',action:'問題を演習する',copy:true,roles:T},
+      {no:22,kind:'回答フォーム',aud:'講義中の確認問題',title:'章別確認問題フォーム（1〜16章）',desc:'第1〜16章の確認問題フォームを選び、講義中に一緒に取り組みます。',orig:'章別確認問題フォーム',action:'選択したフォームを開く',chapters:true,copy:true,notice:{kind:'info',title:'受講生にはeラーニング経由で案内',text:'受講生はeラーニングからフォームを開いてください。'},roles:T},
+      {no:13,kind:'サイト',aud:'シミュレーター',title:'CLIシミュレーター',desc:'CLIシミュレーターでシミュレーション演習を行います。',orig:'CCNA Network Simulator',action:'シミュレーターを開く',copy:true,roles:T},
+      {no:'',kind:'解説サイト',aud:'講義用',title:'宿題解説サイト',desc:'宿題の問題別解説を確認します。',orig:'宿題解説サイト',action:'解説を開く',roles:T}
+    ]},
+    {group:'講義後', items:[
+      {no:30,kind:'回答フォーム',aud:'結果入力用',title:'模試・シミュレーション結果入力フォーム',desc:'模試・シミュレーションの結果をフォームに入力します。',orig:'本番想定模試・シミュレーション結果入力フォーム',action:'結果を入力する',roles:T},
+      {no:23,kind:'回答フォーム',aud:'受講生が回答',title:'受講生アンケート（授業終了時）',desc:'授業終了時に受講生がアンケートに回答します。',orig:'授業後・学習進捗アンケート〔回答用〕',action:'アンケートに回答',copy:true,roles:T},
+      {no:26,kind:'回答フォーム',aud:'講師が回答',title:'講師アンケート（受講生の様子）',desc:'講義後に講師が、授業中の受講生の様子を回答します。',orig:'受講者状況共有フォーム（回答用）',action:'アンケートに回答',roles:T},
+      {no:21,kind:'サイト',aud:'宿題の出題用',title:'宿題づくりツール',desc:'宿題づくりツールを開いて、受講生に出す宿題を用意します。',orig:'宿題づくりツール',action:'宿題を出す',roles:T},
+      {no:20,kind:'フォルダ',aud:'宿題の出題後',title:'宿題PDFの保存フォルダ',desc:'出題した宿題のPDFを保存するフォルダを開きます。',orig:'宿題フォルダ',action:'保存フォルダを見る',roles:T}
+    ]},
+    {group:'その他', items:[
+      {no:2,kind:'フォルダ',aud:'講師限定',title:'講師用CCNA研修資料フォルダ',desc:'講師向けのCCNA研修資料・フォルダをまとめて確認します。',orig:'CCNA研修資料フォルダ',action:'講師用資料を見る',notice:{kind:'restricted',title:'受講生への配布禁止',text:'講師限定。新人講師は研修責任者の許可が必要です。'},roles:T},
+      {no:4,kind:'フォルダ',aud:'オンライン研修用',title:'オンライン研修の講義資料フォルダ',desc:'オンライン研修の講義資料フォルダを開きます。',orig:'オンライン研修講義資料フォルダ',action:'フォルダを見る',roles:T},
+      {no:24,kind:'編集・回答管理画面',aud:'管理用',title:'授業終了時アンケートの編集・回答管理',desc:'授業終了時アンケートの編集・回答管理画面を開きます。',orig:'学習進捗アンケート〔編集・回答管理用〕',action:'回答を確認・編集',roles:A,admin:true},
+      {no:25,kind:'集計シート',aud:'管理用',title:'授業終了時アンケートの回答シート',desc:'授業終了時アンケートの回答をシートで確認します。',orig:'学習進捗アンケート回答スプシ',action:'回答シートを見る',roles:A,admin:true},
+      {no:27,kind:'編集・回答管理画面',aud:'管理用',title:'受講者状況アンケートの編集・回答管理',desc:'受講者状況アンケートの編集・回答管理画面を開きます。',orig:'受講者状況共有フォーム〔管理者用〕',action:'回答を確認・編集',roles:A,admin:true},
+      {no:'',kind:'サイト',aud:'学習ゲーム',title:'CCNAゲームマップ',desc:'CCNAの章別ゲームの入口をマップから選びます。',orig:'CCNAゲームマップ',action:'開く',roles:T}
+    ]}
+  ];
+  var PORTAL_LEARNER = [
+    {group:'学ぶ', items:[
+      {kind:'サイト',aud:'教科書',title:'デジタル教科書',desc:'全16章の教科書・対話授業・講義を読み、板書やマーカーを使って学べます。',action:'教科書を開く'},
+      {kind:'サイト',aud:'講義',title:'講義資料・動画ライブラリ',desc:'授業で使う資料と講義動画を、章ごとに確認できます。',action:'ライブラリを開く'},
+      {kind:'サイト',aud:'学習ゲーム',title:'CCNAゲームマップ',desc:'章ごとの要点をゲームで確かめます。',action:'ゲームを開く'}
+    ]},
+    {group:'解く・提出する', items:[
+      {kind:'回答フォーム',aud:'確認問題',title:'章別確認問題（1〜16章）',desc:'章を選んで確認問題に回答します。',action:'選択した章を開く',chapters:true},
+      {kind:'サイト',aud:'問題演習',title:'本番レベル問題演習',desc:'本番形式の模試5回と章別演習。途中保存に対応。',action:'演習を始める'},
+      {kind:'サイト',aud:'シミュレーター',title:'CLIシミュレーター',desc:'ブラウザでコマンドを入力し、機器の設定を練習します。',action:'シミュレーターを開く'},
+      {kind:'回答フォーム',aud:'授業終了時',title:'受講生アンケート',desc:'授業の最後に、理解度と学習時間を回答します。',action:'アンケートに回答'}
+    ]},
+    {group:'調べる・復習する', items:[
+      {kind:'サイト',aud:'辞典',title:'コマンド辞典',desc:'コマンドの書式や使い方を確認できます。',action:'辞典を開く'},
+      {kind:'解説サイト',aud:'宿題',title:'宿題Form解説',desc:'宿題の問題ごとに、考え方と解説を確認できます。',action:'解説を開く'},
+      {kind:'解説サイト',aud:'シミュレーション',title:'シミュレーション解説',desc:'本番想定問題の要件から設定・確認までを読めます。',action:'解説を開く'},
+      {kind:'サイト',aud:'特訓',title:'解き方道場',desc:'問題の読み方や判断の順番をテーマごとに練習します。',action:'道場を開く'},
+      {kind:'サイト',aud:'特訓',title:'サブネット道場',desc:'サブネット計算を、時間を計って反復練習します。',action:'道場を開く'}
+    ]},
+    {group:'研修に参加する', items:[
+      {kind:'参加リンク',aud:'オンライン研修',title:'オンライン研修（Zoom）',desc:'当日の研修に参加します。ID：000 0000 0000（デモ）',action:'Zoomに参加'},
+      {kind:'回答フォーム',aud:'予約',title:'研修予約フォーム',desc:'参加する日程を予約します。',action:'予約する'}
+    ]}
+  ];
+  var state = {q:'', edit:false, hidden:{}, order:{}};
+  function visibleItems(){
+    var src = ROLE==='learner' ? PORTAL_LEARNER : PORTAL_STAFF;
+    return src.map(function(g){
+      var items = g.items.filter(function(it){ return ROLE==='learner' || (it.roles||T).indexOf(ROLE)>=0; });
+      var ord = state.order[g.group];
+      if(ord) items = ord.map(function(t){ return items.filter(function(x){return x.title===t;})[0]; }).filter(Boolean);
+      return {group:g.group, items:items};
+    }).filter(function(g){ return g.items.length; });
+  }
+  function matches(it,q){ if(!q) return true; q=q.toLowerCase(); return [it.title,it.desc,it.orig,it.aud,it.kind].join(' ').toLowerCase().indexOf(q)>=0; }
+
+  function renderPortal(){
+    var el = document.getElementById('view-portal'); if(!el) return;
+    var groups = visibleItems(), q = state.q, total = 0, shown = 0;
+    var body = groups.map(function(g){
+      var items = g.items.filter(function(it){ total++; var ok = matches(it,q) && (state.edit || !state.hidden[it.title]); if(ok) shown++; return ok; });
+      if(!items.length) return '';
+      return '<section class="dp-group" aria-label="'+esc(g.group)+'"><h3>'+esc(g.group)+' <small>'+items.length+'件</small></h3><div class="dp-grid">'+
+        items.map(function(it){ return card(it,g.group); }).join('')+'</div></section>';
+    }).join('');
+    var isAdmin = ROLE==='admin';
+    el.innerHTML = '<div class="dp-wrap">'+
+      '<div class="dp-head"><div><h2>ポータル</h2><p>'+
+        (ROLE==='learner' ? '研修で使うサイトとフォームの入口です。リンクは新しいタブで開きます。' : '講師が使う資料・フォーム・表の入口をまとめています。用途から探せます。リンクは新しいタブで開きます。')+
+      '</p></div>'+(isAdmin?'<button type="button" class="dp-btn" id="dpEditToggle" aria-pressed="'+state.edit+'">'+(state.edit?'編集を終える':'入口を編集')+'</button>':'')+'</div>'+
+      '<div class="dp-tools"><label class="sr-only" for="dpSearch" style="position:absolute;left:-9999px">入口を検索</label>'+
+        '<input id="dpSearch" class="dp-input" type="search" placeholder="資料名・元の名称で探す" value="'+esc(q)+'">'+
+        '<button type="button" class="dp-btn" id="dpClear">クリア</button><span class="dp-count">'+shown+'件 / '+total+'件</span></div>'+
+      (isAdmin&&state.edit?'<p class="dp-note">編集モード：表示・非表示と並び順を変えられます。本番ではDBのシートに保存されます（デモでは保存されません）。</p>':'')+
+      (body || '<div class="dp-empty">「'+esc(q)+'」に合う入口はありません。</div>')+
+      '</div>';
+    var s = document.getElementById('dpSearch');
+    s.addEventListener('input', function(){ state.q = s.value; var pos=s.selectionStart; renderPortal(); var n=document.getElementById('dpSearch'); n.focus(); try{n.setSelectionRange(pos,pos);}catch(e){} });
+    document.getElementById('dpClear').addEventListener('click', function(){ state.q=''; renderPortal(); });
+    var et = document.getElementById('dpEditToggle'); if(et) et.addEventListener('click', function(){ state.edit=!state.edit; renderPortal(); });
+    el.querySelectorAll('[data-dp-open]').forEach(function(b){ b.addEventListener('click', function(){
+      var sel = b.parentNode.querySelector('select'); var extra = sel ? '（第'+sel.value+'章）' : '';
+      toast('デモ版のためリンク先は開きません。本番では「'+b.dataset.dpOpen+extra+'」を新しいタブで開きます。'); }); });
+    el.querySelectorAll('[data-dp-copy]').forEach(function(b){ b.addEventListener('click', function(){
+      var url = 'https://example.com/demo/'+encodeURIComponent(b.dataset.dpCopy);
+      var done = function(){ toast('案内用のURLをコピーしました（デモ用のダミーURL）'); };
+      try{ navigator.clipboard.writeText(url).then(done, done); }catch(e){ done(); } }); });
+    el.querySelectorAll('[data-dp-hide]').forEach(function(c){ c.addEventListener('change', function(){ state.hidden[c.dataset.dpHide]=!c.checked; renderPortal(); toast('表示設定を変更しました（デモのため保存されません）'); }); });
+    el.querySelectorAll('[data-dp-move]').forEach(function(b){ b.addEventListener('click', function(){
+      var g = b.dataset.group, t = b.dataset.dpMove, dir = Number(b.dataset.dir);
+      var list = visibleItems().filter(function(x){return x.group===g;})[0].items.map(function(x){return x.title;});
+      var i = list.indexOf(t), j = i+dir; if(j<0||j>=list.length) return; list.splice(j,0,list.splice(i,1)[0]); state.order[g]=list; renderPortal(); }); });
+  }
+  function card(it, group){
+    var off = state.hidden[it.title];
+    var chapters = it.chapters ? '<select class="dp-select" aria-label="章を選択">'+CH16.map(function(n){return '<option value="'+n+'">第'+n+'章</option>';}).join('')+'</select>' : '';
+    var notice = it.notice ? '<div class="dp-notice '+esc(it.notice.kind)+'"><b>'+esc(it.notice.title)+'</b>'+esc(it.notice.text)+'</div>' : '';
+    var edit = (ROLE==='admin'&&state.edit) ? '<div class="dp-edit"><label><input type="checkbox" data-dp-hide="'+esc(it.title)+'" '+(off?'':'checked')+'> 表示する</label>'+
+      '<button type="button" class="dp-btn" data-dp-move="'+esc(it.title)+'" data-group="'+esc(group)+'" data-dir="-1" aria-label="上へ">↑</button>'+
+      '<button type="button" class="dp-btn" data-dp-move="'+esc(it.title)+'" data-group="'+esc(group)+'" data-dir="1" aria-label="下へ">↓</button>'+
+      '<span>見せる相手：'+esc(((it.roles||['learner']).map(function(r){return {learner:'受講者',instructor:'講師',supervisor:'上司',admin:'管理者'}[r];})).join('・'))+'</span></div>' : '';
+    return '<article class="dp-card'+(off?' off':'')+'">'+
+      '<div class="dp-meta"><span class="dp-kind">'+esc(it.kind)+'</span><span class="dp-aud">'+esc(it.aud)+'</span>'+(it.admin?'<span class="dp-admin">管理者のみ</span>':'')+'</div>'+
+      '<h4>'+esc(it.title)+'</h4><p>'+esc(it.desc)+'</p>'+(it.orig?'<div class="dp-orig">元の名称：'+esc(it.orig)+'</div>':'')+notice+
+      '<div class="dp-actions">'+chapters+'<button type="button" class="dp-btn primary" data-dp-open="'+esc(it.title)+'">'+esc(it.action)+' ↗</button>'+
+      (it.copy?'<button type="button" class="dp-btn" data-dp-copy="'+esc(it.title)+'">URLをコピー</button>':'')+'</div>'+edit+'</article>';
+  }
+
+  /* ---------- 運営情報のデータ（架空） ---------- */
+  var L = 'ABCDEFGHIJKLM'.split('');
+  var ATT = ['出席','出席','出席','遅刻','出席','欠席連絡','出席','出席','未確認','欠席連絡','出席','出席','出席'];
+  var PLAN = ['終日','終日','午前','終日','終日','—','午後','終日','終日','—','終日','午前','終日'];
+  var HW = ['承認','提出済み','承認','未提出','提出済み','期限切れ','承認','提出済み','未提出','期限切れ','承認','提出済み','未提出'];
+  var RATE = [82,77,88,64,79,58,85,71,80,52,90,68,76];
+  var MEET = ['11/14','11/18','—','11/12','11/20','11/12','—','11/19','11/15','11/11','—','11/21','11/18'];
+  var learners = L.map(function(l,i){
+    var reasons = [];
+    if(RATE[i]<60) reasons.push('確認問題の平均正答率が60%未満');
+    if(HW[i]==='期限切れ') reasons.push('宿題が期限切れ');
+    if(ATT[i]==='欠席連絡'&&i===9) reasons.push('今週2回目の欠席');
+    if(i===3) reasons.push('授業後アンケートで「理解できていない」');
+    return {id:'demo-s'+pad(i+1), name:'受講者 '+l, teacher:i<7?'サンプル 講師':'講師 B', att:ATT[i], plan:PLAN[i], hw:HW[i], rate:RATE[i], meet:MEET[i], reasons:reasons,
+      chapters:[1,2,3,4,5,6,7,8].map(function(n){ return Math.max(35, Math.min(98, RATE[i] + [8,5,-6,4,-2,6,-4,-12][n-1] + ((i*7+n*3)%9-4))); }),
+      memo:i===3?'サブネット計算で手が止まる。次回は計算手順を一緒に確認する。':(i===9?'体調面の相談あり。課題量を調整中。':'特記事項なし'),
+      teacherEval:i%4===0?'説明が速い日があった（授業後アンケートより）':'問題なし'};
+  });
+  var opsState = {teacher:'all', onlyHw:false, onlyFollow:false, sort:'follow', sel:null, readAt:new Date()};
+  var SOURCE_UPDATED = '11/9 15:12';
+  function scoped(){ return ROLE==='instructor' ? learners.filter(function(u){return u.teacher==='サンプル 講師';}) : learners; }
+  function pill(v){
+    var cls = {'出席':'ok','承認':'ok','提出済み':'ok','再提出依頼':'warn','遅刻':'warn','未確認':'warn','未提出':'warn','欠席連絡':'bad','期限切れ':'bad'}[v] || 'mute';
+    return '<span class="dp-pill '+cls+'">'+esc(v)+'</span>';
+  }
+  function renderOps(){
+    var el = document.getElementById('view-ops'); if(!el) return;
+    if(!STAFF){ el.innerHTML = '<div class="dp-empty">この画面は講師・上司・管理者だけが見られます。</div>'; return; }
+    var base = scoped(), rows = base.slice();
+    if(opsState.teacher!=='all') rows = rows.filter(function(u){return u.teacher===opsState.teacher;});
+    if(opsState.onlyHw) rows = rows.filter(function(u){return u.hw==='未提出'||u.hw==='期限切れ';});
+    if(opsState.onlyFollow) rows = rows.filter(function(u){return u.reasons.length;});
+    rows.sort(function(a,b){
+      if(opsState.sort==='name') return a.name.localeCompare(b.name,'ja');
+      if(opsState.sort==='rate') return a.rate-b.rate;
+      return b.reasons.length-a.reasons.length || a.rate-b.rate;
+    });
+    var present = base.filter(function(u){return u.att==='出席'||u.att==='遅刻';}).length;
+    var planned = base.filter(function(u){return u.plan!=='—';}).length;
+    var notSub = base.filter(function(u){return u.hw==='未提出';}).length;
+    var late = base.filter(function(u){return u.hw==='期限切れ';}).length;
+    var follow = base.filter(function(u){return u.reasons.length;}).length;
+    var scopeNote = ROLE==='instructor' ? '担当の受講者のみ表示しています（'+base.length+'名）。' : (ROLE==='supervisor' ? '全受講者（'+base.length+'名）。面談メモと講師評価は表示されません。' : '全受講者（'+base.length+'名）。');
+    el.innerHTML = '<div class="dp-wrap">'+
+      '<div class="dp-head"><div><h2>運営情報</h2><p>スプレッドシートで管理している出席・宿題・フォロー状況を、読み取り専用で表示します。入力は今までどおりスプレッドシートで行います。</p></div>'+
+        '<button type="button" class="dp-btn" id="dpRefresh">最新に更新</button></div>'+
+      '<div class="dp-asof"><span>eラーニングが読み込んだ時刻 <b>'+stamp(opsState.readAt)+'</b></span><span>元のシートの最終更新 <b>'+SOURCE_UPDATED+'</b></span><span>元データ：進捗表（参加予定・担当講師／確認問題・宿題・実力の進捗表）</span><span>'+esc(scopeNote)+'</span></div>'+
+      '<div class="dp-tiles">'+
+        tile('今日の出席', present+'<small>/ '+planned+'名</small>', '')+
+        tile('宿題 未提出', notSub+'<small>名</small>', notSub?'warn':'')+
+        tile('宿題 期限切れ', late+'<small>名</small>', late?'alert':'')+
+        tile('要フォロー', follow+'<small>名</small>', follow?'alert':'')+
+        tile('次の面談（今週）', base.filter(function(u){return /^11\/1[0-6]$/.test(u.meet);}).length+'<small>件</small>', '')+
+      '</div>'+
+      '<div class="dp-tools">'+
+        (ROLE==='instructor'?'':'<select class="dp-select" id="dpTeacher" aria-label="担当講師で絞り込む"><option value="all">担当講師：すべて</option><option'+(opsState.teacher==='サンプル 講師'?' selected':'')+'>サンプル 講師</option><option'+(opsState.teacher==='講師 B'?' selected':'')+'>講師 B</option></select>')+
+        '<label class="dp-count"><input type="checkbox" id="dpOnlyHw" '+(opsState.onlyHw?'checked':'')+'> 宿題が未提出・期限切れのみ</label>'+
+        '<label class="dp-count"><input type="checkbox" id="dpOnlyFollow" '+(opsState.onlyFollow?'checked':'')+'> 要フォローのみ</label>'+
+        '<select class="dp-select" id="dpSort" aria-label="並べ替え"><option value="follow"'+(opsState.sort==='follow'?' selected':'')+'>要フォロー順</option><option value="rate"'+(opsState.sort==='rate'?' selected':'')+'>得点率が低い順</option><option value="name"'+(opsState.sort==='name'?' selected':'')+'>名前順</option></select>'+
+        '<span class="dp-count">'+rows.length+'名を表示</span></div>'+
+      '<div class="dp-tablewrap"><table class="dp-table"><thead><tr><th>受講者</th><th>担当講師</th><th>今日の参加予定</th><th>出席</th><th>宿題（第8章）</th><th>確認問題 得点率</th><th>次の面談</th><th>要フォローの理由</th></tr></thead><tbody>'+
+        rows.map(function(u){ return '<tr data-dp-row="'+u.id+'" tabindex="0" aria-selected="'+(opsState.sel===u.id)+'"><td><b>'+esc(u.name)+'</b></td><td>'+esc(u.teacher)+'</td><td>'+esc(u.plan)+'</td><td>'+pill(u.att)+'</td><td>'+pill(u.hw)+'</td><td>'+rateBar(u.rate)+'</td><td>'+esc(u.meet)+'</td><td>'+(u.reasons.length?'<div class="dp-reason">'+u.reasons.map(esc).join('<br>')+'</div>':'<span class="dp-note">—</span>')+'</td></tr>'; }).join('')+
+      '</tbody></table></div>'+
+      '<p class="dp-note">行を選ぶと、その受講者の詳細を表示します。<br>出席 ＝ 出席＋遅刻（今日の参加予定がある人のうち）。要フォローの判定：確認問題の平均正答率が60%未満／宿題が期限切れ／同じ週に2回目の欠席／授業後アンケートで「理解できていない」。</p>'+
+      detail()+
+      '</div>';
+    document.getElementById('dpRefresh').addEventListener('click', function(){ opsState.readAt=new Date(); renderOps(); toast('スプレッドシートを読み直しました（デモ）'); });
+    var t=document.getElementById('dpTeacher'); if(t) t.addEventListener('change', function(){ opsState.teacher=t.value; renderOps(); });
+    document.getElementById('dpOnlyHw').addEventListener('change', function(e){ opsState.onlyHw=e.target.checked; renderOps(); });
+    document.getElementById('dpOnlyFollow').addEventListener('change', function(e){ opsState.onlyFollow=e.target.checked; renderOps(); });
+    document.getElementById('dpSort').addEventListener('change', function(e){ opsState.sort=e.target.value; renderOps(); });
+    el.querySelectorAll('[data-dp-row]').forEach(function(tr){
+      function pick(){ opsState.sel=tr.dataset.dpRow; renderOps(); var d=document.getElementById('dpDetail'); if(d) d.scrollIntoView({block:'nearest'}); }
+      tr.addEventListener('click', pick); tr.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+    });
+  }
+  function rateBar(v){ var c = v>=80 ? '' : (v>=60 ? 'w' : 'b'); return '<span class="dp-rate"><span class="dp-rbar"><i class="'+c+'" style="width:'+v+'%"></i></span><span>'+v+'%</span></span>'; }
+  window.__demoRateBar = rateBar;
+  function tile(label, value, cls){ return '<div class="dp-tile '+cls+'"><span>'+esc(label)+'</span><strong>'+value+'</strong></div>'; }
+  function detail(){
+    var u = scoped().filter(function(x){return x.id===opsState.sel;})[0];
+    if(!u) return '';
+    var names=['ネットワーク基礎','スイッチング','IPv4・サブネット','VLAN・トランク','STP','EtherChannel','ルーティング','OSPF'];
+    var memo = (ROLE==='instructor'||ROLE==='admin') ? '<p style="margin:0;font-size:13.5px;line-height:1.7">'+esc(u.memo)+'</p>' : '<div class="dp-locked">面談メモは講師・管理者だけが見られます。</div>';
+    var evalBox = ROLE==='admin' ? '<p style="margin:0;font-size:13.5px">'+esc(u.teacherEval)+'</p>' : '<div class="dp-locked">講師評価は管理者だけが見られます（評価される講師本人には表示しません）。</div>';
+    return '<section class="dp-detail" id="dpDetail" aria-label="受講者の詳細"><h3>'+esc(u.name)+' <span class="dp-note">担当：'+esc(u.teacher)+'</span></h3><div class="dp-cols">'+
+      '<div class="dp-box"><h4>章別の得点率（確認問題）</h4><div class="dp-bars">'+u.chapters.map(function(v,i){ return '<div class="dp-bar"><span>第'+(i+1)+'章 '+esc(names[i].slice(0,6))+'</span><i><b class="'+(v<60?'low':'')+'" style="width:'+v+'%"></b></i><em>'+v+'%</em></div>'; }).join('')+'</div></div>'+
+      '<div class="dp-box"><h4>宿題</h4><ul class="dp-list"><li><span>第8章 OSPF 確認問題</span>'+pill(u.hw)+'</li><li><span>第5章 STP まとめノート</span>'+pill(u.hw==='期限切れ'?'期限切れ':'承認')+'</li><li><span>第4章 VLAN 設定演習</span>'+pill('承認')+'</li></ul>'+
+        '<h4>模試</h4><ul class="dp-list"><li><span>第1回（10/30）</span><b>'+Math.round(u.rate*7.6)+' / 1000</b></li><li><span>第2回（11/20）</span><span class="dp-note">予定</span></li></ul></div>'+
+      '<div class="dp-box"><h4>面談</h4><ul class="dp-list"><li><span>次回</span><b>'+esc(u.meet)+'</b></li></ul><h4>面談メモ</h4>'+memo+'<h4>講師評価（授業後アンケート）</h4>'+evalBox+'</div>'+
+      '</div></section>';
+  }
+
+  /* ---------- 画面の追加と画面遷移へのつなぎ込み ---------- */
+  function mountViews(){
+    var home = document.getElementById('view-home'); if(!home) return false;
+    if(!document.getElementById('view-portal')){ var a=document.createElement('section'); a.id='view-portal'; a.className='view'; home.parentNode.insertBefore(a, home.nextSibling); }
+    if(!document.getElementById('view-ops')){ var b=document.createElement('section'); b.id='view-ops'; b.className='view'; home.parentNode.insertBefore(b, document.getElementById('view-portal').nextSibling); }
+    return true;
+  }
+  function hook(){
+    if(typeof window.navigateTo !== 'function' || !mountViews()) { setTimeout(hook, 200); return; }
+    var orig = window.navigateTo;
+    window.navigateTo = function(viewId){
+      var r = orig.apply(this, arguments);
+      if(viewId==='portal') renderPortal();
+      if(viewId==='ops') renderOps();
+      return r;
+    };
+    try{ navigateTo = window.navigateTo; }catch(e){}
+    var h = (location.hash||'').replace('#','');
+    if(h==='portal'||h==='ops') setTimeout(function(){ window.navigateTo(h); }, 2500);
+  }
+  hook();
+  window.__demoRenderPortal = renderPortal; window.__demoRenderOps = renderOps;
+  window.__demoOps = {learners:learners, scoped:scoped, state:opsState, render:renderOps, pill:pill};
+})();
+
+</script>
+<script>
+/* 改善プロトタイプ：ロール別「今日」ホーム
+   - 講師・管理者：今日の授業／要フォロー／確認待ちの宿題（その場で承認・再提出依頼）
+   - 上司：今日の状況サマリー（閲覧のみ）
+   - 受講者：今日やること（チェックできる）／締切の近い宿題／次の予定
+   本番へは「ホームの先頭に差し込む部品」として移植できる形にしている。 */
+(function(){
+  var ROLE = window.__demoRole || 'learner';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function toast(m){ if(window.__demoToast) window.__demoToast(m); }
+  var TODAY = '11月9日（月）';
+
+  var css = [
+  /* 上部の大きな画像枠を小さくし、今日の情報を最初に見せる */
+  '#view-home .hero{min-height:0!important}',
+  '#view-home .hero-content{min-height:0!important;padding:18px 24px!important}',
+  '#view-home .hero-vision{font-size:clamp(18px,2vw,22px)!important}',
+  '.tp{display:grid;gap:14px;margin:18px 0 6px}',
+  '.tp-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px}',
+  '.tp-head h2{margin:0;font-size:clamp(20px,2.4vw,24px);font-weight:900;color:var(--text)}',
+  '.tp-head span{font-size:13px;color:var(--muted)}',
+  '.tp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;align-items:start}',
+  '.tp-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:grid;gap:10px;min-width:0}',
+  '.tp-card h3{margin:0;font-size:15px;font-weight:900;display:flex;justify-content:space-between;align-items:center;gap:8px}',
+  '.tp-badge{font-size:12px;font-weight:900;border-radius:999px;padding:2px 9px;background:var(--soft);color:var(--navy-3)}',
+  '.tp-badge.alert{background:#fde7e7;color:#a32b2b}',
+  '.tp-badge.warn{background:#fff1d9;color:#8a5200}',
+  '.tp-badge.ok{background:#e4f5ec;color:#126b45}',
+  '.tp-list{margin:0;padding:0;list-style:none;display:grid;gap:8px}',
+  '.tp-item{display:grid;gap:4px;border:1px solid var(--line);border-radius:12px;padding:10px 12px}',
+  '.tp-item b{font-size:14px}',
+  '.tp-sub{font-size:12.5px;color:var(--muted);line-height:1.55}',
+  '.tp-why{font-size:12.5px;color:#a32b2b;line-height:1.5}',
+  '.tp-quote{font-size:12.5px;color:var(--text);background:#f6f8fb;border-radius:8px;padding:8px 10px;line-height:1.6;white-space:pre-wrap;word-break:break-word}',
+  '.tp-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}',
+  '.tp-btn{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:6px 12px;font-size:12.5px;font-weight:800;color:var(--text)}',
+  '.tp-btn:hover{border-color:var(--blue);color:var(--blue)}',
+  '.tp-btn.go{background:var(--blue);border-color:var(--blue);color:#fff}',
+  '.tp-btn.go:hover{filter:brightness(1.06);color:#fff}',
+  '.tp-btn:focus-visible,.tp-check input:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}',
+  '.tp-link{background:none;border:0;padding:0;color:var(--blue);font-weight:800;font-size:13px;justify-self:start}',
+  '.tp-text{width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13px;min-height:58px;resize:vertical}',
+  '.tp-empty{font-size:13px;color:var(--muted);background:#f6f8fb;border-radius:10px;padding:12px;text-align:center}',
+  '.tp-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}',
+  '.tp-stat{border:1px solid var(--line);border-radius:12px;padding:10px 12px}',
+  '.tp-stat span{display:block;font-size:11.5px;color:var(--muted);font-weight:800}',
+  '.tp-stat strong{font-size:22px;font-weight:900;font-variant-numeric:tabular-nums}',
+  '.tp-check{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px}',
+  '.tp-check input{width:18px;height:18px}',
+  '.tp-check.done b{text-decoration:line-through;color:var(--muted)}',
+  '.tp-progress{height:8px;border-radius:4px;background:var(--soft);overflow:hidden}',
+  '.tp-progress i{display:block;height:100%;background:var(--success);border-radius:4px;transition:width .2s ease}',
+  '@media (prefers-reduced-motion:reduce){.tp-progress i{transition:none}}'
+  ].join('\n');
+  var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
+
+  var learnerDone = {};
+  var LESSON = {title:'第8章 OSPF（講義）', time:'10:00〜12:00', place:'オンライン', next:'第9章 IPv6（講義） 11/12 10:00〜'};
+
+  function ops(){ return window.__demoOps; }
+  function go(view, prep){ if(prep) prep(); if(typeof window.navigateTo==='function') window.navigateTo(view); window.scrollTo(0,0); }
+
+  /* ---------- 講師・管理者・上司 ---------- */
+  function staffPanel(){
+    var o = ops(); if(!o) return '';
+    var list = o.scoped();
+    var present = list.filter(function(u){return u.att==='出席'||u.att==='遅刻';}).length;
+    var planned = list.filter(function(u){return u.plan!=='—';}).length;
+    var absent = list.filter(function(u){return u.att==='欠席連絡';});
+    var follow = list.filter(function(u){return u.reasons.length;}).sort(function(a,b){return b.reasons.length-a.reasons.length||a.rate-b.rate;});
+    var queue = list.filter(function(u){return u.hw==='提出済み';});
+    var scope = ROLE==='instructor' ? '担当の受講者'+list.length+'名' : '全受講者'+list.length+'名';
+
+    var lesson = '<section class="tp-card" aria-label="今日の授業"><h3>今日の授業 <span class="tp-badge">'+present+' / '+planned+'名 出席</span></h3>'+
+      '<div class="tp-item"><b>'+esc(LESSON.title)+'</b><span class="tp-sub">'+esc(LESSON.time)+'・'+esc(LESSON.place)+'</span>'+
+      (absent.length?'<span class="tp-sub">欠席連絡：'+absent.map(function(u){return esc(u.name);}).join('、')+'</span>':'')+'</div>'+
+      '<span class="tp-sub">次回：'+esc(LESSON.next)+'</span>'+
+      '<button type="button" class="tp-link" data-tp-go="ops">出席の一覧を見る →</button></section>';
+
+    var fl = '<section class="tp-card" aria-label="要フォロー"><h3>要フォロー <span class="tp-badge '+(follow.length?'alert':'ok')+'">'+follow.length+'名</span></h3>'+
+      (follow.length ? '<ul class="tp-list">'+follow.slice(0,3).map(function(u){ return '<li class="tp-item"><b>'+esc(u.name)+'</b><span class="tp-why">'+u.reasons.map(esc).join('／')+'</span><span class="tp-sub">次の面談：'+esc(u.meet)+'</span></li>'; }).join('')+'</ul>' : '<div class="tp-empty">今日フォローが必要な受講者はいません。</div>')+
+      (follow.length>3?'<span class="tp-sub">ほか'+(follow.length-3)+'名</span>':'')+
+      '<button type="button" class="tp-link" data-tp-go="ops-follow">要フォローの一覧を見る →</button></section>';
+
+    var hw;
+    if(ROLE==='supervisor'){
+      var avg = Math.round(list.reduce(function(a,u){return a+u.rate;},0)/list.length);
+      var late = list.filter(function(u){return u.hw==='期限切れ'||u.hw==='未提出';}).length;
+      hw = '<section class="tp-card" aria-label="研修の状況"><h3>研修の状況 <span class="tp-badge">閲覧のみ</span></h3>'+
+        '<div class="tp-stats"><div class="tp-stat"><span>平均得点率</span><strong>'+avg+'%</strong></div><div class="tp-stat"><span>宿題 未提出・期限切れ</span><strong>'+late+'名</strong></div><div class="tp-stat"><span>今日の出席率</span><strong>'+Math.round(present/Math.max(1,planned)*100)+'%</strong></div></div>'+
+        '<span class="tp-sub">受験目標日：2027年1月20日（あと72日）</span>'+
+        '<button type="button" class="tp-link" data-tp-go="ops">受講者ごとの状況を見る →</button></section>';
+    } else {
+      hw = '<section class="tp-card" aria-label="確認待ちの宿題"><h3>確認待ちの宿題 <span class="tp-badge '+(queue.length?'warn':'ok')+'">'+queue.length+'件</span></h3>'+
+        (queue.length ? '<ul class="tp-list">'+queue.slice(0,3).map(function(u){ return '<li class="tp-item" data-tp-hw="'+u.id+'"><b>'+esc(u.name)+'</b><span class="tp-sub">第8章 OSPF 確認問題・提出 11/8 21:00</span>'+
+          '<div class="tp-quote">router ospf 1 を設定し、show ip ospf neighbor で隣接が FULL になったことを確認しました。</div>'+
+          '<div class="tp-row"><button type="button" class="tp-btn go" data-tp-approve="'+u.id+'">承認</button><button type="button" class="tp-btn" data-tp-return="'+u.id+'">再提出を依頼</button></div></li>'; }).join('')+'</ul>'
+          : '<div class="tp-empty">確認待ちの宿題はありません。</div>')+
+        (queue.length>3?'<span class="tp-sub">ほか'+(queue.length-3)+'件</span>':'')+
+        '<button type="button" class="tp-link" data-tp-go="homework">宿題の一覧を見る →</button></section>';
+    }
+    return '<section class="tp" id="tpPanel"><div class="tp-head"><h2>'+TODAY+'の運営</h2><span>'+esc(scope)+'・サンプルデータ</span></div><div class="tp-grid">'+lesson+fl+hw+'</div></section>';
+  }
+
+  /* ---------- 受講者 ---------- */
+  var tasks = [
+    {id:'join', title:'授業に参加する', sub:'第8章 OSPF（講義） 10:00〜12:00・オンライン', action:'参加する', view:'portal'},
+    {id:'hw', title:'宿題「第8章 OSPF 確認問題」を提出する', sub:'締切 11/11（水）23:59・あと2日', action:'提出する', view:'homework'},
+    {id:'review', title:'苦手な「OSPF」を復習する', sub:'確認問題の正答率 58%・要復習 4問', action:'解説を見る', view:'portal'},
+    {id:'survey', title:'授業後アンケートに回答する', sub:'授業の最後に2分ほど', action:'回答する', view:'portal'}
+  ];
+  function learnerPanel(){
+    var done = tasks.filter(function(t){return learnerDone[t.id];}).length, pct = Math.round(done/tasks.length*100);
+    var todo = '<section class="tp-card" aria-label="今日やること"><h3>今日やること <span class="tp-badge '+(done===tasks.length?'ok':'')+'">'+done+' / '+tasks.length+'</span></h3>'+
+      '<div class="tp-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+pct+'" aria-label="今日やることの進み具合"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="tp-list">'+tasks.map(function(t){ var d=!!learnerDone[t.id]; return '<label class="tp-check'+(d?' done':'')+'"><input type="checkbox" data-tp-task="'+t.id+'"'+(d?' checked':'')+'><span><b>'+esc(t.title)+'</b><br><span class="tp-sub">'+esc(t.sub)+'</span></span><button type="button" class="tp-btn" data-tp-go="'+t.view+'">'+esc(t.action)+'</button></label>'; }).join('')+'</div>'+
+      (done===tasks.length?'<div class="tp-empty">今日やることはすべて終わりました。おつかれさまでした。</div>':'')+'</section>';
+    var due = '<section class="tp-card" aria-label="締切の近い宿題"><h3>締切の近い宿題 <span class="tp-badge warn">1件</span></h3>'+
+      '<div class="tp-item"><b>第8章 OSPF 確認問題</b><span class="tp-sub">締切 11/11（水）23:59・未提出</span></div>'+
+      '<div class="tp-item"><b>第5章 STP まとめノート</b><span class="tp-sub">承認済み・講師コメントあり</span></div>'+
+      '<button type="button" class="tp-link" data-tp-go="homework">宿題を開く →</button></section>';
+    var next = '<section class="tp-card" aria-label="次の予定"><h3>次の予定</h3>'+
+      '<div class="tp-item"><b>第9章 IPv6（講義）</b><span class="tp-sub">11/12（木）10:00〜12:00・オンライン</span></div>'+
+      '<div class="tp-item"><b>模試（第2回）</b><span class="tp-sub">11/20（金）13:00・本番形式70分</span></div>'+
+      '<span class="tp-sub">受験目標日まで あと72日</span>'+
+      '<button type="button" class="tp-link" data-tp-go="calendar">予定を開く →</button></section>';
+    return '<section class="tp" id="tpPanel"><div class="tp-head"><h2>'+TODAY+'</h2><span>おはようございます、デモ 太郎さん</span></div><div class="tp-grid">'+todo+due+next+'</div></section>';
+  }
+
+  /* ---------- 差し込みと操作 ---------- */
+  function mount(){
+    var home = document.getElementById('view-home'); if(!home) return;
+    var old = document.getElementById('tpPanel'); if(old) old.remove();
+    var wrap = document.createElement('div'); wrap.innerHTML = ROLE==='learner' ? learnerPanel() : staffPanel();
+    var panel = wrap.firstChild; if(!panel) return;
+    var hero = home.querySelector('.hero');
+    if(hero && hero.parentNode===home) home.insertBefore(panel, hero.nextSibling); else home.insertBefore(panel, home.firstChild);
+    bind(panel);
+  }
+  function bind(panel){
+    panel.querySelectorAll('[data-tp-go]').forEach(function(b){ b.addEventListener('click', function(e){
+      e.preventDefault(); var v = b.dataset.tpGo;
+      if(v==='ops-follow') return go('ops', function(){ var o=ops(); if(o){ o.state.onlyFollow=true; o.state.onlyHw=false; } });
+      if(v==='ops') return go('ops', function(){ var o=ops(); if(o){ o.state.onlyFollow=false; } });
+      go(v);
+    }); });
+    panel.querySelectorAll('[data-tp-task]').forEach(function(c){ c.addEventListener('change', function(){ learnerDone[c.dataset.tpTask]=c.checked; mount(); var n=document.querySelector('[data-tp-task="'+c.dataset.tpTask+'"]'); if(n) n.focus(); }); });
+    panel.querySelectorAll('[data-tp-approve]').forEach(function(b){ b.addEventListener('click', function(){
+      var u = find(b.dataset.tpApprove); if(!u) return; u.hw='承認'; mount(); toast(u.name+'さんの宿題を承認しました（デモのため保存されません）'); }); });
+    panel.querySelectorAll('[data-tp-return]').forEach(function(b){ b.addEventListener('click', function(){
+      var li = b.closest('[data-tp-hw]'); if(!li || li.querySelector('textarea')) return;
+      var box = document.createElement('div'); box.className='tp-row';
+      box.innerHTML = '<label style="position:absolute;left:-9999px" for="tpReason-'+b.dataset.tpReturn+'">再提出の理由</label><textarea class="tp-text" id="tpReason-'+b.dataset.tpReturn+'" placeholder="直してほしい点を書いてください（受講者に届きます）"></textarea>'+
+        '<button type="button" class="tp-btn go">依頼を送る</button><button type="button" class="tp-btn">やめる</button>';
+      li.appendChild(box); var ta = box.querySelector('textarea'); ta.focus();
+      var btns = box.querySelectorAll('button');
+      btns[0].addEventListener('click', function(){ if(!ta.value.trim()){ ta.focus(); toast('直してほしい点を入力してください。'); return; }
+        var u = find(b.dataset.tpReturn); if(u){ u.hw='再提出依頼'; } mount(); toast('再提出を依頼しました（デモのため送信されません）'); });
+      btns[1].addEventListener('click', function(){ box.remove(); });
+    }); });
+  }
+  function find(id){ var o=ops(); return o ? o.learners.filter(function(u){return u.id===id;})[0] : null; }
+
+  function hook(){
+    if(typeof window.renderHome!=='function' || typeof window.navigateTo!=='function'){ setTimeout(hook, 200); return; }
+    var origRender = window.renderHome;
+    window.renderHome = function(){ var r = origRender.apply(this, arguments); setTimeout(mount, 0); return r; };
+    try{ renderHome = window.renderHome; }catch(e){}
+    var origNav = window.navigateTo;
+    window.navigateTo = function(v){ var r = origNav.apply(this, arguments); if(v==='home') setTimeout(mount, 0); return r; };
+    try{ navigateTo = window.navigateTo; }catch(e){}
+    /* ホームの再描画で消えた場合に戻す */
+    var home = document.getElementById('view-home');
+    if(home && window.MutationObserver){ new MutationObserver(function(){ if(!document.getElementById('tpPanel') && home.querySelector('.hero')) mount(); }).observe(home, {childList:true}); }
+    if(home && home.querySelector('.hero')) mount();
+  }
+  hook();
+})();
+
+</script>
+<script>
+/* 社内教育基盤のモック：コースと学習パス／合否と効果
+   外部ITスクール・学習サービスを内製に置き換えるために必要な機能を、架空データで見せる。 */
+(function(){
+  var ROLE = window.__demoRole || 'learner';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function toast(m){ if(window.__demoToast) window.__demoToast(m); }
+  function yen(n){ return Math.round(n).toLocaleString('ja-JP')+'円'; }
+  function man(n){ return (Math.round(n/1000)/10).toLocaleString('ja-JP')+'万円'; }
+
+  var css = [
+  '.cp-note{font-size:12px;color:var(--muted)}',
+  '.cp-cols{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}',
+  '.cp-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;gap:12px;min-width:0}',
+  '.cp-card h3{margin:0;font-size:16px;font-weight:900;display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}',
+  '.cp-card h3 small{font-size:12px;color:var(--muted);font-weight:700}',
+  '.cp-course{display:grid;gap:6px}',
+  '.cp-course .t{font-size:20px;font-weight:900}',
+  '.cp-prog{height:10px;border-radius:5px;background:var(--soft);overflow:hidden}',
+  '.cp-prog i{display:block;height:100%;background:var(--blue);border-radius:5px}',
+  '.cp-path{list-style:none;margin:0;padding:0;display:grid;gap:0}',
+  '.cp-path li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;position:relative;padding-bottom:14px}',
+  '.cp-path li:not(:last-child)::before{content:"";position:absolute;left:13px;top:26px;bottom:0;width:2px;background:var(--line)}',
+  '.cp-path li.done:not(:last-child)::before{background:var(--success)}',
+  '.cp-dot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:900;border:2px solid var(--line);background:var(--surface);color:var(--muted);position:relative;z-index:1}',
+  '.cp-path li.done .cp-dot{background:var(--success);border-color:var(--success);color:#fff}',
+  '.cp-path li.now .cp-dot{border-color:var(--blue);color:var(--blue);box-shadow:0 0 0 4px #e3eeff}',
+  '.cp-path b{font-size:14.5px}',
+  '.cp-path .s{font-size:12.5px;color:var(--muted);display:block}',
+  '.cp-mods{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}',
+  '.cp-mod{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:var(--muted);background:var(--surface)}',
+  '.cp-mod.ok{border-color:#bfe3cf;background:#e9f7ef;color:#126b45}',
+  '.cp-cond{display:grid;gap:10px}',
+  '.cp-cond div{display:grid;gap:4px}',
+  '.cp-cond .row{display:flex;justify-content:space-between;gap:8px;font-size:13px}',
+  '.cp-cond .row b{font-variant-numeric:tabular-nums}',
+  '.cp-cat{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}',
+  '.cp-cat .it{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:4px;background:var(--surface)}',
+  '.cp-cat .it b{font-size:14px}',
+  '.cp-heat td.c{text-align:center}',
+  '.cp-cell{display:inline-block;min-width:44px;border-radius:6px;padding:2px 6px;font-size:11.5px;font-weight:800}',
+  '.cp-cell.done{background:#e4f5ec;color:#126b45}',
+  '.cp-cell.now{background:#e3eeff;color:#1f4f9a}',
+  '.cp-cell.todo{background:var(--soft);color:var(--muted)}',
+  '.cp-stage{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 12px}',
+  '.cp-stage .s{font-size:12px;color:var(--muted)}',
+  '.cp-inline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px}',
+  '.cp-inline input{width:5em;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-variant-numeric:tabular-nums}',
+  '.cp-calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}',
+  '.cp-calc label{display:grid;gap:4px;font-size:12px;color:var(--muted);font-weight:700;min-width:0}',
+  '.cp-calc input{box-sizing:border-box!important;width:100%!important;min-width:0!important;max-width:100%!important;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:14px;font-variant-numeric:tabular-nums;color:var(--text)}',
+  '.cp-inline input{box-sizing:border-box!important;width:5.5em!important;min-width:0!important;flex:0 0 auto}',
+  '.cp-bars{display:grid;gap:10px}',
+  '.cp-bar{display:grid;grid-template-columns:9.5em minmax(0,1fr) 7.5em;gap:10px;align-items:center;font-size:13px}',
+  '.cp-bar i{display:block;height:14px;border-radius:4px;background:#9aa7b4}',
+  '.cp-bar i.in{background:var(--blue)}',
+  '.cp-bar em{font-style:normal;text-align:right;font-weight:800;font-variant-numeric:tabular-nums}',
+  '.cp-save{font-size:15px;font-weight:900;color:#126b45;background:#e9f7ef;border-radius:12px;padding:12px 14px}',
+  '.cp-cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}',
+  '.cp-cmp div{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:4px}',
+  '.cp-cmp div.in{border-color:#bcd3f5;background:#f3f8ff}',
+  '.cp-cmp span{font-size:12px;color:var(--muted);font-weight:700}',
+  '.cp-cmp strong{font-size:24px;font-weight:900;font-variant-numeric:tabular-nums}',
+  '.cp-cert{border:2px solid #b8963e;border-radius:14px;padding:26px 24px;text-align:center;display:grid;gap:8px;background:linear-gradient(#fffdf6,#fffdf6) padding-box;color:#3a2f12}',
+  '.cp-cert .k{font-size:12px;letter-spacing:.3em;color:#8a6d22;font-weight:800}',
+  '.cp-cert .n{font-size:26px;font-weight:900}',
+  '.cp-cert .c{font-size:15px;font-weight:800}',
+  '.cp-cert .d{font-size:12px;color:#6b5a2b}',
+  '.cp-tabs{display:flex;flex-wrap:wrap;gap:8px}',
+  '.cp-tabs .dp-btn{display:inline-flex;gap:8px;align-items:center}',
+  '.cp-modes{display:flex;gap:6px;flex-wrap:wrap}',
+  '.cp-list{margin:0;padding-left:1.2em;display:grid;gap:4px;font-size:13.5px}',
+  '.cp-q{display:grid;gap:10px}',
+  '.cp-qb{margin:0;font-size:15px;font-weight:800;line-height:1.7}',
+  '.cp-opts{display:grid;gap:8px}',
+  '.cp-opt{display:grid;grid-template-columns:auto auto minmax(0,1fr);gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;font-size:14px}',
+  '.cp-opt:hover{border-color:var(--blue)}',
+  '.cp-opt.ok{border-color:#7cc59b;background:#e9f7ef}',
+  '.cp-opt.ng{border-color:#e7a3a3;background:#fdeeee}',
+  '.cp-exp{border-radius:10px;padding:10px 12px;font-size:13.5px;line-height:1.7;display:grid;gap:4px}',
+  '.cp-exp.ok{background:#e9f7ef;color:#11553a}',
+  '.cp-exp.ng{background:#fdeeee;color:#7d2323}',
+  '@media (max-width:900px){.cp-cols{grid-template-columns:minmax(0,1fr)}.cp-bar{grid-template-columns:7em minmax(0,1fr) 6.5em}}'
+  ].join('\n');
+  var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
+
+  /* ---------- コースのデータ（架空） ---------- */
+  var STAGES = [
+    {key:'s1', name:'基礎', range:'第1〜3章', mods:['教科書','確認問題','サブネット道場']},
+    {key:'s2', name:'スイッチング', range:'第4〜6章', mods:['教科書','確認問題','CLI演習 3課題']},
+    {key:'s3', name:'ルーティング', range:'第7〜9章', mods:['教科書','確認問題','CLI演習 4課題']},
+    {key:'s4', name:'IPサービス・運用', range:'第10〜13章', mods:['教科書','確認問題','CLI演習 3課題']},
+    {key:'s5', name:'セキュリティ・無線・自動化', range:'第14〜16章', mods:['教科書','確認問題','スライド']},
+    {key:'s6', name:'模試と仕上げ', range:'模試5回', mods:['本番レベル模試','苦手の総復習']},
+    {key:'s7', name:'受験', range:'CCNA 200-301', mods:['受験申込','結果の登録']}
+  ];
+  var COURSES = [
+    {id:'ccna', name:'ネットワーク（CCNA）', cohort:'27卒', learners:13, self:9, mode:'研修＋自習', period:'2026/9〜2027/1', status:'受講中', done:36, goal:'CCNA 合格'},
+    {id:'lpic', name:'Linux（LPIC-1）', cohort:'27卒', learners:13, self:5, mode:'研修＋自習', period:'研修は2027/2〜', status:'自習で公開中', done:0, goal:'LPIC-1 合格'},
+    {id:'aws', name:'クラウド（AWS SAA）', cohort:'希望者', learners:0, self:0, mode:'自習のみ', period:'2027/5〜', status:'準備中', done:0, goal:'AWS SAA 合格'},
+    {id:'it', name:'新人ITリテラシー', cohort:'27卒', learners:13, self:0, mode:'研修のみ', period:'2026/4〜2026/6', status:'修了', done:100, goal:'社内修了'},
+    {id:'sec', name:'情報セキュリティ基礎', cohort:'全社員', learners:48, self:0, mode:'研修のみ', period:'通年', status:'受講中', done:72, goal:'社内修了'}
+  ];
+  var COND = {quiz:80, mock:700, mockTimes:2};
+
+  function ops(){ return window.__demoOps; }
+  function stageOf(u){ var r=u.rate; return r>=85?3:(r>=75?2:(r>=60?2:1)); } /* 何段階目を学習中か（0始まりで現在の段階） */
+
+  /* ---------- コースと学習パス ---------- */
+  function renderPaths(){
+    var el=document.getElementById('view-paths'); if(!el) return;
+    if(ROLE==='learner') el.innerHTML = learnerPaths();
+    else if(ROLE==='instructor') el.innerHTML = instructorPaths();
+    else el.innerHTML = adminPaths();
+    bindPaths(el);
+  }
+  function head(title, sub){ return '<div class="dp-head"><div><h2>'+esc(title)+'</h2><p>'+esc(sub)+'</p></div></div>'; }
+  /* ---------- 受講者：コースを選ぶ（研修／自習）と問題演習 ---------- */
+  var LPIC_STAGES = [
+    {name:'101試験：システムとコマンド', range:'主題101〜104', mods:['教科書','問題演習','コマンド演習']},
+    {name:'102試験：管理とネットワーク', range:'主題105〜110', mods:['教科書','問題演習']},
+    {name:'模試', range:'101・102 各3回', mods:['本番形式の模試']},
+    {name:'受験', range:'LPIC-1 101／102', mods:['受験の記録']}
+  ];
+  var LPIC_Q = [
+    {id:'L1',topic:'主題103 GNUとUnixのコマンド',body:'カレントディレクトリ以下から、名前が .log で終わるファイルを探すコマンドはどれですか。',options:{A:'grep -r "*.log" .',B:'find . -name "*.log"',C:'ls -R | log',D:'locate -d . .log'},answer:['B'],explanation:'find は「場所」と「条件」でファイルを探します。-name に "*.log" を渡すと、名前が .log で終わるファイルが見つかります。'},
+    {id:'L2',topic:'主題104 デバイスとファイルシステム',body:'ファイルの所有者に読み書き実行、グループとその他に読み取りと実行だけを許す数値の権限はどれですか。',options:{A:'644',B:'700',C:'755',D:'775'},answer:['C'],explanation:'r=4・w=2・x=1。所有者は 4+2+1=7、グループとその他は 4+1=5 なので 755 です。'},
+    {id:'L3',topic:'主題103 GNUとUnixのコマンド',body:'コマンドの標準エラー出力だけをファイル error.txt に書き出す書き方はどれですか。',options:{A:'cmd > error.txt',B:'cmd 2> error.txt',C:'cmd < error.txt',D:'cmd | error.txt'},answer:['B'],explanation:'標準出力は1番、標準エラー出力は2番です。2> で標準エラー出力だけをリダイレクトできます。'},
+    {id:'L4',topic:'主題101 システムアーキテクチャ',body:'systemd で、システム起動時にサービスが自動で起動するように設定するコマンドはどれですか。',options:{A:'systemctl start sshd',B:'systemctl enable sshd',C:'systemctl status sshd',D:'service sshd on'},answer:['B'],explanation:'enable は起動時に自動で起動する設定です。start は今すぐ起動するだけで、再起動後は起動しません。'},
+    {id:'L5',topic:'主題103 GNUとUnixのコマンド',body:'ls -l の出力で、行の先頭が「d」になっているものは何ですか。',options:{A:'通常のファイル',B:'ディレクトリ',C:'シンボリックリンク',D:'デバイスファイル'},answer:['B'],explanation:'先頭の1文字は種類を表します。「-」は通常のファイル、「d」はディレクトリ、「l」はシンボリックリンクです。'},
+    {id:'L6',topic:'主題104 デバイスとファイルシステム',body:'シンボリックリンクを作るコマンドはどれですか。',options:{A:'ln -s 元ファイル リンク名',B:'ln -h 元ファイル リンク名',C:'link -s 元ファイル リンク名',D:'cp -l 元ファイル リンク名'},answer:['A'],explanation:'ln だけだとハードリンク、ln -s でシンボリックリンクを作ります。'},
+    {id:'L7',topic:'主題102 インストールとパッケージ管理',body:'Debian系のディストリビューションで、パッケージをインストールするコマンドはどれですか。',options:{A:'rpm -i nginx',B:'apt install nginx',C:'yum get nginx',D:'dpkg -q nginx'},answer:['B'],explanation:'Debian系は apt（または dpkg）、Red Hat系は dnf／yum（または rpm）を使います。'},
+    {id:'L8',topic:'主題103 GNUとUnixのコマンド',body:'ps aux の結果から、sshd を含む行だけを表示する書き方はどれですか。',options:{A:'ps aux | grep sshd',B:'ps aux > grep sshd',C:'grep sshd < ps aux',D:'ps aux & grep sshd'},answer:['A'],explanation:'パイプ（|）で前のコマンドの出力を次のコマンドに渡します。> はファイルへの書き出しです。'},
+    {id:'L9',topic:'主題105 シェルとスクリプト',body:'シェル変数を、子プロセスにも引き継がれる環境変数にするコマンドはどれですか。',options:{A:'set',B:'export',C:'env -u',D:'unset'},answer:['B'],explanation:'export を付けた変数は、そのシェルから起動したプログラムにも引き継がれます。'},
+    {id:'L10',topic:'主題107 管理業務',body:'cron で「毎日 3時0分」に実行する書き方はどれですか。',options:{A:'3 0 * * *',B:'0 3 * * *',C:'* * 3 0 *',D:'0 0 3 * *'},answer:['B'],explanation:'cron の時刻は「分 時 日 月 曜日」の順です。毎日3時0分は 0 3 * * * です。'},
+    {id:'L11',topic:'主題109 ネットワークの基礎',body:'インターフェースのIPアドレスを確かめるコマンドはどれですか。',options:{A:'ip addr show',B:'ifconfig -r',C:'netstat -i addr',D:'route show ip'},answer:['A'],explanation:'今のディストリビューションでは iproute2 の ip addr show（ip a）を使います。'},
+    {id:'L12',topic:'主題110 セキュリティ',body:'SUID が設定されたファイルのパーミッション表示はどれですか。',options:{A:'-rwsr-xr-x',B:'-rwxr-sr-x',C:'-rwxr-xr-t',D:'-rwxrwxrwx'},answer:['A'],explanation:'所有者の実行権の位置が「s」になっているのがSUIDです。グループの位置の「s」はSGID、その他の位置の「t」はスティッキービットです。'}
+  ];
+  var ME = {enrolled:{ccna:'training'}, sel:'ccna', drill:null, solved:{ccna:{n:286,ok:223}, lpic:{n:0,ok:0}}};
+  var CATALOG = [
+    {id:'ccna', name:'ネットワーク（CCNA）', goal:'CCNA 200-301', qs:'問題 900問・模試5回', modes:['研修','自習'], note:'27卒の研修で使用中'},
+    {id:'lpic', name:'Linux（LPIC-1）', goal:'LPIC-1 101／102', qs:'問題 600問・模試6回', modes:['研修','自習'], note:'2027年2月から研修でも使用'},
+    {id:'aws', name:'クラウド（AWS SAA）', goal:'AWS SAA-C03', qs:'準備中', modes:['自習'], note:'2027年5月から公開予定', soon:true},
+    {id:'sec', name:'情報セキュリティ基礎', goal:'社内修了', qs:'問題 120問', modes:['研修'], note:'全社員向けの研修', training:true}
+  ];
+  function learnerPaths(){
+    var ids = Object.keys(ME.enrolled);
+    var tabs = '<div class="cp-tabs" role="tablist" aria-label="受講中のコース">'+ids.map(function(id){ var c=CATALOG.filter(function(x){return x.id===id;})[0]; return '<button type="button" role="tab" class="dp-btn" aria-pressed="'+(ME.sel===id)+'" aria-selected="'+(ME.sel===id)+'" data-cp-sel="'+id+'">'+esc(c.name)+'　'+modeBadge(ME.enrolled[id])+'</button>'; }).join('')+'</div>';
+    var main = ME.sel==='ccna' ? ccnaTraining() : lpicSelf();
+    var cat = CATALOG.map(function(c){
+      var on = ME.enrolled[c.id];
+      var btn = on ? '<span class="dp-pill ok">受講中（'+(on==='training'?'研修':'自習')+'）</span>' :
+        (c.soon ? '<span class="dp-pill mute">準備中</span>' : (c.training ? '<span class="cp-note">研修として割り当てられた人が受講します</span>' : '<button type="button" class="dp-btn primary" data-cp-enroll="'+c.id+'">自習で始める</button>'));
+      return '<div class="it"><b>'+esc(c.name)+'</b><span class="cp-note">'+esc(c.goal)+'・'+esc(c.qs)+'</span><span class="cp-note">'+esc(c.note)+'</span><span class="cp-modes">'+c.modes.map(function(m){return '<span class="cp-mod">'+m+'</span>';}).join('')+'</span>'+btn+'</div>'; }).join('');
+    return '<div class="dp-wrap">'+head('コース','受講中のコースを切り替えて学べます。研修で割り当てられたコースのほかに、好きなコースを自習で始められます。')+
+      tabs+main+
+      '<section class="cp-card" id="cpCatalog" aria-label="コースを選ぶ"><h3>コースを選ぶ <small>研修：講師の管理・宿題・出席あり／自習：自分のペースで問題演習と模試</small></h3><div class="cp-cat">'+cat+'</div></section></div>';
+  }
+  function modeBadge(m){ return m==='training'?'<span class="dp-pill ok">研修</span>':'<span class="dp-pill mute">自習</span>'; }
+  function drillCard(course){
+    var d = ME.drill && ME.drill.course===course ? ME.drill : null, s = ME.solved[course];
+    var rate = s.n ? Math.round(s.ok/s.n*100) : 0;
+    var head = '<h3>問題演習 <small>解いた問題 '+s.n+'問・正答率 '+rate+'%</small></h3>';
+    if(!d) return '<section class="cp-card" id="cpDrill" aria-label="問題演習">'+head+
+      '<div class="cp-inline"><button type="button" class="dp-btn primary" data-cp-start="'+course+'" data-n="5">ランダムに5問解く</button><button type="button" class="dp-btn" data-cp-start="'+course+'" data-n="5" data-mode="weak">苦手から5問解く</button><button type="button" class="dp-btn" data-cp-mock="'+course+'">模試を受ける</button></div>'+
+      '<p class="cp-note">1問ずつ解いて、その場で正解と解説を確かめます。結果は自分の学習記録に残ります。</p></section>';
+    if(d.i>=d.qs.length) return '<section class="cp-card" id="cpDrill" aria-label="問題演習">'+head+'<div class="cp-save">'+d.qs.length+'問中 '+d.ok+'問正解（'+Math.round(d.ok/d.qs.length*100)+'%）</div>'+
+      '<div class="cp-inline"><button type="button" class="dp-btn primary" data-cp-start="'+course+'" data-n="5">もう一度解く</button><button type="button" class="dp-btn" data-cp-close="1">演習を閉じる</button></div></section>';
+    var q = d.qs[d.i];
+    var opts = Object.keys(q.options).map(function(k){ var cls=''; if(d.res){ if(d.res.correctAnswer.indexOf(k)>=0) cls=' ok'; else if(d.pick===k) cls=' ng'; }
+      return '<label class="cp-opt'+cls+'"><input type="radio" name="cpOpt" value="'+k+'"'+(d.pick===k?' checked':'')+(d.res?' disabled':'')+'><b>'+k+'</b><span>'+esc(q.options[k])+'</span></label>'; }).join('');
+    return '<section class="cp-card" id="cpDrill" aria-label="問題演習">'+head+
+      '<div class="cp-q"><span class="cp-note">'+(d.i+1)+' / '+d.qs.length+'問・'+esc(q.topic||'')+'</span><p class="cp-qb">'+esc(q.body)+'</p><div class="cp-opts" role="radiogroup" aria-label="選択肢">'+opts+'</div>'+
+      (d.res?'<div class="cp-exp '+(d.res.correct?'ok':'ng')+'"><b>'+(d.res.correct?'正解':'不正解（正解は '+d.res.correctAnswer.join('・')+'）')+'</b>'+esc(d.res.explanation)+'</div>':'')+
+      '<div class="cp-inline">'+(d.res?'<button type="button" class="dp-btn primary" data-cp-next="1">'+(d.i+1<d.qs.length?'次の問題へ':'結果を見る')+'</button>':'<button type="button" class="dp-btn primary" data-cp-answer="1">解答する</button>')+'<button type="button" class="dp-btn" data-cp-close="1">やめる</button></div></div></section>';
+  }
+  function lpicSelf(){
+    var path = LPIC_STAGES.map(function(s,i){ return '<li class="'+(i===0?'now':'todo')+'"><span class="cp-dot" aria-hidden="true">'+(i+1)+'</span><div><b>'+esc(s.name)+'</b>　<span class="cp-note">'+esc(s.range)+'</span><span class="s">'+(i===0?'学習中':'未着手')+'</span><div class="cp-mods">'+s.mods.map(function(m){return '<span class="cp-mod">'+esc(m)+'</span>';}).join('')+'</div></div></li>'; }).join('');
+    return '<div class="cp-cols"><section class="cp-card" id="cpPath" aria-label="学習パス"><div class="cp-course"><span class="cp-note">自習のコース</span><span class="t">Linux（LPIC-1）</span><span class="cp-note">自分のペースで学習・講師の管理なし・記録は自分だけが見られます</span></div><ol class="cp-path">'+path+'</ol></section>'+
+      '<div style="display:grid;gap:16px">'+drillCard('lpic')+'<section class="cp-card" aria-label="自習でできること"><h3>自習でできること</h3><ul class="cp-list"><li>分野別・ランダム・苦手からの問題演習</li><li>本番形式の模試（時間つき）</li><li>自分の正答率と苦手分野の確認</li></ul><p class="cp-note">研修として割り当てられると、宿題・出席・講師の確認が加わります。</p></section></div></div>';
+  }
+  function ccnaTraining(){
+    return learnerPathsCcna().replace('<!--DRILL-->', drillCard('ccna'));
+  }
+  function getQs(course, n){
+    if(course==='lpic') return LPIC_Q.slice().sort(function(){return Math.random()-.5;}).slice(0,n);
+    var D=window.DEMO_DATA||{}; var qs = D.getPracticeQuestions ? D.getPracticeQuestions('', {}) : [];
+    return qs.sort(function(){return Math.random()-.5;}).slice(0,n).map(function(q){ return {id:q.id, ch:q.chapterId, topic:'第'+q.chapter+'章 '+q.chapterTitle, body:q.body, options:q.options}; });
+  }
+  function grade(course, q, pick){
+    if(course==='lpic'){ var ok=q.answer.indexOf(pick)>=0; return {correct:ok, correctAnswer:q.answer, explanation:q.explanation}; }
+    var D=window.DEMO_DATA; return D.gradeAndRecordQuizAnswer('', q.ch, q.id, [pick]);
+  }
+  function learnerPathsCcna(){
+    var nowIdx = 2;
+    var path = STAGES.map(function(s,i){
+      var cls = i<nowIdx?'done':(i===nowIdx?'now':'todo');
+      var sub = i<nowIdx ? '完了・確認問題の平均 '+[86,81][i]+'%' : (i===nowIdx ? '学習中・第7章まで完了、第8章 OSPF を学習中' : (i===5?'12月〜':(i===6?'受験目標日 2027/1/20':'未着手')));
+      return '<li class="'+cls+'"><span class="cp-dot" aria-hidden="true">'+(i<nowIdx?'✓':(i+1))+'</span><div><b>'+esc(s.name)+'</b>　<span class="cp-note">'+esc(s.range)+'</span><span class="s">'+esc(sub)+'</span>'+
+        '<div class="cp-mods">'+s.mods.map(function(m,j){ var ok = i<nowIdx || (i===nowIdx && j<1); return '<span class="cp-mod'+(ok?' ok':'')+'">'+(ok?'✓ ':'')+esc(m)+'</span>'; }).join('')+'</div></div></li>';
+    }).join('');
+    function cond(label, val, max, unit){ var p=Math.round(val/max*100); return '<div><div class="row"><span>'+esc(label)+'</span><b>'+val+' / '+max+unit+'</b></div><div class="cp-prog"><i style="width:'+p+'%"></i></div></div>'; }
+    var cat = COURSES.filter(function(c){return c.id!=='ccna';}).map(function(c){ return '<div class="it"><b>'+esc(c.name)+'</b><span class="cp-note">'+esc(c.period)+'・'+esc(c.goal)+'</span><span>'+statusPill(c.status)+'</span></div>'; }).join('');
+    return '<div class="cp-cols"><section class="cp-card" id="cpPath" aria-label="学習パス"><div class="cp-course"><span class="cp-note">研修のコース（講師：サンプル 講師）・宿題と出席は「宿題」「ホーム」から</span><span class="t">ネットワーク研修（CCNA）</span><span class="cp-note">27卒・2026/9〜2027/1・目標：CCNA 200-301 合格</span>'+
+        '<div class="cp-prog" role="progressbar" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100" aria-label="コースの進み具合"><i style="width:36%"></i></div><span class="cp-note">コース全体の 36% が完了</span></div>'+
+        '<ol class="cp-path">'+path+'</ol></section>'+
+      '<div style="display:grid;gap:16px"><section class="cp-card" id="cpCond" aria-label="修了条件"><h3>修了条件 <small>すべて満たすと修了</small></h3><div class="cp-cond">'+
+        cond('確認問題 '+COND.quiz+'%以上の章', 6, 16, '章')+cond('模試 '+COND.mock+'点以上', 0, COND.mockTimes, '回')+cond('宿題の提出', 7, 8, '件')+cond('CLI演習 必須課題', 6, 10, '課題')+
+        '</div><p class="cp-note">模試の最高点：620点（第1回）。あと80点で条件に届きます。</p></section>'+
+        '<!--DRILL--></div></div>';
+  }
+  function focusDrill(){ var d=document.getElementById('cpDrill'); if(d){ d.scrollIntoView({block:'nearest'}); var f=d.querySelector('input:not([disabled]),[data-cp-next],[data-cp-start]'); if(f) f.focus({preventScroll:true}); } }
+  function statusPill(s){ var c={'受講中':'ok','自習で公開中':'ok','修了':'mute','準備中':'warn'}[s]||'mute'; return '<span class="dp-pill '+c+'">'+esc(s)+'</span>'; }
+  function instructorPaths(){
+    var o=ops(); var list=o?o.scoped():[];
+    var rows = list.map(function(u){ var now=stageOf(u); return '<tr><td><b>'+esc(u.name)+'</b></td>'+STAGES.map(function(s,i){ var c=i<now?'done':(i===now?'now':'todo'); return '<td class="c"><span class="cp-cell '+c+'">'+(c==='done'?'完了':(c==='now'?'学習中':'—'))+'</span></td>'; }).join('')+'</tr>'; }).join('');
+    var counts = STAGES.map(function(s,i){ return list.filter(function(u){return stageOf(u)>i;}).length; });
+    return '<div class="dp-wrap">'+head('コース','担当の受講者が、学習パスのどこまで進んでいるかを確認できます。')+
+      '<section class="cp-card" id="cpHeat" aria-label="段階ごとの進み具合"><h3>ネットワーク研修（CCNA）<small>担当 '+list.length+'名・段階ごとの進み具合</small></h3>'+
+      '<div class="dp-tablewrap"><table class="dp-table cp-heat"><thead><tr><th>受講者</th>'+STAGES.map(function(s){return '<th>'+esc(s.name)+'<br><span class="cp-note">'+esc(s.range)+'</span></th>';}).join('')+'</tr></thead><tbody>'+rows+
+      '<tr><td><b>完了した人数</b></td>'+counts.map(function(n){return '<td class="c"><b>'+n+'</b> / '+list.length+'</td>';}).join('')+'</tr></tbody></table></div>'+
+      '<p class="cp-note">段階の「完了」＝その段階の確認問題が平均'+COND.quiz+'%以上、かつ課題をすべて提出。</p></section></div>';
+  }
+  function adminPaths(){
+    var canEdit = ROLE==='admin';
+    var rows = COURSES.map(function(c){ return '<tr data-cp-course="'+c.id+'" tabindex="0"><td><b>'+esc(c.name)+'</b></td><td>'+esc(c.mode)+'</td><td>'+(c.learners?esc(c.cohort)+' '+c.learners+'名':'—')+'</td><td>'+(c.self?c.self+'名':'—')+'</td><td>'+esc(c.period)+'</td><td>'+esc(c.goal)+'</td><td>'+(window.__demoRateBar?window.__demoRateBar(c.done):c.done+'%')+'</td><td>'+statusPill(c.status)+'</td></tr>'; }).join('');
+    var stages = STAGES.map(function(s,i){ return '<div class="cp-stage" data-cp-stage="'+i+'"><div><b>'+(i+1)+'. '+esc(s.name)+'</b>　<span class="s">'+esc(s.range)+'</span><div class="cp-mods">'+s.mods.map(function(m){return '<span class="cp-mod">'+esc(m)+'</span>';}).join('')+'</div></div>'+
+      (canEdit?'<div class="cp-inline"><button type="button" class="dp-btn" data-cp-move="'+i+'" data-dir="-1" aria-label="上へ">↑</button><button type="button" class="dp-btn" data-cp-move="'+i+'" data-dir="1" aria-label="下へ">↓</button></div>':'')+'</div>'; }).join('');
+    return '<div class="dp-wrap">'+head('コース', canEdit?'社内のコースを作り、研修として割り当てるか、自習として誰でも始められるようにするかを決めます。':'社内のコースと、その進み具合を確認できます。')+
+      '<section class="cp-card" id="cpCourses" aria-label="コース一覧"><h3>コース一覧 <small>'+COURSES.length+'コース</small>'+(canEdit?'<button type="button" class="dp-btn primary" id="cpNew">コースを作る</button>':'')+'</h3>'+
+      '<div class="dp-tablewrap"><table class="dp-table"><thead><tr><th>コース</th><th>使い方</th><th>研修の受講者</th><th>自習の利用者</th><th>研修の期間</th><th>目標</th><th>研修の進み具合</th><th>状態</th></tr></thead><tbody>'+rows+'</tbody></table></div></section>'+
+      '<div class="cp-cols"><section class="cp-card" id="cpEditor" aria-label="学習パスの設定"><h3>学習パス：ネットワーク研修（CCNA）<small>'+(canEdit?'並び順を変えられます':'閲覧のみ')+'</small></h3><div style="display:grid;gap:8px">'+stages+'</div>'+
+        (canEdit?'<button type="button" class="dp-btn" id="cpAddStage">段階を追加</button>':'')+'</section>'+
+      '<div style="display:grid;gap:16px"><section class="cp-card" aria-label="修了条件の設定"><h3>修了条件</h3>'+
+        '<div class="cp-inline"><label for="cpQ">確認問題</label><input id="cpQ" type="number" min="0" max="100" value="'+COND.quiz+'"'+(canEdit?'':' disabled')+'><span>%以上（全章）</span></div>'+
+        '<div class="cp-inline"><label for="cpM">模試</label><input id="cpM" type="number" min="0" max="1000" value="'+COND.mock+'"'+(canEdit?'':' disabled')+'><span>点以上を</span><input id="cpMT" type="number" min="1" max="5" value="'+COND.mockTimes+'"'+(canEdit?'':' disabled')+'><span>回</span></div>'+
+        '<div class="cp-inline"><span>宿題はすべて提出・CLI演習は必須10課題</span></div>'+
+        (canEdit?'<button type="button" class="dp-btn primary" id="cpSaveCond">修了条件を保存</button>':'')+'</section>'+
+      '<section class="cp-card" aria-label="受講者の登録"><h3>受講者 <small>27卒 13名</small></h3><p class="cp-note">グループ単位で登録します。途中参加・別コースへの移動もここで行います。</p>'+
+        (canEdit?'<div class="cp-inline"><select class="dp-select" id="cpGroup" aria-label="登録するグループ"><option>27卒 ネットワーク研修（13名）</option><option>希望者（6名）</option></select><button type="button" class="dp-btn" id="cpEnroll">受講者を登録</button></div>':'')+'</section></div></div></div>';
+  }
+  function bindPaths(el){
+    el.querySelectorAll('[data-cp-sel]').forEach(function(b){ b.addEventListener('click', function(){ ME.sel=b.dataset.cpSel; ME.drill=null; renderPaths(); }); });
+    el.querySelectorAll('[data-cp-enroll]').forEach(function(b){ b.addEventListener('click', function(){ var id=b.dataset.cpEnroll; ME.enrolled[id]='self'; ME.sel=id; ME.drill=null; renderPaths(); window.scrollTo(0,0); toast('自習で始めました（デモのため保存されません）'); }); });
+    el.querySelectorAll('[data-cp-start]').forEach(function(b){ b.addEventListener('click', function(){ var c=b.dataset.cpStart; ME.drill={course:c, qs:getQs(c, Number(b.dataset.n)||4), i:0, ok:0, pick:null, res:null}; renderPaths(); focusDrill(); }); });
+    el.querySelectorAll('[data-cp-mock]').forEach(function(b){ b.addEventListener('click', function(){ toast('本番形式の模試（70分・前の問題に戻れない）を始めます。デモでは問題演習で代わりに体験できます'); }); });
+    el.querySelectorAll('[data-cp-close]').forEach(function(b){ b.addEventListener('click', function(){ ME.drill=null; renderPaths(); }); });
+    el.querySelectorAll('input[name="cpOpt"]').forEach(function(r){ r.addEventListener('change', function(){ if(ME.drill) ME.drill.pick=r.value; }); });
+    var ans=el.querySelector('[data-cp-answer]'); if(ans) ans.addEventListener('click', function(){ var d=ME.drill; if(!d.pick){ toast('選択肢を1つ選んでください'); return; }
+      try{ d.res=grade(d.course, d.qs[d.i], d.pick); }catch(e){ toast('採点できませんでした'); return; }
+      ME.solved[d.course].n++; if(d.res.correct){ d.ok++; ME.solved[d.course].ok++; } renderPaths(); focusDrill(); });
+    var nx=el.querySelector('[data-cp-next]'); if(nx) nx.addEventListener('click', function(){ var d=ME.drill; d.i++; d.pick=null; d.res=null; renderPaths(); focusDrill(); });
+    var n=el.querySelector('#cpNew'); if(n) n.addEventListener('click', function(){ toast('コースの作成画面を開きます（デモのため保存されません）'); });
+    var a=el.querySelector('#cpAddStage'); if(a) a.addEventListener('click', function(){ toast('段階を追加しました（デモのため保存されません）'); });
+    var s=el.querySelector('#cpSaveCond'); if(s) s.addEventListener('click', function(){
+      var q=Number(el.querySelector('#cpQ').value), m=Number(el.querySelector('#cpM').value), t=Number(el.querySelector('#cpMT').value);
+      if(!(q>=0&&q<=100)||!(m>=0&&m<=1000)||!(t>=1&&t<=5)){ toast('修了条件の数字を確かめてください（確認問題は0〜100%、模試は0〜1000点）'); return; }
+      COND.quiz=q; COND.mock=m; COND.mockTimes=t; toast('修了条件を保存しました（デモのため、この画面の中だけで反映）'); renderPaths(); });
+    var e=el.querySelector('#cpEnroll'); if(e) e.addEventListener('click', function(){ toast(el.querySelector('#cpGroup').value+'を登録しました（デモのため保存されません）'); });
+    el.querySelectorAll('[data-cp-move]').forEach(function(b){ b.addEventListener('click', function(){ var i=Number(b.dataset.cpMove), j=i+Number(b.dataset.dir); if(j<0||j>=STAGES.length) return; STAGES.splice(j,0,STAGES.splice(i,1)[0]); renderPaths(); }); });
+    el.querySelectorAll('[data-cp-course]').forEach(function(tr){ function go(){ toast(tr.querySelector('b').textContent+'の詳細を開きます（デモではCCNAの設定を表示しています）'); } tr.addEventListener('click',go); tr.addEventListener('keydown',function(ev){ if(ev.key==='Enter') go(); }); });
+  }
+
+  /* ---------- 合否と効果 ---------- */
+  var CALC = {people:13, school:300000, service:6000, hours:40, rate:3000, system:0};
+  var certFor = null;
+  function exams(){
+    var o=ops(); var list=o?(ROLE==='instructor'?o.scoped():o.learners):[];
+    return list.map(function(u){
+      var best = Math.min(960, Math.round(u.rate*8.6+20));
+      var res = null, date='2027/1/20';
+      if(u.name==='受講者 K'){ res={pass:true, score:862, date:'2026/11/6'}; date='2026/11/6'; }
+      if(u.name==='受講者 C'){ date='2026/11/27'; }
+      var pred = best>=COND.mock?'高い':(best>=600?'もう少し':'要対策');
+      return {u:u, best:best, date:date, res:res, pred:pred};
+    });
+  }
+  function renderImpact(){
+    var el=document.getElementById('view-impact'); if(!el) return;
+    if(ROLE==='learner'){ el.innerHTML='<div class="dp-empty">この画面は講師・上司・管理者だけが見られます。</div>'; return; }
+    var ex=exams(), passed=ex.filter(function(x){return x.res&&x.res.pass;}).length, taken=ex.filter(function(x){return x.res;}).length;
+    var high=ex.filter(function(x){return x.pred==='高い'||(x.res&&x.res.pass);}).length;
+    var rows=ex.map(function(x){ var r = x.res ? (x.res.pass?'<span class="dp-pill ok">合格 '+x.res.score+'点</span>':'<span class="dp-pill bad">不合格</span>') : '<span class="dp-pill mute">未受験</span>';
+      var pc={'高い':'ok','もう少し':'warn','要対策':'bad'}[x.pred];
+      return '<tr><td><b>'+esc(x.u.name)+'</b></td><td>'+esc(x.u.teacher)+'</td><td>'+esc(x.date)+'</td><td>'+x.best+'点</td><td>'+(x.res?'—':'<span class="dp-pill '+pc+'">'+x.pred+'</span>')+'</td><td>'+r+'</td><td>'+(x.res&&x.res.pass?'<button type="button" class="dp-btn" data-cp-cert="'+esc(x.u.name)+'">修了証</button>':'')+'</td></tr>'; }).join('');
+    var showCost = ROLE!=='instructor';
+    el.innerHTML = '<div class="dp-wrap">'+head('合否と効果','受験の予定と結果、合格の見込み、外部の研修サービスと比べた効果を確認できます。数字はすべてサンプルです。')+
+      '<div class="dp-tiles" id="cpTiles">'+
+        tileH('受験予定', ex.length+'<small>名</small>','')+tileH('受験済み・合格', passed+'<small>/ '+taken+'名</small>','')+
+        tileH('合格見込み「高い」', high+'<small>/ '+ex.length+'名</small>','')+tileH('受験目標日まで','72<small>日</small>','')+
+      '</div>'+
+      '<section class="cp-card" id="cpExams" aria-label="受験の予定と結果"><h3>受験の予定と結果 <small>'+(ROLE==='instructor'?'担当の受講者':'全受講者')+'</small></h3>'+
+      '<div class="dp-tablewrap"><table class="dp-table"><thead><tr><th>受講者</th><th>担当講師</th><th>受験日</th><th>模試の最高点</th><th>合格の見込み</th><th>結果</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>'+
+      '<p class="cp-note">合格の見込み：模試の最高点が'+COND.mock+'点以上で「高い」、600点台で「もう少し」、600点未満で「要対策」（修了条件の設定と連動）。</p>'+
+      (certFor?cert(certFor):'')+'</section>'+
+      (showCost? compare()+calc() : '')+'</div>';
+    bindImpact(el);
+  }
+  function tileH(l,v,c){ return '<div class="dp-tile '+c+'"><span>'+esc(l)+'</span><strong>'+v+'</strong></div>'; }
+  function cert(name){ return '<div class="cp-cert" id="cpCert" role="img" aria-label="'+esc(name)+'さんの修了証"><span class="k">CERTIFICATE OF COMPLETION</span><span class="c">修了証</span><span class="n">'+esc(name)+'</span><span>ネットワーク研修（CCNA）の全課程を修了し、<br>CCNA 200-301 に合格したことを証します。</span><span class="d">2026年11月6日　研修運営（デモ）</span></div>'; }
+  function compare(){
+    return '<section class="cp-card" id="cpCompare" aria-label="前の期との比較"><h3>前の期との比較 <small>サンプルの数字</small></h3>'+
+      '<div class="cp-cmp"><div><span>26卒（外部ITスクール＋学習サービス）</span><strong>67%</strong><span>受験12名・合格8名・受験まで平均5.5か月</span></div>'+
+      '<div class="in"><span>27卒（社内のeラーニング・見込み）</span><strong>77%</strong><span>受験13名・合格見込み10名・受験まで平均4.0か月</span></div></div>'+
+      '<p class="cp-note">27卒は合格の見込み（模試の最高点から判定）。結果が出るたびに実績に置き換わります。</p></section>';
+  }
+  function calc(){
+    var c=CALC, ext=c.people*(c.school+c.service), inn=c.hours*c.rate*12+c.system, save=ext-inn, max=Math.max(ext,inn,1);
+    return '<section class="cp-card" id="cpCalc" aria-label="費用の試算"><h3>費用の試算 <small>数字は仮。入力して変えられます</small></h3>'+
+      '<div class="cp-calc">'+
+        num('cpPeople','受講者数（人）',c.people)+num('cpSchool','外部スクールの受講料（1人）',c.school)+num('cpService','学習サービスの利用料（1人・年）',c.service)+
+        num('cpHours','社内の運営工数（時間／月）',c.hours)+num('cpRate','工数の単価（円／時間）',c.rate)+num('cpSystem','システム費（年）',c.system)+
+      '</div><div class="cp-bars" aria-label="年間費用の比較">'+
+        '<div class="cp-bar"><span>外部委託（年）</span><i style="width:'+(ext/max*100)+'%"></i><em>'+man(ext)+'</em></div>'+
+        '<div class="cp-bar"><span>社内（年）</span><i class="in" style="width:'+(inn/max*100)+'%"></i><em>'+man(inn)+'</em></div></div>'+
+      '<div class="cp-save">'+(save>=0?'年間 '+man(save)+' の削減（1人あたり '+yen(save/Math.max(1,c.people))+'）':'社内のほうが年間 '+man(-save)+' 多くかかります')+'</div>'+
+      '<p class="cp-note">外部委託 ＝ 受講者数 ×（受講料＋利用料）。社内 ＝ 運営工数 × 単価 × 12か月＋システム費。教材づくりの初期工数は含めていません。</p></section>';
+  }
+  function num(id,label,v){ return '<label for="'+id+'">'+esc(label)+'<input id="'+id+'" type="number" min="0" step="1" value="'+v+'"></label>'; }
+  function bindImpact(el){
+    el.querySelectorAll('[data-cp-cert]').forEach(function(b){ b.addEventListener('click', function(){ certFor=b.dataset.cpCert; renderImpact(); var c=document.getElementById('cpCert'); if(c) c.scrollIntoView({block:'nearest'}); }); });
+    var map={cpPeople:'people',cpSchool:'school',cpService:'service',cpHours:'hours',cpRate:'rate',cpSystem:'system'};
+    Object.keys(map).forEach(function(id){ var i=el.querySelector('#'+id); if(!i) return; i.addEventListener('change', function(){ var v=Number(i.value); if(!(v>=0)){ toast('0以上の数字を入れてください'); i.value=CALC[map[id]]; return; } CALC[map[id]]=v; renderImpact(); var n=document.getElementById(id); if(n) n.focus(); }); });
+  }
+
+  /* ---------- つなぎ込み ---------- */
+  function mount(){
+    var home=document.getElementById('view-home'); if(!home) return false;
+    ['paths','impact'].forEach(function(id){ if(!document.getElementById('view-'+id)){ var s=document.createElement('section'); s.id='view-'+id; s.className='view'; home.parentNode.appendChild(s); } });
+    return true;
+  }
+  (function hook(){
+    if(typeof window.navigateTo!=='function' || !mount()){ setTimeout(hook,200); return; }
+    var orig=window.navigateTo;
+    window.navigateTo=function(v){ var r=orig.apply(this,arguments); if(v==='paths') renderPaths(); if(v==='impact') renderImpact(); return r; };
+    try{ navigateTo=window.navigateTo; }catch(e){}
+  })();
+})();
+
+</script>
+<script>
+/* デモの分かりやすさ：掲示板のサンプル投稿と「この画面でできること」 */
+(function(){
+  var ROLE = window.__demoRole || 'learner';
+  var STAFF = ROLE !== 'learner';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+  /* ---------- 掲示板のサンプル（架空） ---------- */
+  var T = {nickname:'サンプル 講師'};
+  function who(n){ return {nickname:n}; }
+  var POSTS = [
+    {postId:'bp1', category:'連絡', title:'【ピン留め】第2回模試の持ち物と注意', author:T, createdAt:'2026-11-09T08:30:00+09:00', pinned:true,
+      body:'11/20（金）13:00から本番形式の模試を行います。\n・70分、前の問題には戻れません\n・筆記用具と計算用紙を用意してください\n・開始10分前に入室してください',
+      replies:[{author:who('受講者 B'), at:'2026-11-09T09:02:00+09:00', body:'計算用紙は何枚まで使えますか？'},{author:T, at:'2026-11-09T09:15:00+09:00', body:'2枚までです。本番の試験と同じ条件にしています。'}]},
+    {postId:'bp2', category:'質問', title:'OSPFのDRとBDRが選ばれる順番が分かりません', author:who('受講者 D'), createdAt:'2026-11-08T21:14:00+09:00',
+      body:'優先度が同じとき、どのルーターがDRになりますか？ 後から優先度の高いルーターをつないだ場合も知りたいです。',
+      replies:[{author:T, at:'2026-11-08T22:01:00+09:00', body:'優先度が同じなら、ルーターIDが最も大きいルーターがDRです。DRは一度決まると、後から優先度の高いルーターが入っても入れ替わりません（プリエンプトしない）。'},{author:who('受講者 E'), at:'2026-11-08T22:20:00+09:00', body:'clear ip ospf process で選び直せると教科書の第8章にありました。'},{author:who('受講者 D'), at:'2026-11-08T22:31:00+09:00', body:'ありがとうございます、すっきりしました！'}]},
+    {postId:'bp3', category:'共有', title:'show ip route の見方を1枚にまとめました', author:who('受講者 K'), createdAt:'2026-11-07T19:40:00+09:00',
+      body:'先頭の記号（C・L・S・O）と、[110/2] の意味を表にしました。復習に使ってください。',
+      replies:[{author:T, at:'2026-11-07T20:05:00+09:00', body:'よくまとまっています。AD値（管理距離）の一覧も足すと、さらに使いやすくなります。'}]},
+    {postId:'bp4', category:'質問', title:'/27のブロックサイズを素早く出すコツはありますか', author:who('受講者 J'), createdAt:'2026-11-07T12:10:00+09:00',
+      body:'サブネット計算で時間がかかってしまいます。',
+      replies:[{author:T, at:'2026-11-07T12:40:00+09:00', body:'256 − マスクの最後のオクテット（/27 なら 224）＝ 32 がブロックサイズです。サブネット道場の「ブロックサイズ」練習で、1問10秒を目標にしてみてください。'}]},
+    {postId:'bp5', category:'質問', title:'ネイティブVLANを1から変える理由は？', author:who('受講者 F'), createdAt:'2026-11-06T18:25:00+09:00',
+      body:'設定例でネイティブVLANを999にしていましたが、なぜ変えるのでしょうか。', replies:[]},
+    {postId:'bp6', category:'自習', title:'LPIC-1を自習で始めました。おすすめの順番はありますか', author:who('受講者 C'), createdAt:'2026-11-05T20:00:00+09:00',
+      body:'CCNAと並行して、自習コースでLPIC-1を始めました。',
+      replies:[{author:T, at:'2026-11-05T20:30:00+09:00', body:'101試験の主題103（コマンド）から始めるのがおすすめです。CCNAの模試が終わる12月までは、1日15分くらいで十分です。'}]}
+  ];
+  window.__demoBoard = POSTS;
+  var BIND = 'demo-board', REV = 'r1';
+  var D = window.DEMO_DATA || (window.DEMO_DATA = {});
+  D.getBoardPage = function(token, p){
+    p = p || {};
+    var list = POSTS.slice();
+    var q = String(p.q || p.query || '').trim(); if(q) list = list.filter(function(x){ return (x.title+x.body).indexOf(q)>=0; });
+    if(p.category) list = list.filter(function(x){ return x.category===p.category; });
+    var start = Number(p.cursor||0), lim = Math.min(3, Number(p.limit)||3);
+    var page = list.slice(start, start+lim);
+    return {items:page.map(function(x){ return {postId:x.postId, title:x.title, itemRevision:REV, category:x.category, pinned:!!x.pinned}; }), nextCursor:(start+lim<list.length)?String(start+lim):null, binding:BIND, revision:REV};
+  };
+  D.getBoardThread = function(token, postId, input){
+    var x = POSTS.filter(function(p){ return p.postId===postId; })[0]; if(!x) throw new Error('投稿が見つかりません。');
+    input = input || {}; var start = Number(input.cursor||0);
+    var reps = x.replies.slice().reverse().map(function(r,i){ return {replyId:x.postId+'-r'+i, author:r.author, createdAt:r.at, body:r.body}; });
+    var page = reps.slice(start, start+3);
+    return {post:{postId:x.postId, title:x.title, body:x.body, category:x.category, author:x.author, createdAt:x.createdAt, pinned:!!x.pinned, locked:false, canModerate:STAFF, canDelete:false},
+      replies:page, nextCursor:(start+3<reps.length)?String(start+3):null, binding:BIND, revision:REV};
+  };
+
+  /* ---------- この画面でできること ---------- */
+  var G = {
+    learner: {
+      home:['今日やること（授業・宿題・復習・アンケート）を確認し、終わったら印を付けます','締切の近い宿題と、次の予定・受験日までの日数が分かります'],
+      paths:['研修のコースは、学習パスと修了条件の進み具合を確認します','「コースを選ぶ」から、LPIC-1などを自習で始められます','問題演習でその場で解いて、正解と解説を確かめます'],
+      portal:['教科書・問題演習・確認問題・道場などの入口がまとまっています','確認問題は章を選んで開きます'],
+      learning:['教材・問題演習・実機演習への入口です','上のタブで、学習状況・間違いノート・ランキングに切り替えます'],
+      homework:['出された宿題の締切と内容を確認し、テキストかURLで提出します','講師のコメントと、承認・再提出の状況が分かります'],
+      calendar:['研修・宿題の締切・模試の予定と、自分で入れた予定が並びます'],
+      board:['分からないことを質問したり、まとめを共有したりします','講師が回答します。投稿を開くと返信が読めます'],
+      settings:['表示名や通知など、自分の設定を変えます']
+    },
+    instructor: {
+      home:['今日の授業と出席、要フォローの受講者が分かります','確認待ちの宿題を、その場で承認・再提出の依頼ができます'],
+      ops:['担当の受講者の出席・宿題・得点率と、要フォローの理由が一覧で出ます','行を選ぶと、章別の得点率や面談メモを確認できます'],
+      homework:['宿題を作って公開し、受講者ごとの提出状況を確認します'],
+      paths:['担当の受講者が、学習パスのどの段階まで進んでいるかが分かります'],
+      impact:['担当の受講者の受験日・模試の最高点・合格の見込みが分かります','合格した人には修了証を表示できます'],
+      admin:['受講者の一覧・成績・宿題・お知らせの投稿などを、上のタブで切り替えます'],
+      portal:['講師が使う入口を、研修状況・講義中・講義後・その他に分けて並べています'],
+      reports:['研修の報告書（スライド・PDF）を作ります'],
+      calendar:['研修と宿題の予定を確認します'],
+      board:['受講者の質問に回答します。連絡はピン留めできます'],
+      settings:['表示名や通知など、自分の設定を変えます']
+    },
+    supervisor: {
+      home:['研修全体の状況（平均得点率・未提出・出席率）と要フォローの人数が分かります。閲覧のみです'],
+      impact:['受験の予定と結果、前の期との比較、費用の試算を確認します'],
+      ops:['全受講者の出席・宿題・得点率を確認します','面談メモと講師評価は、上司には表示されません'],
+      paths:['社内のコースと、研修の進み具合を確認します'],
+      reports:['研修の報告書を確認します'],
+      portal:['研修状況のシートなど、上司向けの入口です'],
+      calendar:['研修の予定を確認します'],
+      settings:['自分の設定を変えます']
+    },
+    admin: {
+      home:['全受講者の今日の授業・要フォロー・確認待ちの宿題が分かります'],
+      ops:['全受講者の運営情報を、面談メモ・講師評価まで含めて確認します'],
+      homework:['宿題を作って公開し、提出状況を確認します'],
+      paths:['コースを作り、研修として割り当てるか、自習で公開するかを決めます','学習パスの並べ替え、修了条件、受講者の登録を設定します'],
+      impact:['合否と前期比較を確認し、費用の試算に数字を入れて効果を確かめます'],
+      admin:['受講者・宿題・お知らせ・アカウントと権限を、上のタブで管理します'],
+      portal:['入口の一覧を確認します。「入口を編集」で表示・非表示と並び順を変えられます'],
+      reports:['研修の報告書（スライド・PDF）を作ります'],
+      operations:['運用の手順書や引き継ぎの記録を確認します'],
+      calendar:['研修と宿題の予定を確認します'],
+      board:['質問への回答、ピン留め、非表示などを行います'],
+      settings:['自分の設定を変えます']
+    }
+  };
+  var LS = 'demoGuideHiddenV1';
+  function hidden(){ try{ return JSON.parse(localStorage.getItem(LS)||'false'); }catch(e){ return false; } }
+  var css = [
+    '.dm-guide{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:start;background:#eef6f2;border:1px solid #cfe5da;color:#173b2f;border-radius:14px;padding:10px 14px;margin:0 0 14px;font-size:13px;line-height:1.65}',
+    '.dm-guide b{font-size:12px;color:#1f6b57;white-space:nowrap;padding-top:1px}',
+    '.dm-guide ul{margin:0;padding-left:1.1em;display:grid;gap:2px}',
+    '.dm-guide button{border:0;background:transparent;color:#1f6b57;font-size:12px;font-weight:800;cursor:pointer;padding:2px 4px;white-space:nowrap}',
+    '.dm-guide button:focus-visible{outline:2px solid #23c7e8;outline-offset:2px}',
+    '.dm-guide-show{border:1px dashed #cfe5da;background:transparent;color:#1f6b57;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:800;cursor:pointer;margin:0 0 10px}',
+    '@media (max-width:520px){.dm-guide{grid-template-columns:minmax(0,1fr)}.dm-guide button{justify-self:end}}'
+  ].join('\n');
+  var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
+
+  function place(view){
+    var sec = document.getElementById('view-'+view); if(!sec) return;
+    var old = sec.querySelector(':scope > .dm-guide, :scope > .dm-guide-show'); if(old) old.remove();
+    var items = (G[ROLE]||{})[view]; if(!items) return;
+    var el = document.createElement('div');
+    if(hidden()){
+      el.innerHTML = '<button type="button" class="dm-guide-show">この画面でできること</button>';
+      el = el.firstChild; el.addEventListener('click', function(){ try{ localStorage.setItem(LS,'false'); }catch(e){} place(view); });
+    } else {
+      el.className = 'dm-guide'; el.setAttribute('role','note');
+      el.innerHTML = '<b>この画面でできること</b><ul>'+items.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul><button type="button" aria-label="案内を閉じる">閉じる</button>';
+      el.querySelector('button').addEventListener('click', function(){ try{ localStorage.setItem(LS,'true'); }catch(e){} place(view); });
+    }
+    sec.insertBefore(el, sec.firstChild);
+  }
+  function current(){ var a = document.querySelector('.view.active'); return a ? a.id.replace('view-','') : null; }
+  function ensure(){ var v = current(); if(!v) return; var sec = document.getElementById('view-'+v); if(sec && !sec.querySelector(':scope > .dm-guide, :scope > .dm-guide-show')) place(v); }
+  (function hook(){
+    if(typeof window.navigateTo!=='function'){ setTimeout(hook,200); return; }
+    var orig = window.navigateTo;
+    window.navigateTo = function(v){ var r = orig.apply(this, arguments); setTimeout(ensure, 60); setTimeout(ensure, 700); return r; };
+    try{ navigateTo = window.navigateTo; }catch(e){}
+    setInterval(ensure, 1500);
+  })();
+})();
+
+</script>
+<script>
+/* デモの見せ方：アカウント切替・架空データの帯・紙芝居ツアー
+   （report-coach のモックを参考に、ロールをまたいだ「1日の流れ」と目線別ツアーを用意） */
+(function(){
+  window.__demoAccountUI = true;
+  var ROLE = window.__demoRole || 'learner';
+  var LS_TOUR = 'demoTourV1';
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function get(k){ try{ return JSON.parse(localStorage.getItem(k)||'null'); }catch(e){ return null; } }
+  function put(k,v){ try{ if(v==null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+
+  var ACCOUNTS = {
+    learner:    {name:'デモ 太郎',     ini:'太', title:'受講者',  unit:'ネットワーク研修（CCNA）', scope:'自分の学習と宿題', color:'#2f7d68'},
+    instructor: {name:'サンプル 講師', ini:'講', title:'講師',    unit:'担当 7名',                scope:'担当の受講者（面談メモまで）', color:'#3b62a0'},
+    supervisor: {name:'サンプル 上長', ini:'上', title:'上司',    unit:'研修全体',                scope:'全受講者の状況（面談メモ・講師評価は見えない）', color:'#8a5a3c'},
+    admin:      {name:'サンプル 管理', ini:'管', title:'管理者',  unit:'研修運営',                scope:'すべて＋入口や表示の設定', color:'#6a4f8f'}
+  };
+
+  var STORIES = {
+    learner: {who:'受講者（デモ 太郎）', story:'受講者として、今日やることと締切を迷わずつかみ、必要な教材やフォームにすぐたどり着きたい。',
+      now:['サイトやフォームの入口がばらばらで、案内メールを探す','宿題の締切を自分で管理している','どこから手を付けるか分からない日がある'],
+      goal:['ホームを開けば今日やることが並ぶ','研修のコースも、自分で選んだ自習のコースも同じ場所で学べる','宿題の提出と講師のコメントが1か所にある']},
+    instructor: {who:'講師（サンプル 講師）', story:'講師として、授業の前に担当の受講者の出席・宿題・つまずきを5分でつかみ、その日のうちに声をかけたい。',
+      now:['出席・宿題・成績が別々のスプレッドシートにある','リンク集・フォーム・進捗表を行き来する','宿題の確認が後回しになりやすい'],
+      goal:['ホームに今日の授業・要フォロー・確認待ちの宿題が並ぶ','宿題をその場で承認・再提出依頼できる','講師用の入口が同じ画面にある']},
+    supervisor: {who:'上司（サンプル 上長）', story:'上司として、研修が予定どおり進んでいるかを毎朝つかみ、手を打つべき受講者を早く知りたい。',
+      now:['進捗表は手作業の更新で、いつ時点の数字か分からない','詳しいことは講師に聞かないと分からない'],
+      goal:['出席率・得点率・要フォローが1画面に出る','いつ時点の情報かが必ず表示される','面談メモなど機微な情報は見えない']},
+    admin: {who:'管理者（サンプル 管理）', story:'管理者として、入口や表示の設定をコードを触らずに直し、運営を一人に頼らない形にしたい。',
+      now:['リンクを変えるたびにコードを直している','誰に何を見せるかが画面ごとにばらばら'],
+      goal:['ポータルの入口を画面から編集できる','ロールごとに見える範囲がそろっている']}
+  };
+
+  /* 各手順：role（必要ならロールを切り替えて再読み込み）・view・spot（強調する要素）・act（準備） */
+  var TOURS = {
+    all: [
+      {role:'instructor', view:'home', spot:'#tpPanel', when:'8:30', who:'講師', t:'授業の前に、ホームで今日をつかむ', d:'今日の授業と出席の見込み、要フォローの受講者、確認待ちの宿題が最初に並びます。スプレッドシートを開かずに、今日声をかける相手が分かります。'},
+      {role:'instructor', view:'ops', spot:'.dp-tiles', when:'8:40', who:'講師', t:'運営情報で出席と宿題を確かめる', d:'スプレッドシートの出席・宿題・フォロー状況を、読み取り専用で表示します。上に「いつ時点の情報か」が必ず出ます。講師には担当の7名だけが見えます。'},
+      {role:'instructor', view:'ops', spot:'.dp-tablewrap', when:'8:45', who:'講師', t:'要フォローの理由まで見る', d:'受講者ごとに、得点率と要フォローの理由が並びます。判定の基準は表の下に書いてあります。'},
+      {role:'learner', view:'home', spot:'[aria-label="今日やること"]', when:'10:00', who:'受講者', t:'受講者は「今日やること」から始める', d:'授業への参加、宿題、苦手の復習、アンケートがチェックリストで並びます。終わったものに印を付けると、進み具合のバーが伸びます。'},
+      {role:'learner', view:'portal', spot:'.dp-group', when:'授業中', who:'受講者', t:'教材やフォームはポータルから', d:'教科書・問題演習・確認問題・道場などの入口がまとまっています。章を選んで確認問題を開くこともできます。'},
+      {role:'learner', view:'homework', spot:'#view-homework', when:'夕方', who:'受講者', t:'宿題を提出する', d:'締切と講師のコメントを見ながら、テキストかURLで提出します。'},
+      {role:'learner', view:'paths', spot:'#cpCond', when:'週末', who:'受講者', t:'研修のコースで、修了までに何が足りないかを確かめる', d:'研修として割り当てられたコースは、学習パスと修了条件（確認問題・模試・宿題・CLI演習）の進み具合が出ます。外部スクールのカリキュラムの代わりに、社内でコースと修了条件を持ちます。'},
+      {role:'learner', view:'paths', spot:'#cpCatalog', when:'週末', who:'受講者', t:'好きなコースを自習で始める', d:'LPIC-1など、研修で割り当てられていないコースも「自習で始める」で受講できます。自習では講師の管理はなく、問題演習と模試を自分のペースで使えます（外部の学習サービスの代わり）。'},
+      {role:'instructor', view:'home', spot:'[aria-label="確認待ちの宿題"]', when:'夜', who:'講師', t:'確認待ちの宿題を、その場で承認する', d:'提出内容を読んで「承認」か「再提出を依頼」。依頼には理由を書きます。処理すると運営情報の一覧にも反映されます。'},
+      {role:'supervisor', view:'home', spot:'[aria-label="研修の状況"]', when:'翌朝', who:'上司', t:'上司は研修の状況を見る', d:'平均得点率、宿題の未提出・期限切れ、出席率、受験日までの日数。閲覧だけで、操作はしません。'},
+      {role:'supervisor', view:'ops', spot:'#dpDetail', act:'pickRow', when:'翌朝', who:'上司', t:'受講者の詳細と、見えない項目', d:'章別の得点率や宿題は見えますが、面談メモと講師評価は上司には表示されません。ロールごとに見える範囲を変えています。'},
+      {role:'supervisor', view:'impact', spot:'#cpCompare', when:'月次', who:'上司', t:'合格の見込みと、前の期との比較を見る', d:'受験の予定と結果、模試から見た合格の見込み、外部ITスクールを使った前の期との比較が出ます。結果が出るたびに見込みが実績に置き換わります。'},
+      {role:'admin', view:'portal', spot:'.dp-card', act:'editOn', when:'必要なとき', who:'管理者', t:'管理者は入口を画面から編集する', d:'入口の表示・非表示と並び順を、コードを触らずに変えられます。本番ではDBのシートに保存されます。'},
+      {role:'admin', view:'paths', spot:'#cpEditor', when:'期の始め', who:'管理者', t:'コースと学習パスを社内で作る', d:'CCNAのほかLPICやAWSなどのコースを作り、段階・修了条件・受講者を設定します。外部スクールに頼らず、次の研修も同じ基盤に載せられます。'},
+      {role:'admin', view:'impact', spot:'#cpCalc', when:'予算の検討', who:'管理者', t:'内製の効果を試算する', d:'受講者数・外部の受講料・社内の運営工数を入れると、年間の費用と削減額がその場で出ます。数字は仮のサンプルです。'}
+    ]
+  };
+  TOURS.learner = [{story:'learner', role:'learner', view:'home'}].concat(TOURS.all.filter(function(s){return s.role==='learner';}));
+  TOURS.instructor = [{story:'instructor', role:'instructor', view:'home'}].concat(TOURS.all.filter(function(s){return s.role==='instructor';}),
+    [{role:'instructor', view:'portal', spot:'.dp-group', when:'授業中', who:'講師', t:'講師用の入口もここに', d:'講師が使う資料・フォーム・表の入口を、研修状況・講義中・講義後・その他の4つに分けて並べています。元の資料名でも検索できます。'},
+     {role:'instructor', view:'paths', spot:'#cpHeat', when:'週次', who:'講師', t:'担当の受講者が学習パスのどこにいるか', d:'段階ごとに「完了・学習中・未着手」が一覧で出ます。遅れている人と、つまずいている段階が分かります。'},
+     {role:'instructor', view:'impact', spot:'#cpExams', when:'受験前', who:'講師', t:'受験の予定と合格の見込み', d:'担当の受講者の受験日、模試の最高点、合格の見込みが並びます。合格した人には修了証を出せます。'}]);
+  TOURS.supervisor = [{story:'supervisor', role:'supervisor', view:'home'}].concat(TOURS.all.filter(function(s){return s.role==='supervisor';}));
+  TOURS.admin = [{story:'admin', role:'admin', view:'home'},
+    {role:'admin', view:'home', spot:'#tpPanel', when:'朝', who:'管理者', t:'全体の今日をつかむ', d:'管理者のホームには、全受講者の今日の授業・要フォロー・確認待ちの宿題が出ます。'},
+    {role:'admin', view:'ops', spot:'#dpDetail', act:'pickRow', when:'朝', who:'管理者', t:'すべての項目が見える', d:'管理者は面談メモと講師評価まで見られます。講師評価は、評価される講師本人には表示しません。'}].concat(TOURS.all.filter(function(s){return s.role==='admin';}));
+  var TOUR_NAME = {all:'1日の流れ（全体）', learner:'受講者の目線', instructor:'講師の目線', supervisor:'上司の目線', admin:'管理者の目線'};
+
+  /* ---------- スタイル ---------- */
+  var css = [
+  '.dm-banner{background:#fff4d6;color:#7a5a00;font-size:12px;text-align:center;padding:6px 16px;border-radius:10px;margin:0 0 12px}',
+  '.dm-dock{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:max(12px,env(safe-area-inset-bottom,0px));z-index:99999;display:flex;gap:8px;align-items:flex-end;font:13px -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;color:#172033}',
+  '.dm-acct{position:relative}',
+  '.dm-btn{display:grid;grid-template-columns:34px minmax(0,1fr) 14px;gap:8px;align-items:center;text-align:left;border:1px solid #cdd6e0;background:#fff;border-radius:12px;padding:7px 10px;box-shadow:0 6px 24px rgba(9,30,66,.16);min-width:200px;max-width:260px;cursor:pointer}',
+  '.dm-btn:hover{background:#f5f8fb}',
+  '.dm-av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px}',
+  '.dm-av.sm{width:30px;height:30px;font-size:13px}',
+  '.dm-name{display:grid;min-width:0;line-height:1.35}',
+  '.dm-name strong{font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+  '.dm-name span{font-size:11px;color:#68758a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+  '.dm-name .scope{color:#1f6b57;white-space:normal}',
+  '.dm-menu{position:absolute;right:0;bottom:calc(100% + 8px);background:#fff;border:1px solid #cdd6e0;border-radius:12px;box-shadow:0 12px 32px rgba(9,30,66,.2);padding:6px;display:grid;gap:2px;width:min(320px,calc(100vw - 24px))}',
+  '.dm-mh{font-size:11px;color:#68758a;padding:6px 8px 4px}',
+  '.dm-item{display:grid;grid-template-columns:30px minmax(0,1fr) 14px;gap:10px;align-items:center;border:0;background:transparent;text-align:left;padding:8px;border-radius:9px;cursor:pointer}',
+  '.dm-item:hover,.dm-item:focus-visible{background:#eef3f8}',
+  '.dm-ck{color:#1f6b57;font-weight:800}',
+  '.dm-tourbtn{border:1px solid #1f6b57;background:#e1eee8;color:#1f6b57;font-weight:800;border-radius:12px;padding:10px 14px;box-shadow:0 6px 24px rgba(9,30,66,.16);cursor:pointer;white-space:nowrap}',
+  '.dm-tmenu{position:absolute;right:0;bottom:calc(100% + 8px);background:#fff;border:1px solid #cdd6e0;border-radius:12px;box-shadow:0 12px 32px rgba(9,30,66,.2);padding:6px;display:grid;gap:2px;width:240px}',
+  '.dm-tmenu button{border:0;background:transparent;text-align:left;padding:9px 10px;border-radius:9px;cursor:pointer;font-size:13px}',
+  '.dm-tmenu button:hover,.dm-tmenu button:focus-visible{background:#eef3f8}',
+  '.dm-tmenu small{display:block;color:#68758a;font-size:11px}',
+  '.dm-dock button:focus-visible,.dm-tour button:focus-visible{outline:2px solid #23c7e8;outline-offset:2px}',
+  '.dm-spot{outline:3px solid #1f6b57!important;outline-offset:5px;border-radius:14px;transition:outline-color .2s}',
+  'body.dm-touring main{padding-bottom:280px!important}',
+  'body.dm-touring .dm-dock{display:none}',
+  '.dm-tour{position:fixed;z-index:100000;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(680px,calc(100% - 24px));background:#fff;border:1px solid #cdd6e0;border-top:4px solid #1f6b57;border-radius:14px;box-shadow:0 14px 44px rgba(9,30,66,.26);padding:14px 18px 12px;display:grid;gap:8px;font:14px -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;color:#172033;line-height:1.65}',
+  '.dm-tm{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:#68758a}',
+  '.dm-tm .no{color:#1f6b57;font-weight:800;font-variant-numeric:tabular-nums}',
+  '.dm-tour h2{margin:0;font-size:18px;font-weight:900}',
+  '.dm-tour p{margin:0}',
+  '.dm-sq{font-size:16.5px;font-weight:800;line-height:1.6;border-left:3px solid #1f6b57;padding-left:12px}',
+  '.dm-pp{display:grid;grid-template-columns:1fr 1fr;gap:10px}',
+  '.dm-pp div{background:#f3f6f9;border-radius:10px;padding:8px 10px;font-size:12.5px}',
+  '.dm-pp b{display:block;font-size:11px;color:#68758a;margin-bottom:2px}',
+  '.dm-pp ul{margin:0;padding-left:1.1em}',
+  '.dm-tn{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}',
+  '.dm-dots{display:flex;flex-wrap:wrap;gap:4px}',
+  '.dm-dots button{width:22px;height:22px;border-radius:50%;border:1px solid #cdd6e0;background:#fff;font-size:10px;color:#68758a;padding:0;cursor:pointer}',
+  '.dm-dots button[aria-current="step"]{background:#1f6b57;color:#fff;border-color:#1f6b57}',
+  '.dm-nb{display:flex;gap:6px}',
+  '.dm-nb button{border:1px solid #cdd6e0;background:#fff;border-radius:9px;padding:7px 14px;font-weight:800;font-size:13px;cursor:pointer}',
+  '.dm-nb button.go{background:#1f6b57;border-color:#1f6b57;color:#fff}',
+  '.dm-nb button:disabled{opacity:.45;cursor:default}',
+  '.dm-loading{font-size:12px;color:#68758a}',
+  '@media (max-width:620px){.dm-btn{min-width:0;max-width:200px}.dm-pp{grid-template-columns:1fr}.dm-tourbtn{padding:10px}}',
+  '@media (prefers-reduced-motion:reduce){.dm-spot{transition:none}}'
+  ].join('\n');
+  var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
+
+  /* ---------- 帯（架空データ） ---------- */
+  function mountBanner(){
+    var main = document.querySelector('main'); if(!main || document.getElementById('dmBanner')) return;
+    var b = document.createElement('div'); b.id='dmBanner'; b.className='dm-banner';
+    b.textContent = 'デモ（架空のデータ）です。人物・成績・予定はすべて架空で、操作しても保存されません。';
+    main.insertBefore(b, main.firstChild);
+  }
+
+  /* ---------- アカウント切替と紙芝居ボタン ---------- */
+  var dock, menuOpen=false, tmenuOpen=false;
+  function renderDock(){
+    if(!dock){ dock=document.createElement('div'); dock.className='dm-dock'; document.body.appendChild(dock); }
+    var a = ACCOUNTS[ROLE];
+    var html = '<div class="dm-acct">'+
+      (tmenuOpen?'<div class="dm-tmenu" role="menu" aria-label="紙芝居で見る">'+Object.keys(TOUR_NAME).map(function(k){ return '<button type="button" role="menuitem" data-dm-tour="'+k+'">'+(k==='all'?'▶ ':'')+esc(TOUR_NAME[k])+(k==='all'?'<small>4つのロールをまたいで '+TOURS.all.length+' 手順</small>':'')+'</button>'; }).join('')+'</div>':'')+
+      '<button type="button" class="dm-tourbtn" id="dmTourBtn" aria-haspopup="menu" aria-expanded="'+tmenuOpen+'">紙芝居で見る</button></div>'+
+      '<div class="dm-acct">'+
+      (menuOpen?'<div class="dm-menu" role="menu"><div class="dm-mh">アカウントを切り替える（デモ用）</div>'+Object.keys(ACCOUNTS).map(function(k){ var x=ACCOUNTS[k];
+        return '<button type="button" class="dm-item" role="menuitemradio" aria-checked="'+(k===ROLE)+'" data-dm-role="'+k+'"><span class="dm-av sm" style="background:'+x.color+'">'+esc(x.ini)+'</span><span class="dm-name"><strong>'+esc(x.name)+'</strong><span>'+esc(x.title)+'・'+esc(x.unit)+'</span><span class="scope">見える範囲：'+esc(x.scope)+'</span></span><span class="dm-ck">'+(k===ROLE?'✓':'')+'</span></button>'; }).join('')+'</div>':'')+
+      '<button type="button" class="dm-btn" id="dmAcctBtn" aria-haspopup="menu" aria-expanded="'+menuOpen+'"><span class="dm-av" style="background:'+a.color+'">'+esc(a.ini)+'</span><span class="dm-name"><strong>'+esc(a.name)+'</strong><span>'+esc(a.title)+'・'+esc(a.unit)+'</span></span><span aria-hidden="true">▴</span></button></div>';
+    dock.innerHTML = html;
+    dock.querySelector('#dmAcctBtn').addEventListener('click', function(e){ e.stopPropagation(); menuOpen=!menuOpen; tmenuOpen=false; renderDock(); var f=dock.querySelector('.dm-item[aria-checked="true"]'); if(f) f.focus(); });
+    dock.querySelector('#dmTourBtn').addEventListener('click', function(e){ e.stopPropagation(); tmenuOpen=!tmenuOpen; menuOpen=false; renderDock(); var f=dock.querySelector('[data-dm-tour]'); if(f) f.focus(); });
+    dock.querySelectorAll('[data-dm-role]').forEach(function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); var r=b.dataset.dmRole; menuOpen=false; if(r===ROLE){ renderDock(); return; } put(LS_TOUR,null); if(window.__demoSetRole) window.__demoSetRole(r); }); });
+    dock.querySelectorAll('[data-dm-tour]').forEach(function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); tmenuOpen=false; startTour(b.dataset.dmTour, 0); }); });
+  }
+  document.addEventListener('click', function(e){ if((menuOpen||tmenuOpen) && !e.target.closest('.dm-dock')){ menuOpen=false; tmenuOpen=false; renderDock(); } });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && (menuOpen||tmenuOpen)){ menuOpen=false; tmenuOpen=false; renderDock(); var b=document.getElementById('dmAcctBtn'); if(b) b.focus(); } });
+
+  /* ---------- 紙芝居 ---------- */
+  var tourEl, cur = null;
+  function appReady(){ return typeof window.navigateTo==='function' && document.querySelector('#navList .nav-button') && !document.getElementById('demoCoverV1'); }
+  function startTour(key, i){ goStep(key, i); }
+  function goStep(key, i){
+    var T = TOURS[key]; if(!T || i<0 || i>=T.length) return;
+    var s = T[i];
+    put(LS_TOUR, {key:key, i:i});
+    if(s.role !== ROLE){ showPanel(key, i, true); if(window.__demoSetRole) window.__demoSetRole(s.role); return; }
+    cur = {key:key, i:i};
+    applyStep(s, function(){ showPanel(key, i, false); });
+  }
+  function applyStep(s, done){
+    clearSpot();
+    try{ window.navigateTo(s.view); }catch(e){}
+    setTimeout(function(){
+      if(s.act==='pickRow'){ var o=window.__demoOps; if(o){ var list=o.scoped(); var u=list.filter(function(x){return x.reasons.length;})[0]||list[0]; o.state.sel=u.id; o.state.onlyFollow=false; o.render(); } }
+      if(s.act==='editOn'){ var et=document.getElementById('dpEditToggle'); if(et && et.getAttribute('aria-pressed')!=='true') et.click(); }
+      setTimeout(function(){
+        var el = s.spot && document.querySelector(s.spot);
+        if(el){ el.classList.add('dm-spot'); el.scrollIntoView({block:'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); }
+        else window.scrollTo(0,0);
+        done();
+      }, 250);
+    }, 450);
+  }
+  function clearSpot(){ document.querySelectorAll('.dm-spot').forEach(function(x){ x.classList.remove('dm-spot'); }); }
+  function showPanel(key, i, loading){
+    var T = TOURS[key], s = T[i], n = i+1;
+    document.body.classList.add('dm-touring');
+    if(!tourEl){ tourEl=document.createElement('div'); tourEl.className='dm-tour'; tourEl.setAttribute('role','dialog'); tourEl.setAttribute('aria-label','紙芝居'); document.body.appendChild(tourEl); }
+    var body;
+    if(s.story){
+      var S = STORIES[s.story];
+      body = '<div class="dm-tm"><span class="no">'+n+' / '+T.length+'</span><span>'+esc(TOUR_NAME[key])+'</span><span>ユーザーストーリー</span></div>'+
+        '<div class="dm-tm">'+esc(S.who)+'</div><div class="dm-sq">'+esc(S.story)+'</div>'+
+        '<div class="dm-pp"><div><b>今の困りごと</b><ul>'+S.now.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div><div><b>このeラーニングで</b><ul>'+S.goal.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div>';
+    } else {
+      body = '<div class="dm-tm"><span class="no">'+n+' / '+T.length+'</span><span>'+esc(TOUR_NAME[key])+'</span><span>'+esc(s.when)+'</span><span>'+esc(s.who)+'</span></div>'+
+        '<h2>'+esc(s.t)+'</h2><p>'+esc(s.d)+'</p>';
+    }
+    if(loading) body += '<div class="dm-loading">'+esc(ACCOUNTS[s.role].title)+'のアカウントに切り替えています…</div>';
+    tourEl.innerHTML = body + '<div class="dm-tn"><div class="dm-dots">'+T.map(function(x,j){ return '<button type="button" data-dm-step="'+j+'"'+(j===i?' aria-current="step"':'')+' aria-label="'+(x.story?'ユーザーストーリー':'手順 '+(j+1))+'">'+(x.story?'★':(j+1))+'</button>'; }).join('')+'</div>'+
+      '<div class="dm-nb"><button type="button" id="dmPrev"'+(i===0?' disabled':'')+'>← 前へ</button><button type="button" class="go" id="dmNext">'+(n===T.length?'最初に戻る':'次へ →')+'</button><button type="button" id="dmEnd">終了</button></div></div>';
+    tourEl.querySelector('#dmPrev').addEventListener('click', function(){ goStep(key, i-1); });
+    tourEl.querySelector('#dmNext').addEventListener('click', function(){ goStep(key, n===T.length?0:i+1); });
+    tourEl.querySelector('#dmEnd').addEventListener('click', endTour);
+    tourEl.querySelectorAll('[data-dm-step]').forEach(function(b){ b.addEventListener('click', function(){ goStep(key, Number(b.dataset.dmStep)); }); });
+  }
+  function endTour(){ put(LS_TOUR,null); cur=null; clearSpot(); document.body.classList.remove('dm-touring'); if(tourEl){ tourEl.remove(); tourEl=null; } renderDock(); }
+  document.addEventListener('keydown', function(e){
+    if(!cur || (e.target.closest && e.target.closest('input,textarea,select'))) return;
+    if(e.key==='ArrowRight') goStep(cur.key, cur.i+1);
+    else if(e.key==='ArrowLeft') goStep(cur.key, cur.i-1);
+    else if(e.key==='Escape') endTour();
+  });
+
+  /* ---------- 起動：準備ができたら帯・ドックを出し、途中の紙芝居を再開 ---------- */
+  var tries=0;
+  (function boot(){
+    if(!appReady()){ if(++tries<100) setTimeout(boot, 150); return; }
+    mountBanner(); renderDock();
+    var saved = get(LS_TOUR);
+    if(saved && TOURS[saved.key] && TOURS[saved.key][saved.i]){
+      var s = TOURS[saved.key][saved.i];
+      if(s.role===ROLE) setTimeout(function(){ cur={key:saved.key,i:saved.i}; applyStep(s, function(){ showPanel(saved.key, saved.i, false); }); }, 600);
+      else put(LS_TOUR, null);
+    }
+  })();
+})();
+
+</script>
+<script>
+/* 確認用：全画面の見た目を自動で点検する（デモの動作には影響しない） */
+(function(){
+  function sleep(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
+  function label(el){ return (el.tagName+'#'+(el.id||'')+'.'+String(el.className||'').split(' ')[0]).slice(0,48)+' "'+(el.textContent||'').trim().slice(0,18)+'"'; }
+  function checkView(view){
+    var root = document.querySelector('.view.active'); if(!root) return ['表示中の画面なし'];
+    var issues = [];
+    if(document.documentElement.scrollWidth > innerWidth + 1) issues.push('ページが横にはみ出し：'+document.documentElement.scrollWidth+'px');
+    var boxSel = '.cp-card,.dp-card,.tp-card,.dp-tile,.card,.panel,.home-dashboard-card,.dp-detail,.dp-asof,.cp-cert';
+    root.querySelectorAll('input,select,textarea,button,a,img,svg,'+boxSel).forEach(function(el){
+      if(!el.offsetParent || el.closest('.dp-tablewrap,.scroll,table,.legacy-panel:not(.active)')) return;
+      var box = el.parentElement && el.parentElement.closest(boxSel+',.dp-wrap'); if(!box) return;
+      var r = el.getBoundingClientRect(), b = box.getBoundingClientRect();
+      if(r.width && (r.right > b.right + 1.5 || r.left < b.left - 1.5)) issues.push('枠からはみ出し：'+label(el)+' '+Math.round(r.right-b.right)+'px');
+    });
+    root.querySelectorAll('*').forEach(function(el){
+      if(!el.offsetParent || el.children.length) return;
+      var cs = getComputedStyle(el);
+      if((cs.overflowX==='hidden' || cs.overflow==='hidden') && el.scrollWidth > el.clientWidth + 2 && cs.textOverflow!=='ellipsis' && !el.closest('.dp-tablewrap,table')) issues.push('文字が切れている：'+label(el));
+      var t = (el.textContent||'').trim();
+      if(/^(undefined|null|NaN|\[object Object\])$|undefined|NaN|\[object Object\]/.test(t)) issues.push('表示崩れ：'+label(el));
+      if(t && parseFloat(cs.fontSize) < 10.5) issues.push('文字が小さすぎる（'+cs.fontSize+'）：'+label(el));
+    });
+    var txt = root.innerText || '';
+    var eng = (txt.match(/\b[A-Z][A-Z' &]{4,}\b/g)||[]).filter(function(x){ return !/^(CCNA|OSPF|VLAN|LPIC|AWS SAA|FULL|LINE|IPV6|DEMO|CERTIFICATE OF COMPLETION)\s*$/.test(x); });
+    if(eng.length) issues.push('英語の見出し：'+Array.from(new Set(eng)).slice(0,4).join('、'));
+    if(/デモ版では表示できません|この画面はデモ版では/.test(txt)) issues.push('未対応の表示あり');
+    return Array.from(new Set(issues)).slice(0,8);
+  }
+  window.__demoAudit = async function(){
+    var errs = []; var h = function(e){ errs.push(String(e.message||e).slice(0,80)); }; window.addEventListener('error', h);
+    var out = {role:window.__demoRole, width:innerWidth, views:{}};
+    var views = window.__demoNavViews || [];
+    for(var i=0;i<views.length;i++){
+      var v = views[i]; window.__demoCalls.length = 0;
+      try{ window.navigateTo(v); }catch(e){ out.views[v]=['開けない：'+e.message]; continue; }
+      await sleep(800);
+      var list = checkView(v);
+      if(v==='admin'){
+        var tabs = Array.from(document.querySelectorAll('#view-admin [data-admin-tab]')).map(function(b){ return b.dataset.adminTab; });
+        for(var j=0;j<tabs.length;j++){ try{ window.openAdminTab(tabs[j]); }catch(e){} await sleep(300); checkView(v).forEach(function(x){ list.push('['+tabs[j]+'] '+x); }); }
+      }
+      if(v==='learning'){
+        var sw = Array.from(document.querySelectorAll('#view-learning [data-learn-tab]')).map(function(b){ return b.dataset.learnTab; });
+        for(var k=0;k<sw.length;k++){ var b2=document.querySelector('#view-learning [data-learn-tab="'+sw[k]+'"]'); if(b2) b2.click(); await sleep(300); checkView(v).forEach(function(x){ list.push('['+sw[k]+'] '+x); }); }
+      }
+      if(v==='board'){
+        var p1=document.querySelector('#view-board [data-post]'); if(p1){ p1.click(); await sleep(300); checkView(v).forEach(function(x){ list.push('[投稿] '+x); }); }
+      }
+      var miss = Array.from(new Set(window.__demoCalls.filter(function(c){return c.missing;}).map(function(c){return c.name;})));
+      if(miss.length) list.push('データ不足：'+miss.join('、'));
+      list = Array.from(new Set(list));
+      if(list.length) out.views[v] = list.slice(0,10);
+    }
+    window.removeEventListener('error', h);
+    if(errs.length) out.errors = Array.from(new Set(errs));
+    return out;
+  };
+})();
+
+</script>
