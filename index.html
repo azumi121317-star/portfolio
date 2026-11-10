@@ -4,44 +4,44 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>安住 龍祐 ポートフォリオ</title>
-<meta name="description" content="安住龍祐のポートフォリオ。研修PMとして課題を企画し、生成AIで仕組みを作り、運用まで届けています。">
+<meta name="description" content="人が動きたくなる仕組みを、つくる。大学では対話の場を、いまは生成AIで研修の仕組みをつくっている安住龍祐のポートフォリオ。">
 <meta property="og:title" content="安住 龍祐 ポートフォリオ">
-<meta property="og:description" content="研修PMとして課題を企画し、生成AIで仕組みを作り、運用まで届けています。">
+<meta property="og:description" content="人が動きたくなる仕組みを、つくる。">
 <meta property="og:image" content="assets/img/learning.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='36' r='24' fill='%2346c9a0'/%3E%3Cpath d='M20 16l6 10-10 0zM44 16l-6 10 10 0z' fill='%23ffb74d'/%3E%3Ccircle cx='24' cy='34' r='5' fill='%23fff'/%3E%3Ccircle cx='40' cy='34' r='5' fill='%23fff'/%3E%3Ccircle cx='25' cy='35' r='2.6' fill='%231d2321'/%3E%3Ccircle cx='41' cy='35' r='2.6' fill='%231d2321'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap">
 <style>
-/* 色は題材から：マスコット「リュウ」の緑（主色）と角の琥珀色（数字の強調）。背景は中立。 */
+/* 色は題材から：マスコット「リュウ」の緑＝現在（社会人）と強調、角の琥珀色＝数字。大学時代の点は中立の灰。背景は中立。 */
 :root{
-  --bg:#f5f5f2;--bg2:#ecece8;--surface:#ffffff;--fg:#1d2321;--muted:#5b6461;--line:#dfe1dc;
+  --bg:#f5f5f2;--bg2:#ecece8;--surface:#ffffff;--fg:#1d2321;--muted:#5b6461;--line:#dcdfda;
   --accent:#167a5b;--accent-soft:#e2f1ea;--amber:#b86e00;
-  --net:#9aa5a0;
+  --univ:#6f7874;--univ-soft:#eef0ed;
   --shadow:0 1px 2px rgba(29,35,33,.06),0 8px 24px -14px rgba(29,35,33,.22);
   --dragon:#46c9a0;--dragon-dark:#2a9c7a;--belly:#fff4d6;--horn:#ffb74d;--ink:#1d2321;
   --font-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
   --font-body:"Noto Sans JP","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
-  --radius:14px;--max:1120px;
+  --radius:14px;--max:1120px;--ease:cubic-bezier(.2,.8,.2,1);
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#121413;--bg2:#171a19;--surface:#1c201e;--fg:#e9ecea;--muted:#9ba49f;--line:#2c312f;
-    --accent:#4cc79f;--accent-soft:#1a2e27;--amber:#f0b04a;--net:#4a5450;
+    --bg:#121413;--bg2:#171a19;--surface:#1c201e;--fg:#e9ecea;--muted:#9ba49f;--line:#2e3431;
+    --accent:#4cc79f;--accent-soft:#1a2e27;--amber:#f0b04a;--univ:#a3aca7;--univ-soft:#232826;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -16px rgba(0,0,0,.7);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#121413;--bg2:#171a19;--surface:#1c201e;--fg:#e9ecea;--muted:#9ba49f;--line:#2c312f;
-  --accent:#4cc79f;--accent-soft:#1a2e27;--amber:#f0b04a;--net:#4a5450;
+  --bg:#121413;--bg2:#171a19;--surface:#1c201e;--fg:#e9ecea;--muted:#9ba49f;--line:#2e3431;
+  --accent:#4cc79f;--accent-soft:#1a2e27;--amber:#f0b04a;--univ:#a3aca7;--univ-soft:#232826;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px -16px rgba(0,0,0,.7);
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.8;overflow-x:hidden;transition:background .3s,color .3s}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.8;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
@@ -49,35 +49,19 @@ a{color:inherit}
 .skip{position:absolute;left:12px;top:-60px;z-index:100;background:var(--accent);color:#fff;padding:8px 14px;border-radius:10px;text-decoration:none}
 .skip:focus{top:12px}
 
-/* 進捗バーとヘッダー */
-.progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:60;background:var(--accent);transform-origin:0 50%;transform:scaleX(0)}
-header.top{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-header.top.scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line)}
+/* ヘッダー */
+header.top{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .25s var(--ease),border-color .25s var(--ease);border-bottom:1px solid transparent}
+header.top.scrolled{background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line)}
 .nav{display:flex;align-items:center;justify-content:space-between;height:60px;gap:16px}
 .logo{font-family:var(--font-display);font-weight:700;text-decoration:none;font-size:16px}
 .nav ul{display:flex;gap:2px;list-style:none;margin:0;padding:0}
-.nav ul a{display:block;padding:6px 12px;border-radius:8px;text-decoration:none;font-size:14px;color:var(--muted);transition:color .2s,background .2s}
+.nav ul a{display:block;padding:6px 12px;border-radius:8px;text-decoration:none;font-size:14px;color:var(--muted);transition:color .2s var(--ease),background .2s var(--ease)}
 .nav ul a:hover,.nav ul a.active{color:var(--fg);background:var(--bg2)}
 .theme-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;display:grid;place-items:center;flex:none}
 .theme-btn svg{width:18px;height:18px}
-@media (max-width:860px){.nav ul{display:none}}
+@media (max-width:700px){.nav ul{display:none}}
 
-/* 最初の一画面：誰か → 主役の数字 → 次の行動 */
-.hero{position:relative;overflow:hidden;isolation:isolate;padding:120px 0 64px;border-bottom:1px solid var(--line)}
-#net{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
-.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:48px;align-items:end}
-.who{font-family:var(--font-display);font-weight:700;font-size:17px;margin:0 0 6px}
-.who span{color:var(--muted);font-weight:500;margin-left:10px;font-size:15px}
-.hero-grid>*{min-width:0}
-.catch{font-family:var(--font-display);font-weight:900;font-size:clamp(30px,4.2vw,54px);line-height:1.2;margin:0 0 20px;letter-spacing:-.01em}
-.catch .line{display:block;overflow:hidden;padding-bottom:.06em}
-.catch .line>span{display:inline-block;transform:translateY(110%);animation:rise .8s cubic-bezier(.2,.8,.2,1) forwards}
-.catch .line:nth-child(2)>span{animation-delay:.1s}
-.catch em{font-style:normal;color:var(--accent)}
-@keyframes rise{to{transform:none}}
-.lead{font-size:16px;color:var(--muted);max-width:560px;margin:0 0 28px}
-.cta{display:flex;flex-wrap:wrap;gap:10px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;font-size:15px;transition:transform .15s,background .2s;border:1px solid transparent;cursor:pointer;font-family:inherit}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none;font-size:15px;transition:transform .2s var(--ease);border:1px solid transparent;cursor:pointer;font-family:inherit}
 .btn.primary{background:var(--accent);color:#fff}
 :root[data-theme="dark"] .btn.primary{color:#0d1f19}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#0d1f19}}
@@ -85,191 +69,185 @@ header.top.scrolled{background:color-mix(in srgb,var(--bg) 88%,transparent);back
 .btn:hover{transform:translateY(-1px)}
 .btn svg{width:18px;height:18px}
 
-/* 成果：主役の1つだけ大きく、残りは段階的に弱く */
-.proof{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 26px}
-.proof-main{padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:14px}
-.proof-main .big{font-family:var(--font-display);font-weight:900;line-height:1.1;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.proof-main .from{font-size:22px;color:var(--muted);text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:color-mix(in srgb,var(--muted) 60%,transparent)}
-.proof-main .arrow{color:var(--muted);font-size:22px}
-.proof-main .to{font-size:clamp(46px,5vw,64px);color:var(--amber)}
-.proof-main .to small{font-size:.4em;margin-left:2px;color:var(--fg)}
-.proof-main p{margin:6px 0 0;font-size:14px;color:var(--muted)}
-.proof ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-.proof li{display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:baseline;font-size:14px;color:var(--muted)}
-.proof li b{font-family:var(--font-display);font-size:20px;color:var(--fg);font-weight:900;white-space:nowrap}
-.proof li b small{font-size:12px;font-weight:700;margin-left:1px}
-@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:32px}.hero{padding:100px 0 48px}}
+/* 最初の一画面：キャッチコピー＋ネットワーク図 */
+.hero{padding:104px 0 56px;border-bottom:1px solid var(--line)}
+.hero-grid{display:grid;grid-template-columns:1fr 1.35fr;gap:40px;align-items:center}
+.hero-grid>*{min-width:0}
+.who{font-family:var(--font-display);font-weight:700;font-size:16px;margin:0 0 10px}
+.who span{display:block;color:var(--muted);font-weight:500;font-size:14px}
+.catch{font-family:var(--font-display);font-weight:900;font-size:clamp(32px,3.6vw,46px);line-height:1.25;margin:0 0 18px;letter-spacing:-.01em}
+.catch span{display:block}
+.catch em{font-style:normal;color:var(--accent)}
+.lead{font-size:15.5px;color:var(--muted);margin:0 0 26px}
+.cta{display:flex;flex-wrap:wrap;gap:10px}
+
+/* Human Network */
+.topo{position:relative;height:470px}
+.topo svg.links{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.topo line{stroke:var(--line);stroke-width:1.5;vector-effect:non-scaling-stroke;transition:stroke .2s var(--ease),stroke-width .2s var(--ease),opacity .2s var(--ease)}
+.topo line.cross{stroke-dasharray:3 4;opacity:0}
+.topo.focus line.cross.on{opacity:1;stroke:var(--accent);stroke-width:1.5}
+.topo.focus line.spoke.on{stroke:var(--accent);stroke-width:2}
+.node{position:absolute;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:6px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-size:12.5px;font-weight:700;line-height:1.3;white-space:nowrap;cursor:pointer;transition:border-color .2s var(--ease),background .2s var(--ease),transform .2s var(--ease),opacity .2s var(--ease)}
+.node::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--univ);flex:none}
+.node.work::before{background:var(--accent)}
+.node:hover,.node:focus-visible{border-color:var(--accent);transform:translate(-50%,-50%) scale(1.05)}
+.topo.focus .node:not(.on):not(.hub){opacity:.45}
+.node.hub{padding:10px 16px;font-family:var(--font-display);font-size:15px;background:var(--fg);color:var(--bg);border-color:var(--fg);cursor:default}
+.node.hub::before{display:none}
+.node.hub:hover{transform:translate(-50%,-50%)}
+.node.hit{animation:hit .3s var(--ease)}
+@keyframes hit{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--accent) 30%,transparent)}}
+.packet{position:absolute;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--accent);pointer-events:none;opacity:0;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent)}
+.topo-cap{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}
+.topo-cap i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;background:var(--univ)}
+.topo-cap i.w{background:var(--accent)}
+.cap-m{display:none}
+@media (max-width:960px){.hero-grid{grid-template-columns:1fr;gap:28px}}
+@media (max-width:600px){.topo{height:560px}.cap-d{display:none}.cap-m{display:inline}.hero{padding:92px 0 40px}}
 
 /* 節 */
-section{padding:88px 0;position:relative}
-.sec-head{margin-bottom:36px;max-width:720px}
-.sec-head h2{font-family:var(--font-display);font-weight:900;font-size:clamp(26px,3.4vw,36px);line-height:1.3;margin:0 0 8px}
+section{padding:88px 0}
+.sec-head{margin-bottom:32px;max-width:720px}
+.sec-head h2{font-family:var(--font-display);font-weight:900;font-size:clamp(26px,3.4vw,34px);line-height:1.3;margin:0 0 6px}
 .sec-head p{color:var(--muted);margin:0}
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.reveal{opacity:0;transform:translateY(8px);transition:opacity .3s var(--ease),transform .3s var(--ease)}
 .reveal.in{opacity:1;transform:none}
 .alt{background:var(--bg2)}
 
-/* 制作物 */
-.feature{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:var(--radius);padding:28px 32px;margin-bottom:32px;display:grid;grid-template-columns:1fr 1.1fr;gap:36px;align-items:start}
-.feature .when{font-size:13px;color:var(--muted)}
-.feature h3{font-family:var(--font-display);font-weight:900;font-size:22px;line-height:1.45;margin:2px 0 10px}
-.feature p{color:var(--muted);margin:0;font-size:15px}
-.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:f;position:relative}
-.flow li{counter-increment:f;padding:0 12px 0 0;font-size:13px;line-height:1.6;color:var(--muted);position:relative}
-.flow li::before{content:counter(f);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:13px;margin-bottom:8px;position:relative;z-index:1}
-.flow li::after{content:"";position:absolute;top:14px;left:28px;right:0;height:2px;background:var(--line)}
-.flow li:last-child::after{display:none}
-.flow b{display:block;color:var(--fg);font-size:14px;margin-bottom:2px}
-@media (max-width:900px){.feature{grid-template-columns:1fr;padding:24px 20px}.flow{grid-template-columns:repeat(2,1fr);gap:18px 0}.flow li::after{display:none}}
+/* 実績：主役1つ＋一覧 */
+.results{display:grid;grid-template-columns:1fr 1.25fr;gap:24px;align-items:stretch}
+.res-main{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 30px;display:flex;flex-direction:column;justify-content:center}
+.res-main .label{font-size:14px;color:var(--muted);margin:0 0 6px}
+.res-main .big{font-family:var(--font-display);font-weight:900;line-height:1.1;display:flex;align-items:baseline;flex-wrap:wrap;gap:10px}
+.res-main .from{font-size:26px;color:var(--muted)}
+.res-main .arrow{font-size:24px;color:var(--muted)}
+.res-main .to{font-size:clamp(56px,6vw,76px);color:var(--amber)}
+.res-main .to small{font-size:.36em;color:var(--fg);margin-left:2px}
+.res-main p{margin:12px 0 0;font-size:14px;color:var(--muted)}
+.res-list{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.res-list li{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:baseline;padding:14px 22px;border-bottom:1px solid var(--line);font-size:14.5px}
+.res-list li:last-child{border:none}
+.res-list .v{font-family:var(--font-display);font-weight:900;font-size:19px;white-space:nowrap;text-align:right}
+.res-list .v s{color:var(--muted);text-decoration:none;font-weight:700;font-size:15px}
+.res-list .v s::after{content:" → ";color:var(--muted)}
+.res-list small{display:block;color:var(--muted);font-size:12.5px}
+@media (max-width:860px){.results{grid-template-columns:1fr}}
 
-.works-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-.work{perspective:1000px}
-.work-card{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;padding:0;transform-style:preserve-3d;transition:transform .25s ease-out,border-color .2s;will-change:transform}
-.work-card:hover{border-color:var(--accent)}
-.shot{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--bg2);border-bottom:1px solid var(--line)}
-.shot img{position:absolute;top:0;left:0;width:100%;height:auto;transition:transform 4s cubic-bezier(.2,.8,.2,1)}
-.work-card:hover .shot img{transform:translateY(-12%)}
-.work-body{padding:18px 22px 22px;display:grid;grid-template-columns:auto 1fr;column-gap:14px}
-.work-body .no{font-family:var(--font-display);font-weight:900;font-size:28px;line-height:1;color:var(--accent);grid-row:span 3;padding-top:4px}
-.work-body h3{font-family:var(--font-display);font-size:19px;margin:0 0 4px;line-height:1.45}
-.work-body p{margin:0 0 12px;color:var(--muted);font-size:14px;line-height:1.7}
-.tags{display:flex;flex-wrap:wrap;gap:6px}
-.tags span{font-size:12px;padding:2px 9px;border-radius:6px;background:var(--bg2);color:var(--muted)}
-@media (max-width:780px){.works-grid{grid-template-columns:1fr}}
+/* ストーリー */
+.road{list-style:none;margin:0 0 20px;padding:0;display:grid;grid-template-columns:repeat(5,1fr);border-top:2px solid var(--line)}
+.road li{position:relative;padding:20px 16px 0 0}
+.road li::before{content:"";position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--univ);box-shadow:0 0 0 4px var(--bg2)}
+.road li.work::before{background:var(--accent)}
+.road li.next::before{background:var(--bg2);border:2px solid var(--accent)}
+.road .when{font-size:12.5px;color:var(--muted)}
+.road h3{font-family:var(--font-display);font-size:18px;margin:0 0 4px}
+.road p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.7}
+.speed{background:var(--surface);border-left:4px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:14px 20px;margin:28px 0 44px;font-size:15px}
+.speed b{font-family:var(--font-display)}
+.axis h3{font-family:var(--font-display);font-size:19px;margin:0 0 4px}
+.axis>p{color:var(--muted);margin:0 0 16px;font-size:14.5px}
+.axis-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:14px}
+.axis-table th,.axis-table td{text-align:left;vertical-align:top;padding:12px 16px;border-bottom:1px solid var(--line);line-height:1.7}
+.axis-table tr:last-child th,.axis-table tr:last-child td{border-bottom:none}
+.axis-table thead th{font-size:13px;color:var(--muted);font-weight:500;background:var(--bg)}
+.axis-table thead th.u::before,.axis-table thead th.w::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--univ)}
+.axis-table thead th.w::before{background:var(--accent)}
+.axis-table tbody th{font-family:var(--font-display);font-size:14.5px;width:22%}
+.axis-table td{color:var(--muted)}
+@media (max-width:860px){.road{grid-template-columns:1fr;border-top:none;border-left:2px solid var(--line);margin-left:6px}.road li{padding:0 0 18px 22px}.road li::before{top:6px;left:-7px}}
+@media (max-width:700px){
+  .axis-table thead{display:none}
+  .axis-table,.axis-table tbody,.axis-table tr,.axis-table th,.axis-table td{display:block;width:100%}
+  .axis-table tr{border-bottom:1px solid var(--line);padding:12px 16px}
+  .axis-table tr:last-child{border:none}
+  .axis-table th,.axis-table td{border:none;padding:2px 0}
+  .axis-table td::before{content:attr(data-h);display:inline-block;font-size:12px;font-weight:700;margin-right:8px;color:var(--fg)}
+}
 
-/* 事例の詳細 */
+/* プロジェクト */
+.sub-h{font-family:var(--font-display);font-size:19px;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.sub-h::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.sub-h.u::before{background:var(--univ)}
+.works-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-bottom:48px}
+.card{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;padding:0;transition:border-color .2s var(--ease),transform .2s var(--ease)}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.shot{aspect-ratio:16/9;overflow:hidden;background:var(--bg2);border-bottom:1px solid var(--line)}
+.shot img{width:100%;height:auto}
+.card-body{padding:16px 20px 20px}
+.card-body h4{font-family:var(--font-display);font-size:18px;margin:0 0 4px;line-height:1.45}
+.card-body p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}
+.card-body .meta{font-size:12.5px;color:var(--muted);margin-bottom:2px}
+.univ-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.univ-grid .card-body{padding:16px 18px}
+.univ-grid h4{font-size:16px}
+.award{display:inline-block;font-size:11.5px;font-weight:700;color:var(--amber);border:1px solid currentColor;border-radius:6px;padding:0 6px;margin-top:6px}
+@media (max-width:980px){.univ-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.works-grid,.univ-grid{grid-template-columns:1fr}}
+
+/* 事例 */
 dialog.case{width:min(860px,calc(100% - 32px));max-height:calc(100% - 48px);border:1px solid var(--line);border-radius:18px;padding:0;background:var(--surface);color:var(--fg);box-shadow:0 30px 90px -20px rgba(0,0,0,.5)}
 dialog.case::backdrop{background:rgba(18,20,19,.55)}
-dialog.case[open]{animation:pop .3s cubic-bezier(.2,.9,.3,1.1)}
-@keyframes pop{from{opacity:0;transform:translateY(16px)}}
-.case-head{position:relative}
-.case-head img{width:100%;aspect-ratio:16/7;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
-.case-close{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(18,20,19,.75);color:#fff;font-size:20px;cursor:pointer;display:grid;place-items:center}
+dialog.case[open]{animation:pop .25s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}}
+.case-img{width:100%;aspect-ratio:16/7;object-fit:cover;object-position:top;border-bottom:1px solid var(--line)}
+.case-close{position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(18,20,19,.75);color:#fff;font-size:20px;cursor:pointer;display:grid;place-items:center;z-index:1}
 .case-body{padding:24px 30px 30px}
-.case-body h3{font-family:var(--font-display);font-size:clamp(21px,2.8vw,26px);margin:0 0 6px;line-height:1.4}
-.case-body .sub{color:var(--muted);margin:0 0 20px;font-size:15px}
-.case-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:22px}
-.case-grid div{background:var(--bg);border-radius:12px;padding:14px 16px}
-.case-grid div.result{background:var(--accent-soft)}
-.case-grid h4{margin:0 0 4px;font-size:14px;font-family:var(--font-display)}
-.case-grid p,.case-grid ul{margin:0;font-size:14px;line-height:1.75}
-.case-grid ul{padding-left:1.1em}
-.case-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-@media (max-width:640px){.case-grid{grid-template-columns:1fr}.case-body{padding:20px 18px 22px}}
-
-/* 自己紹介 */
-.about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:start}
-.about-text p{margin:0 0 16px}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
-.chip{font-size:13px;padding:3px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--line)}
-.strengths{display:grid;gap:12px}
-.strength{display:grid;grid-template-columns:36px 1fr;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
-.strength .n{font-family:var(--font-display);font-weight:900;font-size:24px;color:var(--accent);line-height:1.2}
-.strength h3{margin:0 0 2px;font-family:var(--font-display);font-size:17px}
-.strength p{margin:0;color:var(--muted);font-size:14px;line-height:1.7}
-@media (max-width:860px){.about-grid{grid-template-columns:1fr;gap:28px}}
-
-/* 進め方 */
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s;border-top:2px solid var(--line)}
-.step{counter-increment:s;padding:20px 20px 0 0;position:relative}
-.step::before{content:"";position:absolute;top:-7px;left:0;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--bg2)}
-.step h3{font-family:var(--font-display);font-size:17px;margin:0 0 6px}
-.step h3::before{content:counter(s) ". ";color:var(--accent)}
-.step p{margin:0;font-size:14px;color:var(--muted);line-height:1.75}
-.ai-note{margin-top:36px;border-left:4px solid var(--accent);background:var(--surface);border-radius:0 var(--radius) var(--radius) 0;padding:16px 22px}
-.ai-note p{margin:0;font-size:15px}
-@media (max-width:900px){.steps{grid-template-columns:repeat(2,1fr);gap:24px 0}}
-@media (max-width:520px){.steps{grid-template-columns:1fr}}
-
-/* 経歴 */
-.career-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:48px}
-.timeline{list-style:none;margin:0;padding:0;position:relative}
-.timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line)}
-.timeline li{position:relative;padding:0 0 26px 34px}
-.timeline li::before{content:"";position:absolute;left:0;top:8px;width:16px;height:16px;border-radius:50%;background:var(--surface);border:3px solid var(--line)}
-.timeline li.now::before{border-color:var(--accent);background:var(--accent)}
-.timeline .when{font-size:13px;color:var(--muted)}
-.timeline h3{margin:0 0 4px;font-family:var(--font-display);font-size:17px}
-.timeline p{margin:0;font-size:14px;color:var(--muted);line-height:1.75}
-.side-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px}
-.side-card h3{margin:0 0 10px;font-size:15px;font-family:var(--font-display)}
-.cert{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.cert li{display:flex;justify-content:space-between;gap:12px;font-size:14px;border-bottom:1px solid var(--line);padding-bottom:6px}
-.cert li:last-child{border:none;padding:0}
-.cert span{color:var(--muted);font-size:13px;white-space:nowrap}
-.side-card .note{margin:10px 0 0;font-size:12px;color:var(--muted)}
-@media (max-width:860px){.career-grid{grid-template-columns:1fr}}
-
-/* 学生時代 */
-.roots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.root{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;display:flex;flex-direction:column;gap:6px;transition:border-color .2s}
-.root:hover{border-color:var(--accent)}
-.root.big{grid-column:span 3;display:grid;grid-template-columns:1fr 1fr;gap:28px;padding:24px 26px}
-.root.big>div{display:flex;flex-direction:column;gap:6px}
-.root .kind{font-size:12px;color:var(--muted)}
-.root h3{font-family:var(--font-display);font-size:16px;margin:0;line-height:1.5}
-.root.big h3{font-size:19px}
-.root p{margin:0;font-size:14px;color:var(--muted);line-height:1.7;flex:1}
-.award{display:inline-block;font-size:12px;font-weight:700;color:var(--amber);border:1px solid currentColor;border-radius:6px;padding:0 7px;margin-left:6px;vertical-align:2px}
-.root .links{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13px}
-.root .links a{color:var(--accent);text-decoration:none;font-weight:700}
-.root .links a:hover{text-decoration:underline}
-@media (max-width:980px){.roots-grid{grid-template-columns:repeat(2,1fr)}.root.big{grid-column:span 2}}
-@media (max-width:600px){.roots-grid{grid-template-columns:1fr}.root.big{grid-column:auto;grid-template-columns:1fr;gap:20px}}
+.case-meta{font-size:13px;color:var(--muted)}
+.case-body h3{font-family:var(--font-display);font-size:clamp(21px,2.8vw,26px);margin:2px 0 18px;line-height:1.4}
+.case-steps{list-style:none;margin:0 0 22px;padding:0;display:grid;gap:10px;counter-reset:c}
+.case-steps li{counter-increment:c;display:grid;grid-template-columns:100px 1fr;gap:14px;padding:12px 16px;background:var(--bg);border-radius:12px;font-size:14.5px;line-height:1.75}
+.case-steps li.res{background:var(--accent-soft)}
+.case-steps h4{margin:0;font-family:var(--font-display);font-size:14px}
+.case-steps h4::before{content:counter(c) ". ";color:var(--accent)}
+.case-steps ul{margin:0;padding-left:1.1em}
+.case-links{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.case-links a.ext{font-size:14px;color:var(--accent);font-weight:700;text-decoration:none}
+.case-links a.ext:hover{text-decoration:underline}
+@media (max-width:600px){.case-steps li{grid-template-columns:1fr;gap:2px}.case-body{padding:20px 18px 22px}}
 
 /* 連絡先 */
-.contact-box{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow)}
-.contact-box h2{font-family:var(--font-display);font-weight:900;font-size:clamp(24px,3vw,32px);margin:0 0 4px}
+.contact-box{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 32px}
+.contact-box h2{font-family:var(--font-display);font-weight:900;font-size:clamp(24px,3vw,30px);margin:0 0 4px}
 .contact-box p{margin:0;color:var(--muted)}
 @media (max-width:700px){.contact-box{grid-template-columns:1fr;padding:24px 20px}}
 footer{padding:28px 0 120px;font-size:13px;color:var(--muted)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 
-/* 案内役 */
+/* 案内役リュウ（常時の揺れはなし。まばたきと、話しかけたときだけ動く） */
 .buddy{position:fixed;right:20px;bottom:20px;z-index:40;display:flex;align-items:flex-end;gap:10px;pointer-events:none}
 .buddy>*{pointer-events:auto}
-.bubble{max-width:250px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13.5px;line-height:1.65;box-shadow:var(--shadow);transform-origin:100% 100%;transition:opacity .3s,transform .3s;margin-bottom:52px;margin-top:0}
-.bubble.hide{opacity:0;transform:scale(.85);pointer-events:none}
-.bubble .name{display:block;font-size:11px;font-weight:700;color:var(--accent);margin-bottom:1px}
-.dragon-btn{width:88px;height:88px;border:none;background:none;padding:0;cursor:pointer;flex:none;filter:drop-shadow(0 8px 12px rgba(0,0,0,.18))}
+.bubble{max-width:240px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13.5px;line-height:1.65;box-shadow:var(--shadow);transition:opacity .25s var(--ease),transform .25s var(--ease);margin:0 0 50px}
+.bubble.hide{opacity:0;transform:translateY(6px);pointer-events:none}
+.bubble .name{display:block;font-size:11px;font-weight:700;color:var(--accent)}
+.dragon-btn{width:80px;height:80px;border:none;background:none;padding:0;cursor:pointer;flex:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.16))}
 .dragon-btn svg{width:100%;height:100%;overflow:visible}
-.dragon{animation:bob 3s ease-in-out infinite;transform-origin:60px 110px}
-.dragon.hop{animation:hop .6s cubic-bezier(.3,1.6,.5,1)}
-@keyframes bob{50%{transform:translateY(-5px)}}
-@keyframes hop{30%{transform:translateY(-22px) rotate(-6deg)}60%{transform:translateY(0) scaleY(.92)}}
-.wing{transform-box:fill-box;animation:flap .5s ease-in-out infinite alternate}
-.wing.l{transform-origin:100% 80%}.wing.r{transform-origin:0% 80%;animation-name:flapR}
-@keyframes flap{to{transform:rotate(-14deg)}}
-@keyframes flapR{to{transform:rotate(14deg)}}
-.tail{transform-box:fill-box;transform-origin:0 50%;animation:wag 1.6s ease-in-out infinite alternate}
-@keyframes wag{to{transform:rotate(12deg)}}
+.dragon{transform-origin:60px 110px}
+.dragon.hop{animation:hop .5s var(--ease)}
+@keyframes hop{35%{transform:translateY(-16px) rotate(-5deg)}70%{transform:translateY(0) scaleY(.94)}}
 .lids{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:lid 5s infinite}
-@keyframes lid{0%,92%,100%{transform:scaleY(0)}95%{transform:scaleY(1)}}
+@keyframes lid{0%,93%,100%{transform:scaleY(0)}96%{transform:scaleY(1)}}
 .buddy-min{position:absolute;top:-6px;right:-4px;width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:13px;cursor:pointer;display:grid;place-items:center;line-height:1}
 .dragon-wrap{position:relative}
-@media (max-width:600px){.bubble{max-width:190px;font-size:12.5px;margin-bottom:40px}.dragon-btn{width:68px;height:68px}.buddy{right:12px;bottom:12px}}
+@media (max-width:600px){.bubble{max-width:180px;font-size:12.5px;margin-bottom:38px}.dragon-btn{width:62px;height:62px}.buddy{right:12px;bottom:12px}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none}
-  .catch .line>span{transform:none}
 }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
-<div class="progress" id="progress" aria-hidden="true"></div>
 
 <header class="top" id="top">
   <div class="wrap nav">
     <a class="logo" href="#hero">安住 龍祐</a>
     <nav aria-label="ページ内メニュー">
       <ul>
-        <li><a href="#works">制作物</a></li>
-        <li><a href="#about">自己紹介</a></li>
-        <li><a href="#process">進め方</a></li>
-        <li><a href="#career">経歴</a></li>
-        <li><a href="#roots">学生時代</a></li>
+        <li><a href="#results">実績</a></li>
+        <li><a href="#story">ストーリー</a></li>
+        <li><a href="#projects">プロジェクト</a></li>
         <li><a href="#contact">連絡先</a></li>
       </ul>
     </nav>
@@ -280,207 +258,95 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 </header>
 
 <main id="main">
-<section class="hero" id="hero" data-buddy="hero" aria-label="はじめに">
-  <canvas id="net" aria-hidden="true"></canvas>
+<section class="hero" id="hero" aria-label="はじめに">
   <div class="wrap hero-grid">
     <div>
       <h1 class="who">安住 龍祐<span>企画・研修PM ／ 生成AIでの開発</span></h1>
-      <p class="catch">
-        <span class="line"><span>現場の困りごとを、</span></span>
-        <span class="line"><span><em>動く仕組み</em>にする。</span></span>
-      </p>
-      <p class="lead">研修PMとして課題を見つけて企画し、生成AIを使って自分で作り、運用に乗せるところまで一人で進めてきました。</p>
+      <p class="catch"><span>人が動きたくなる</span><span><em>仕組み</em>を、つくる。</span></p>
+      <p class="lead">大学では、学生と社会人が対話する場を。いまは、生成AIで研修と業務の仕組みを。道具は変わっても、人が前に進みたくなる場と仕組みをつくってきました。</p>
       <div class="cta">
-        <a class="btn primary" href="#works">制作物を見る
+        <a class="btn primary" href="#projects">プロジェクトを見る
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a class="btn ghost" href="#contact">連絡する</a>
       </div>
     </div>
-    <aside class="proof" aria-label="主な成果">
-      <div class="proof-main">
-        <div class="big"><span class="from">週24時間</span><span class="arrow" aria-hidden="true">→</span><span class="to"><span data-count="1">1</span><small>時間</small></span></div>
-        <p>研修の準備・集計・報告（講師全体）を自動化で短縮</p>
+    <div>
+      <div class="topo" id="topo" role="group" aria-label="これまでの取り組みのネットワーク図。点を押すと、その取り組みの詳細が開きます">
+        <svg class="links" id="topoLinks" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="packet" id="packet" aria-hidden="true"></div>
       </div>
-      <ul>
-        <li><b>9<small>名全員</small></b>LPIC-1に1週間以内で合格（講師なしの自習）</li>
-        <li><b>8<small>名</small></b>教材開発を経験した講師がエンジニア案件に配属</li>
-        <li><b>1<small>位</small></b>受講生による講師評価（13人中）</li>
+      <div class="topo-cap"><span><i></i>大学時代</span><span><i class="w"></i>社会人</span><span><span class="cap-d">点を押すと詳細が開きます</span><span class="cap-m">点を押すと詳細が開きます</span></span></div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2>実績</h2></div>
+    <div class="results">
+      <div class="res-main reveal">
+        <p class="label">研修の運営業務（講師全体の準備・集計・報告）</p>
+        <div class="big"><span class="from">週24時間</span><span class="arrow" aria-hidden="true">→</span><span class="to"><span id="mainCount">1</span><small>時間</small></span></div>
+        <p>自分で作った学習基盤で、集計と報告を自動化しました。</p>
+      </div>
+      <ul class="res-list reveal">
+        <li><span>上司の報告書作成</span><span class="v"><s>30分</s>1分</span></li>
+        <li><span>LPIC-1 の自習支援<small>講師なし・1週間以内に合格</small></span><span class="v">9名全員</span></li>
+        <li><span>講師評価<small>受講生による評価</small></span><span class="v">13人中1位</span></li>
+        <li><span>エンジニア案件への配属<small>教材開発を経験した講師</small></span><span class="v">8名</span></li>
+        <li><span>大型家電の保証加入率<small>ノジマ時代の個人実績</small></span><span class="v"><s>10%</s>30%</span></li>
       </ul>
-    </aside>
+    </div>
   </div>
 </section>
 
-<section id="works" data-buddy="works">
+<section id="story" class="alt">
   <div class="wrap">
     <div class="sec-head reveal">
-      <h2>制作物</h2>
-      <p>業務のために作った仕組みを、社外公開用のデモにしたものです。人物やデータはすべて架空です。</p>
+      <h2>ストーリー</h2>
+      <p>研究室から店頭、茶畑、研修、そしてFDEへ。</p>
     </div>
+    <ol class="road reveal">
+      <li><span class="when">〜2025年3月</span><h3>研究室</h3><p>地域・企業・行政と組み、学生と社会人をつなぐ場をつくる</p></li>
+      <li class="work"><span class="when">2025年4月〜2026年3月</span><h3>店頭</h3><p>ノジマで提案営業。10件以上の案件を並行して管理</p></li>
+      <li class="work"><span class="when">2026年5〜6月</span><h3>茶畑</h3><p>茶葉生産農家で除草・遮光シート管理・収穫補助</p></li>
+      <li class="work"><span class="when">2026年7月〜</span><h3>研修</h3><p>DYMキャリアで研修PM・講師。教育基盤を一人で内製化</p></li>
+      <li class="next"><span class="when">2026年11月〜（予定）</span><h3>FDE</h3><p>社内初のFDEとして、社外2社のAI活用を実装で支援</p></li>
+    </ol>
+    <p class="speed reveal">2026年7〜8月に <b>CCNA・LPIC-1・LPIC-3 Security 303</b> に合格し、入社4か月で <b>社内初のFDE</b> に選ばれました。</p>
 
-    <article class="feature reveal">
-      <div>
-        <span class="when">2026年8月〜 ／ 株式会社DYMキャリア</span>
-        <h3>内定者向けCCNA研修と<br>社内教育基盤の内製化</h3>
-        <p>外部講師に頼ると教育費がかかるのにノウハウが残らない、という課題から、研修と教育基盤を内製化しました。下の01〜03はこの取り組みから、04は社内DXから生まれたものです。</p>
-      </div>
-      <ol class="flow">
-        <li><b>課題を見つける</b>費用がかかるのにノウハウが残らない</li>
-        <li><b>企画・提案</b>内製化と講師育成をセットで提案</li>
-        <li><b>一人で作る</b>eラーニング・教材・演習環境</li>
-        <li><b>運用・標準化</b>週24時間の運営業務を1時間に</li>
-      </ol>
-    </article>
+    <div class="axis reveal">
+      <h3>大学から変わらないこと</h3>
+      <p>道具は「対話の場」から「AIシステム」に変わっても、やっていることは同じです。</p>
+      <table class="axis-table">
+        <thead><tr><th scope="col">軸</th><th scope="col" class="u">大学時代</th><th scope="col" class="w">現在</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">人のやる気・当事者意識</th><td data-h="大学">卒業研究（上司のフィードバックと部下の当事者意識）、二要因理論での学生分析</td><td data-h="現在">強制できない内定者の学習継続を支援。入れ替わる講師5〜7名をマネジメント</td></tr>
+          <tr><th scope="row">人と人をつなぐ場</th><td data-h="大学">オープンラボで学生と社会人を、島田市で名所とお弁当屋をつなぐ</td><td data-h="現在">待機社員と研修をつなぎ、実務経験から8名の案件配属へ</td></tr>
+          <tr><th scope="row">運営の仕組み化</th><td data-h="大学">オープンラボの予約・質問・進捗をZapier・Trello・Slackで自動化</td><td data-h="現在">研修運営を週24時間から1時間に、報告書を30分から1分に</td></tr>
+          <tr><th scope="row">採用・育成</th><td data-h="大学">介護業界とカーディーラーの新卒採用、内定者インターン</td><td data-h="現在">内定者向けCCNA研修。FDE案件で採用フローのシステム化と面接の標準化</td></tr>
+          <tr><th scope="row">声を聞いて形にする</th><td data-h="大学">16人へのインタビュー、アンケート、現地調査から、動画・地図・商品・提案へ</td><td data-h="現在">現場のヒアリングから、要件定義・実装へ</td></tr>
+          <tr><th scope="row">人を動かす営業力</th><td data-h="大学">ロールプレイング大会で約30人中1位</td><td data-h="現在">ノジマで店舗1位・エリア1位、講師評価で13人中1位</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>プロジェクト</h2>
+      <p>それぞれ「課題 → 考えたこと → 工夫 → 成果」の順にまとめました。現職の4つは、架空のデータで実際に操作できます。</p>
+    </div>
+    <h3 class="sub-h reveal">現職</h3>
     <div class="works-grid" id="worksGrid"></div>
+    <h3 class="sub-h u reveal">大学時代</h3>
+    <div class="univ-grid" id="univGrid"></div>
   </div>
 </section>
 
-<dialog class="case" id="caseDlg" aria-labelledby="caseTitle">
-  <div class="case-head">
-    <img id="caseImg" alt="">
-    <button class="case-close" id="caseClose" type="button" aria-label="閉じる">×</button>
-  </div>
-  <div class="case-body">
-    <h3 id="caseTitle"></h3>
-    <p class="sub" id="caseSub"></p>
-    <div class="case-grid" id="caseGrid"></div>
-    <div class="case-actions">
-      <a class="btn primary" id="caseLink" href="#" target="_blank" rel="noopener">デモを開く
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
-    </div>
-  </div>
-</dialog>
-
-<section id="about" class="alt" data-buddy="about">
-  <div class="wrap about-grid">
-    <div class="about-text reveal">
-      <div class="sec-head" style="margin-bottom:20px"><h2>自己紹介</h2></div>
-      <p>株式会社ノジマで提案営業と顧客案件の管理を経験したあと、株式会社DYMキャリアへ転職しました。内定者向けCCNA研修のPM・講師を務めながら、教育費の外部依存と、案件待ちの社員に実務経験を積む場がないことに着目しました。</p>
-      <p>そこで、生成AIを使った教育基盤の内製化を提案し、要件定義から開発、運用保守まで一人で進めました。現在は社内DXにも取り組んでおり、社外企業のAI活用を支援するFDE案件にも参加する予定です。</p>
-      <div class="chips">
-        <span class="chip">企画・提案</span><span class="chip">要件定義</span><span class="chip">研修PM</span><span class="chip">講師マネジメント 累計13名</span><span class="chip">生成AI開発</span><span class="chip">業務自動化</span>
-      </div>
-    </div>
-    <div class="strengths">
-      <article class="strength reveal"><span class="n">1</span><div><h3>課題を見つけて企画する</h3><p>経営課題と現場の困りごとをつなげて施策にし、数字を根拠に上長と目標をそろえます。</p></div></article>
-      <article class="strength reveal"><span class="n">2</span><div><h3>生成AIですぐ形にする</h3><p>話し合いの段階でモックを作り、触れる形で合意します。必要な技術はその場で学びます。</p></div></article>
-      <article class="strength reveal"><span class="n">3</span><div><h3>続く仕組みにする</h3><p>担当者が入れ替わっても品質が落ちないよう、教材・評価基準・引き継ぎを標準化します。</p></div></article>
-    </div>
-  </div>
-</section>
-
-<section id="process" data-buddy="process">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <h2>進め方</h2>
-      <p>企画書だけで議論するより、触れるものを早く出して決めます。</p>
-    </div>
-    <div class="steps reveal">
-      <div class="step"><h3>困りごとを拾う</h3><p>受講者・講師・上長それぞれに聞き、課題と数字を集めます。</p></div>
-      <div class="step"><h3>目的から逆算して企画</h3><p>経営課題につながる形で施策をまとめ、目標と優先順位を合意します。</p></div>
-      <div class="step"><h3>AIと一緒に試作</h3><p>要件定義と並行してモックを作り、触ってもらいながら仕様を固めます。</p></div>
-      <div class="step"><h3>運用に乗せて標準化</h3><p>自動化と手順書で、担当が替わっても回る仕組みにします。</p></div>
-    </div>
-    <div class="ai-note reveal">
-      <p>ChatGPT・Claude Code・Gemini を使い分けて、設計・実装・テストを進めています。このサイトも、生成AI（Claude Code）と一緒に企画から公開まで1日で作りました。</p>
-    </div>
-  </div>
-</section>
-
-<section id="career" class="alt" data-buddy="career">
-  <div class="wrap">
-    <div class="sec-head reveal"><h2>経歴</h2></div>
-    <div class="career-grid">
-      <ol class="timeline">
-        <li class="now reveal"><span class="when">2026年11月〜（予定）</span><h3>社外FDE案件に参加</h3><p>社内初のFDEとして、不動産会社とリフォーム会社の2案件に同時に参加する予定です。PMと2人体制で、AIを使ったシステムの実装全般を担当します。</p></li>
-        <li class="now reveal"><span class="when">2026年10月〜</span><h3>社内DX・業務自動化</h3><p>現場にヒアリングして課題を整理し、契約書の作成、稟議書、メールの下書きを自動化しています。新人営業向けの教育AI Botも開発中です。</p></li>
-        <li class="now reveal"><span class="when">2026年7月〜</span><h3>株式会社DYMキャリア</h3><p>内定者向けCCNA研修のPM・講師を担当しています。教育基盤の内製化を提案し、一人で開発・運用しています。講師は常時5〜7名、累計13名をマネジメントしました。</p></li>
-        <li class="reveal"><span class="when">2025年4月〜2026年3月</span><h3>株式会社ノジマ</h3><p>提案営業と顧客案件の管理を担当し、常時10件以上の案件を並行して進めました。新規会員獲得で店舗1位、アプリ会員獲得でエリア1位を達成し、大型家電の保証加入率を10%から30%に上げました。</p></li>
-        <li class="reveal"><span class="when">〜2025年3月</span><h3>大学</h3><p>地域・企業・行政と組んだプロジェクトに取り組みました（下の「学生時代」）。</p></li>
-      </ol>
-      <div>
-        <div class="side-card reveal">
-          <h3>資格</h3>
-          <ul class="cert">
-            <li>LPIC-3 Security 303 試験合格<span>2026年8月</span></li>
-            <li>LPIC-1<span>2026年8月</span></li>
-            <li>CCNA<span>2026年7月</span></li>
-            <li>実用英語技能検定 2級<span>2020年10月</span></li>
-          </ul>
-        </div>
-        <div class="side-card reveal">
-          <h3>技術・ツール</h3>
-          <div class="tags">
-            <span>ChatGPT</span><span>Claude Code</span><span>Gemini</span><span>JavaScript</span><span>HTML/CSS</span><span>Python</span><span>Node.js</span><span>Google Apps Script</span><span>Cloudflare D1</span><span>Firestore</span><span>REST API</span><span>OAuth 2.0</span><span>Zapier</span><span>Google Workspace</span><span>Cisco IOS</span><span>Linux</span>
-          </div>
-          <p class="note">開発・クラウド・DB・APIは生成AIの支援を受けて使っています。</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="roots" data-buddy="roots">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <h2>学生時代</h2>
-      <p>地域・企業・行政と組み、人を巻き込んで形にする取り組みを続けてきました。</p>
-    </div>
-    <div class="roots-grid">
-      <article class="root big reveal">
-        <div>
-          <span class="kind">立ち上げ・運営</span>
-          <h3>オープンラボの立ち上げ</h3>
-          <p>グッドデザイン賞を受賞したフューチャーセンターが休止したあと、その良さを受け継いで、学生と地域の社会人が立場を越えて対話する場を立ち上げました。社会人に自分で声をかけて毎週開催し、事業承継・教育支援・働く意欲をテーマにした3つのプロジェクトが生まれました。予約や進捗管理はZapier・Trello・Slackで自動化しました。</p>
-          <div class="links"><a href="https://note.com/akiko_kokubo/n/n6ba15b7ac73a" target="_blank" rel="noopener">立ち上げの背景</a><a href="https://www.g-mark.org/gallery/winners/9e1ea30b-803d-11ed-af7e-0242ac130002" target="_blank" rel="noopener">前身のグッドデザイン賞</a><a href="https://note.com/kokulabo/n/n675488f500f5" target="_blank" rel="noopener">プロジェクト報告</a></div>
-        </div>
-        <div>
-          <span class="kind">商品開発</span>
-          <h3>函南町「あみにょん焼き」の開発<span class="award">2024年度グッドデザイン賞</span></h3>
-          <p>フィールドワークの結果をレポートにまとめ、お土産の開発会議で意見を出し、商品名にも助言しました。</p>
-          <div class="links"><a href="https://www.izugateway.com/shop/4494/" target="_blank" rel="noopener">商品紹介</a><a href="https://www.g-mark.org/gallery/winners/20814?unitCodes=18&amp;years=2024" target="_blank" rel="noopener">グッドデザイン賞</a></div>
-        </div>
-      </article>
-      <article class="root reveal">
-        <span class="kind">提案</span>
-        <h3>介護業界の新卒採用戦略</h3>
-        <p>企業から依頼を受け、大学生16人へのインタビューを二要因理論で分析し、学生の声をもとに戦略を提案しました。</p>
-        <div class="links"><a href="https://note.com/kokulabo/n/n2eebaf5ae91b" target="_blank" rel="noopener">記事</a></div>
-      </article>
-      <article class="root reveal">
-        <span class="kind">地域振興</span>
-        <h3>島田市「合格祈願弁当」</h3>
-        <p>縁起の良い駅をつないだ観光マップを作り、地元のお弁当チェーンを巻き込んで合格祈願弁当につなげました。</p>
-        <div class="links"><a href="https://www.nikkei.com/article/DGXZQOCC244MA0U3A220C2000000/" target="_blank" rel="noopener">日経の記事</a></div>
-      </article>
-      <article class="root reveal">
-        <span class="kind">調査・映像</span>
-        <h3>小山町スポーツツーリズム</h3>
-        <p>五輪開催地の実績を合宿誘致に活かすため、アンケートや聞き取り、PR動画の制作、提案までを担当しました。</p>
-        <div class="links"><a href="https://youtu.be/BHo5P-H6-kk" target="_blank" rel="noopener">発表動画</a><a href="https://www.fujinokuni-consortium.or.jp/wp-content/uploads/2023/02/8481c2b634e80ac78b6616555ecaa704.pdf" target="_blank" rel="noopener">成果報告書</a></div>
-      </article>
-      <article class="root reveal">
-        <span class="kind">チーム</span>
-        <h3>カーディーラーの採用強化</h3>
-        <p>ゼミのチームで毎週ミーティングとヒアリングを重ね、メンバーの意欲を保ちながら最後までやり切りました。</p>
-        <div class="links"><a href="https://note.com/kokulabo/n/n6930d53c4035" target="_blank" rel="noopener">報告会</a></div>
-      </article>
-      <article class="root reveal">
-        <span class="kind">研究</span>
-        <h3>卒業研究</h3>
-        <p>上司のフィードバックと部下の当事者意識の関係を、社会人へのアンケートと重回帰分析で研究しました。</p>
-        <div class="links"><a href="https://note.com/kokulabo/n/nd36092a147e6" target="_blank" rel="noopener">発表会の記事</a></div>
-      </article>
-      <article class="root reveal">
-        <span class="kind">営業</span>
-        <h3>内定者インターン</h3>
-        <p>買取専門店で営業を担当しました。インターン生約30人のロールプレイング大会で1位になり、店長候補に選ばれました。</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section id="contact" data-buddy="contact" style="padding-top:24px">
+<section id="contact" style="padding-top:8px">
   <div class="wrap">
     <div class="contact-box reveal">
       <div>
@@ -507,15 +373,26 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   </div>
 </footer>
 
+<dialog class="case" id="caseDlg" aria-labelledby="caseTitle">
+  <button class="case-close" id="caseClose" type="button" aria-label="閉じる">×</button>
+  <img class="case-img" id="caseImg" alt="">
+  <div class="case-body">
+    <span class="case-meta" id="caseMeta"></span>
+    <h3 id="caseTitle"></h3>
+    <ol class="case-steps" id="caseSteps"></ol>
+    <div class="case-links" id="caseLinks"></div>
+  </div>
+</dialog>
+
 <div class="buddy" id="buddy">
-  <p class="bubble" id="bubble" role="status" aria-live="polite"><span class="name">リュウ</span><span id="bubbleText">やあ！ぼくはリュウ。このサイトを案内するよ。</span></p>
+  <p class="bubble" id="bubble" role="status" aria-live="polite"><span class="name">リュウ</span><span id="bubbleText">ぼくはリュウ。上の図の点を押すと、パケットが届いて詳しい話が開くよ。</span></p>
   <div class="dragon-wrap">
     <button class="dragon-btn" id="dragonBtn" type="button" aria-label="案内役のリュウに話しかける">
       <svg viewBox="0 0 120 120" aria-hidden="true">
         <g class="dragon" id="dragon">
-          <path class="tail" d="M88 92 q20 -2 24 -18 q-2 10 -8 6 q-4 14 -18 18z" fill="var(--dragon-dark)"/>
-          <path class="wing l" d="M30 58 q-22 -12 -26 -30 q14 6 18 2 q4 10 14 10z" fill="var(--dragon-dark)"/>
-          <path class="wing r" d="M90 58 q22 -12 26 -30 q-14 6 -18 2 q-4 10 -14 10z" fill="var(--dragon-dark)"/>
+          <path d="M88 92 q20 -2 24 -18 q-2 10 -8 6 q-4 14 -18 18z" fill="var(--dragon-dark)"/>
+          <path d="M30 58 q-22 -12 -26 -30 q14 6 18 2 q4 10 14 10z" fill="var(--dragon-dark)"/>
+          <path d="M90 58 q22 -12 26 -30 q-14 6 -18 2 q-4 10 -14 10z" fill="var(--dragon-dark)"/>
           <path d="M40 30 l-6 -20 l16 14z" fill="var(--horn)"/>
           <path d="M80 30 l6 -20 l-16 14z" fill="var(--horn)"/>
           <ellipse cx="60" cy="68" rx="38" ry="40" fill="var(--dragon)"/>
@@ -554,199 +431,269 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     root.dataset.theme = dark ? 'light' : 'dark';
     try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
-    say(dark ? 'ライトモードだよ。まぶしい！' : 'ダークモードだよ。夜はこっちが落ち着くね。');
   });
 
-  /* 制作物 */
-  const WORKS = [
-    { no: '01', title: 'CCNA 研修 CLIシミュレーター', img: 'assets/img/cli-simulator.png', href: 'works/cli-simulator/',
-      lead: 'コマンド演習と自動採点。ネットワーク機器の設定を、ブラウザ上で練習できます。',
-      tags: ['自作エンジン', 'Cisco IOS風CLI', '自動採点'],
-      sub: '実際に使っている版の画面と操作を、軽いエンジンで作り直した公開用デモです（約140KB、外部への通信なし）。',
+  /* ---------- 事例データ（課題 → 考えたこと → 工夫 → 成果） ---------- */
+  const CASES = {
+    training: { era: 'work', label: 'CCNA研修', meta: '2026年8月〜 ／ 株式会社DYMキャリア', title: '内定者向けCCNA研修と、社内教育基盤の内製化',
+      problem: '外部講師やITスクールに頼ると、教育費がかかるのに十分な成果やノウハウが社内に残りませんでした。案件待ちの社員には、実務経験を積む場もありませんでした。',
+      thought: '教育基盤を内製化し、案件待ちの社員を講師にすれば、教育費の削減と実務経験づくりを同時に進められる。',
+      craft: ['経営課題から改善策を企画し、上長と目標をそろえて提案', '生成AIを使い、eラーニング・教材サイト・CLIシミュレーターなどを一人で開発', '講師が交代しても品質が落ちないよう、教材・解説・評価基準を標準化'],
+      result: ['研修運営：週約24時間 → 約1時間', 'LPIC-1：支援した9名全員が1週間以内に合格', '教材開発を経験した講師8名がエンジニア案件に配属'],
+      links: [['works/cli-simulator/', 'CLIシミュレーター'], ['works/ccna-kaisetsu/', '問題別解説サイト'], ['works/learning/', 'eラーニング']] },
+    cli: { era: 'work', meta: '現職 ／ CCNA研修', title: 'CCNA 研修 CLIシミュレーター', img: 'assets/img/cli-simulator.png', demo: 'works/cli-simulator/',
+      lead: 'コマンド演習と自動採点。ブラウザだけで機器の設定を練習できます。',
       problem: '実機や専用ソフトがないと設定の練習ができず、内定者（学生）が自宅で手を動かして学べませんでした。',
-      role: '企画・仕様の検討から、CLIの解析・経路計算・採点エンジンの実装までを担当しました。',
-      how: ['IOS風のコマンドを解析し、VLAN・OSPF・pingを計算', '課題ごとの自動採点と制限時間つきの試験モード', '機器を置いて配線する自由演習モード'],
-      result: ['ブラウザだけで、いつでも実機に近い練習が可能に', '講師が付きっきりでなくても自習できる環境に', '演習の結果を進捗管理と連携（本番版）'] },
-    { no: '02', title: 'CCNA 研修 問題別解説サイト', img: 'assets/img/ccna-kaisetsu.png', href: 'works/ccna-kaisetsu/',
-      lead: '図解・用語集つきの教材。宿題の1問ごとに「どこを見て、なぜ、どう解くか」を図で解説します。',
-      tags: ['教材設計', 'アクセシビリティ', '標準化'],
-      sub: '全16章の宿題の解説を、つまずきやすい前提知識と合わせて整理しました。ふりがな・読み上げ・用語辞典にも対応しています。',
+      thought: '実機がなくても自宅で手を動かせれば、講師が付きっきりでなくても自習が進む。',
+      craft: ['IOS風のコマンドを解析し、VLAN・OSPF・pingを計算するエンジンを実装', '課題ごとの自動採点と、制限時間つきの試験モード', '機器を置いて配線する自由演習モード'],
+      result: ['ブラウザだけで、実機に近い練習がいつでもできるように', '演習の結果を進捗管理と連携（本番版）'] },
+    kaisetsu: { era: 'work', meta: '現職 ／ CCNA研修', title: 'CCNA 研修 問題別解説サイト', img: 'assets/img/ccna-kaisetsu.png', demo: 'works/ccna-kaisetsu/',
+      lead: '図解・用語集つきの教材。1問ごとに「どこを見て、なぜ、どう解くか」を解説します。',
       problem: '講師が案件配属で入れ替わるため、説明の質が講師によって変わっていました。',
-      role: '教材の構成と解説ルールを決め、生成AIで大量の解説を作って一つずつ確認しました。',
-      how: ['「前提知識 → 問題」の順で読める構成', 'ふりがな・ゆっくり再生・用語辞典・ペンで書き込み', '講師が替わっても同じ説明ができるよう標準化'],
-      result: ['講師が交代しても指導の質を保てるように', '自習でつまずいたときの質問を減らす', '講師の勉強会資料としても活用'] },
-    { no: '03', title: 'CCNA 研修 eラーニング・研修管理システム', img: 'assets/img/learning.png', href: 'works/learning/',
-      lead: '受講者・講師・上司・管理者が、同じ場所で学習状況を共有できる研修プラットフォームです。',
-      tags: ['要件定義', 'GAS', 'JavaScript', '自動化'],
-      sub: '研修で動いている仕組みを、ポートフォリオ用に架空のデータで作り直したデモです。右下から役割を切り替えたり、「紙芝居で見る」で使い方を順に見たりできます。',
+      thought: '説明を講師の頭の中ではなく教材の側に持たせれば、講師が替わっても質が落ちない。',
+      craft: ['「前提知識 → 問題」の順で読める構成', 'ふりがな・ゆっくり再生・用語辞典・ペンでの書き込みに対応', '生成AIで作った解説を、一つずつ確認して標準化'],
+      result: ['講師が交代しても、同じ質で説明できるように', '講師向け勉強会の資料としても活用'] },
+    learning: { era: 'work', meta: '現職 ／ CCNA研修', title: 'CCNA 研修 eラーニング・研修管理システム', img: 'assets/img/learning.png', demo: 'works/learning/',
+      lead: '受講者・講師・上司・管理者が、同じ場所で学習状況を共有できます。',
       problem: '講師が毎週、手作業で準備・集計・報告をしていて、上司も研修の状況をすぐに確認できませんでした。',
-      role: '企画・要件定義・設計・開発・テスト・運用保守までをすべて一人で担当しました（生成AIを活用）。',
-      how: ['役割ごとに「今日やること」が分かるホーム', '宿題の提出・採点と進捗の集計を自動化', '研修の状況をリアルタイムで上司に共有'],
-      result: ['講師の運営業務：週約24時間 → 約1時間', '上司の報告書作成：約30分 → 約1分', 'LPIC-1：支援した9名全員が1週間以内に合格'] },
-    { no: '04', title: '営業向け 業務報告・KPI管理のAIコーチ', img: 'assets/img/report-coach.png', href: 'works/report-coach/',
-      lead: '業務改善の試作。毎日の報告を保存すると、その場でAIが当月の進捗を読んで指導を返します。',
-      tags: ['社内DX', 'Claude API', 'Cloudflare', '試作'],
-      sub: '営業メンバーの業務報告とチーム・事業部の数字を1か所にまとめる仕組みの試作です。メンバー・マネージャー・事業部長を切り替えて体験できます。',
+      thought: '内定者は学生なので、学習は強制できない。自習できる環境と、講師が支える体制の両方が要る。',
+      craft: ['役割ごとに「今日やること」が分かるホーム', '宿題の提出・採点と進捗の集計を自動化', '研修の状況をリアルタイムで上司に共有'],
+      result: ['講師の運営業務：週約24時間 → 約1時間', '上司の報告書作成：約30分 → 約1分'] },
+    dx: { era: 'work', label: '社内DX', meta: '2026年10月〜 ／ 社内DX・業務自動化', title: '営業向け 業務報告・KPI管理のAIコーチ', img: 'assets/img/report-coach.png', demo: 'works/report-coach/',
+      lead: '業務改善の試作。報告を保存すると、その場でAIが進捗を読んで指導を返します。',
       problem: '報告・KPI・目標がばらばらに管理されていて、上司が「誰がどこで止まっているか」をすぐに把握できませんでした。',
-      role: '社内DXの一環として、業務の整理・要件定義・設計を行い、試作を作りました。',
-      how: ['架電・アポの数は記録から自動で取り込み', '報告を保存すると、AIが進捗と直近の報告から指導を返す', '上司のメモや事業部長の判断が翌日の指導に反映される'],
-      result: ['「報告 → 指導 → 上司メモ → 提言」を毎日回る流れとして設計', '役割ごとに見える範囲を分けたダッシュボード', '進行中のため、成果の数字はまだありません'] },
+      thought: '報告を書いた直後に指導が返ってくれば、報告が「出すだけ」で終わらず、翌日の行動につながる。',
+      craft: ['架電・アポの数は記録から自動で取り込み', '報告を保存すると、AIが当月の進捗と直近の報告から指導を返す', '上司のメモや事業部長の判断が、翌日の指導に反映される'],
+      result: ['「報告 → 指導 → 上司メモ → 提言」が毎日回る流れを設計', '進行中のため、成果の数字はまだありません'] },
+    fde: { era: 'work', label: 'FDE', meta: '2026年11月〜（参加予定）', title: '社外FDE案件への参加',
+      problem: '不動産会社では営業の効率化、リフォーム会社では人事評価・営業生産性・採用フロー・採用面接に課題があります。',
+      thought: '社内で研修と業務の仕組みを作ってきた経験を、社外企業の課題解決に広げる。',
+      craft: ['社内初のFDEとして、社外2案件に並行して参加', 'PMとの2人体制で、自分はシステム実装全般を担当'],
+      result: ['これから参加する案件のため、成果はまだありません'] },
+    nojima: { era: 'work', label: 'ノジマ', meta: '2025年4月〜2026年3月 ／ 株式会社ノジマ', title: '家電・デジタル製品の提案営業と案件管理',
+      problem: '用途・予算・要望が一人ひとり違うお客様に提案しながら、数日から最長3か月かかる案件を並行して進める必要がありました。',
+      craft: ['用途・予算・要望をもとにした比較提案と見積', '常時10件以上の案件を並行管理し、メーカー・協力会社と調整', '販売実績を分析して、接客と売場を改善'],
+      result: ['新規会員獲得で店舗1位', '新規アプリ会員獲得で静岡・神奈川西エリア1位', '大型家電の保証加入率を10%から30%に（個人実績）'] },
+    tea: { era: 'work', label: '茶畑', meta: '2026年5〜6月 ／ 茶葉生産農家（アルバイト）', title: '茶畑での仕事',
+      did: '茶園の除草、遮光シートの管理、収穫の補助と運搬を担当しました。' },
+    openlab: { era: 'univ', label: 'オープンラボ', meta: '大学時代 ／ 立ち上げ・運営', title: 'オープンラボの立ち上げ・運営',
+      problem: '研究室を地域に開いていたフューチャーセンター（グッドデザイン賞受賞）が休止しました。',
+      thought: 'その良さを受け継ぎ、学生と社会人が立場や業界を越えて対話し、新しい行動につなげる場を新しい形でつくる。',
+      craft: ['さまざまな業界の社会人に自分で連絡し、参加を調整', '平日の仕事後に毎週開催。勤務時間帯には、社会人が仕事として参加できる報告会・勉強会も', '予約・質問対応・進捗管理をZapier・Trello・Slack・Google Workspaceで自動化'],
+      result: ['事業承継・教育支援・働く意欲をテーマにした3つのプロジェクトが始動'],
+      ext: [['https://note.com/akiko_kokubo/n/n6ba15b7ac73a', '立ち上げの背景'], ['https://note.com/akiko_kokubo/n/n27010bcd67d1', '立ち上げ前の取り組み'], ['https://www.g-mark.org/gallery/winners/9e1ea30b-803d-11ed-af7e-0242ac130002', '前身のグッドデザイン賞'], ['https://note.com/kokulabo/n/n675488f500f5', 'プロジェクト報告']] },
+    kaigo: { era: 'univ', label: '介護の採用', meta: '大学時代 ／ 個人プロジェクト', title: '介護業界の新卒採用に向けた営業戦略',
+      problem: '株式会社エルユーエス様から、介護業界の新卒採用に向けた営業戦略の提案を依頼されました。',
+      thought: 'まず、学生が就職先に何を求めているのかを知る必要がある。',
+      craft: ['県内の大学生16人にインタビュー', 'ハーズバーグの二要因理論を踏まえて分析'],
+      result: ['学生の声を根拠にした提案をまとめた'],
+      ext: [['https://note.com/kokulabo/n/n2eebaf5ae91b', '個人プロジェクトの記事']] },
+    dealer: { era: 'univ', label: '車の採用', meta: '大学時代 ／ ゼミのチームプロジェクト', title: 'カーディーラーの新卒採用強化',
+      problem: 'ゼミのチームで、カーディーラーの新卒採用の強化に取り組みました。',
+      thought: '一人の成果ではなく、チーム全員で継続して成果を出す。',
+      craft: ['メンバーのモチベーションに気を配る', '毎週の定期ミーティングに向けて検討を進め、ヒアリングを重ねる'],
+      result: ['14期プロジェクト報告会で発表'],
+      ext: [['https://note.com/kokulabo/n/n6930d53c4035', '14期プロジェクト報告会']] },
+    shimada: { era: 'univ', label: '島田市', meta: '大学時代 ／ 島田市との地域振興', title: '縁起の良い駅をつなぐ「合格祈願弁当」',
+      problem: '地域を巡ってもらうきっかけを、どう作るかが課題でした。',
+      thought: '門出駅や合格駅など、地域に点在する縁起の良い場所をつなげば、巡る理由になる。',
+      craft: ['縁起の良い場所をつないだ観光マップを作成', '静岡県内のローカルチェーンのお弁当屋、天神屋様を巻き込む'],
+      result: ['合格祈願弁当の取り組みにつながり、日本経済新聞で紹介'],
+      ext: [['https://www.nikkei.com/article/DGXZQOCC244MA0U3A220C2000000/', '日経の記事']] },
+    aminyon: { era: 'univ', label: 'あみにょん焼き', meta: '大学時代 ／ 函南町の土産品開発', title: '函南町「あみにょん焼き」の開発に参加', award: '2024年度グッドデザイン賞',
+      problem: '函南町で、新しい土産品の開発が進められていました。',
+      thought: '現場で集めた情報を整理して、関係者と一緒に提案を考える。',
+      craft: ['函南町でフィールドワークを行い、レポートにまとめる', '開発会議で意見を出し、商品名にも助言'],
+      result: ['関わった「あみにょん焼き」が2024年度グッドデザイン賞を受賞'],
+      ext: [['https://www.izugateway.com/shop/4494/', '商品の紹介'], ['https://www.g-mark.org/gallery/winners/20814?unitCodes=18&years=2024', 'グッドデザイン賞']] },
+    oyama: { era: 'univ', label: '小山町', meta: '大学時代 ／ スポーツツーリズム', title: '小山町を、スポーツ合宿地として知ってもらう',
+      problem: '東京オリンピックの競技開催地となった実績を、スポーツ合宿地としての周知に活かしたいという課題でした。',
+      thought: 'さまざまな立場の人から情報を集めて、課題を整理するところから始める。',
+      craft: ['学校へのアンケート、宿泊施設などへの聞き取り、現地調査', '合宿のPR動画を制作'],
+      result: ['調査を踏まえた提案までを一通り担当'],
+      ext: [['https://youtu.be/BHo5P-H6-kk', '発表動画'], ['https://www.fujinokuni-consortium.or.jp/wp-content/uploads/2023/02/8481c2b634e80ac78b6616555ecaa704.pdf', '事業の成果報告書']] },
+    lab: { era: 'univ', label: '卒業研究', meta: '大学時代 ／ 卒業研究', title: '上司のフィードバックと、部下の当事者意識',
+      problem: '上司のフィードバックは、部下の当事者意識にどう関係するのかを研究しました。',
+      thought: '感覚ではなく、社会人のデータで確かめる。',
+      craft: ['社会人へのアンケートを実施', '重回帰分析で関係を検証'],
+      result: ['信頼関係と当事者意識の知見を、現職のマネジメントや関係者の調整に活用'],
+      ext: [['https://note.com/kokulabo/n/nd36092a147e6', '卒論発表会の記事']] },
+    intern: { era: 'univ', label: 'インターン', meta: '大学時代 ／ 株式会社いーふらん', title: '内定者インターンでの買取営業',
+      did: '買取専門店「おたからや」で、買取営業を担当しました。',
+      result: ['インターン生約30人のロールプレイング大会で1位', '入社初日からの店長候補に選ばれた'] },
+  };
+
+  /* ---------- Human Network：点＝取り組み、線＝つないだ関係 ---------- */
+  // d: パソコン幅の位置（%）、m: スマホ幅の位置（%）。左／上が大学時代、右／下が社会人。
+  const NODES = [
+    { id: 'lab',     d: [11, 9],  m: [26, 5] },
+    { id: 'kaigo',   d: [11, 35], m: [74, 5] },
+    { id: 'dealer',  d: [11, 61], m: [26, 15] },
+    { id: 'intern',  d: [11, 87], m: [74, 15] },
+    { id: 'openlab', d: [31, 21], m: [26, 25] },
+    { id: 'shimada', d: [31, 46], m: [74, 25] },
+    { id: 'aminyon', d: [31, 70], m: [26, 35] },
+    { id: 'oyama',   d: [31, 93], m: [74, 35] },
+    { id: 'nojima',  d: [69, 12], m: [26, 65] },
+    { id: 'tea',     d: [69, 40], m: [74, 65] },
+    { id: 'dx',      d: [69, 72], m: [26, 76] },
+    { id: 'training',d: [89, 28], m: [74, 76] },
+    { id: 'fde',     d: [89, 60], m: [50, 88] },
   ];
+  const HUB = { d: [50, 50], m: [50, 50] };
+  // 大学 ⇔ 現在をつなぐ軸（ストーリーの表と同じ）
+  const CROSS = [['lab','training'],['kaigo','training'],['dealer','training'],['openlab','training'],['shimada','training'],
+                 ['kaigo','fde'],['dealer','fde'],['intern','nojima'],['oyama','dx'],['kaigo','dx'],['nojima','training'],['training','fde'],['dx','fde']];
 
-  const grid = $('#worksGrid');
-  grid.innerHTML = WORKS.map((w, i) => `
-    <div class="work reveal">
-      <button class="work-card" type="button" data-i="${i}" aria-haspopup="dialog">
-        <div class="shot"><img src="${w.img}" alt="${w.title}の画面" loading="lazy" width="1280" height="800"></div>
-        <div class="work-body">
-          <span class="no">${w.no}</span>
-          <h3>${w.title}</h3>
-          <p>${w.lead}</p>
-          <div class="tags">${w.tags.map(t => `<span>${t}</span>`).join('')}</div>
-        </div>
-      </button>
-    </div>`).join('');
+  const topo = $('#topo'), svg = $('#topoLinks'), packet = $('#packet');
+  const mq = matchMedia('(max-width:600px)');
+  const pos = n => (mq.matches ? n.m : n.d);
+  const NS = 'http://www.w3.org/2000/svg';
+  const hub = document.createElement('div');
+  hub.className = 'node hub'; hub.textContent = '安住 龍祐'; hub.setAttribute('aria-hidden', 'true');
+  topo.appendChild(hub);
+  const els = {};
+  NODES.forEach(n => {
+    const c = CASES[n.id];
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'node ' + c.era; b.textContent = c.label;
+    b.setAttribute('aria-label', `${c.label}：${c.title}（詳細を開く）`);
+    b.dataset.id = n.id; topo.appendChild(b); els[n.id] = b;
+  });
+  const lines = [];
+  const mkLine = (cls, a, b) => { const l = document.createElementNS(NS, 'line'); l.setAttribute('class', cls); svg.appendChild(l); lines.push({ l, a, b }); return l; };
+  NODES.forEach(n => mkLine('spoke', 'hub', n.id));
+  CROSS.forEach(([a, b]) => mkLine('cross', a, b));
+  const P = id => id === 'hub' ? pos(HUB) : pos(NODES.find(n => n.id === id));
+  const layout = () => {
+    const [hx, hy] = pos(HUB); hub.style.left = hx + '%'; hub.style.top = hy + '%';
+    NODES.forEach(n => { const [x, y] = pos(n); els[n.id].style.left = x + '%'; els[n.id].style.top = y + '%'; });
+    lines.forEach(({ l, a, b }) => { const p = P(a), q = P(b); l.setAttribute('x1', p[0]); l.setAttribute('y1', p[1]); l.setAttribute('x2', q[0]); l.setAttribute('y2', q[1]); });
+  };
+  layout(); mq.addEventListener('change', layout);
 
-  if (!reduce && matchMedia('(hover: hover)').matches) {
-    $$('.work-card').forEach(card => {
-      card.addEventListener('pointermove', e => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-        card.style.transform = `rotateX(${(0.5 - y) * 5}deg) rotateY(${(x - 0.5) * 6}deg) translateY(-3px)`;
-      });
-      card.addEventListener('pointerleave', () => { card.style.transform = ''; });
+  const focusOn = id => {
+    topo.classList.add('focus');
+    const rel = new Set([id]);
+    lines.forEach(({ l, a, b }) => {
+      const on = (a === id || b === id);
+      l.classList.toggle('on', on);
+      if (on && l.classList.contains('cross')) rel.add(a === id ? b : a);
     });
+    Object.entries(els).forEach(([k, e]) => e.classList.toggle('on', rel.has(k)));
+  };
+  const blur = () => { topo.classList.remove('focus'); lines.forEach(({ l }) => l.classList.remove('on')); Object.values(els).forEach(e => e.classList.remove('on')); };
+  Object.entries(els).forEach(([id, e]) => {
+    e.addEventListener('pointerenter', () => focusOn(id));
+    e.addEventListener('focus', () => focusOn(id));
+    e.addEventListener('pointerleave', blur);
+    e.addEventListener('blur', blur);
+    e.addEventListener('click', () => send(id));
+  });
+
+  // パケットを中心から点まで流してから、事例を開く
+  function send(id) {
+    const c = CASES[id];
+    if (reduce) { openCase(id); return; }
+    const [hx, hy] = P('hub'), [x, y] = P(id);
+    const anim = packet.animate([
+      { left: hx + '%', top: hy + '%', opacity: 1 },
+      { left: x + '%', top: y + '%', opacity: 1 },
+    ], { duration: 300, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    anim.onfinish = () => {
+      const e = els[id]; e.classList.remove('hit'); void e.offsetWidth; e.classList.add('hit');
+      setTimeout(() => openCase(id), 120);
+    };
+    say(`パケットを「${c.label}」に送ったよ。`);
   }
 
+  /* ---------- プロジェクト一覧 ---------- */
+  const WORK_IDS = ['cli', 'kaisetsu', 'learning', 'dx'];
+  const UNIV_IDS = ['openlab', 'aminyon', 'shimada', 'oyama', 'kaigo', 'dealer', 'lab', 'intern'];
+  $('#worksGrid').innerHTML = WORK_IDS.map(id => { const c = CASES[id]; return `
+    <button class="card reveal" type="button" data-case="${id}" aria-haspopup="dialog">
+      <div class="shot"><img src="${c.img}" alt="${c.title}の画面" loading="lazy" width="1280" height="800"></div>
+      <div class="card-body"><h4>${c.title}</h4><p>${c.lead}</p></div>
+    </button>`; }).join('');
+  $('#univGrid').innerHTML = UNIV_IDS.map(id => { const c = CASES[id]; return `
+    <button class="card reveal" type="button" data-case="${id}" aria-haspopup="dialog">
+      <div class="card-body"><div class="meta">${c.meta.replace('大学時代 ／ ', '')}</div><h4>${c.title}</h4>${c.award ? `<span class="award">${c.award}</span>` : ''}</div>
+    </button>`; }).join('');
+  $('#projects').addEventListener('click', e => { const b = e.target.closest('[data-case]'); if (b) openCase(b.dataset.case); });
+
+  /* ---------- 事例を開く ---------- */
   const dlg = $('#caseDlg');
-  const list = a => `<ul>${a.map(x => `<li>${x}</li>`).join('')}</ul>`;
-  grid.addEventListener('click', e => {
-    const b = e.target.closest('.work-card'); if (!b) return;
-    const w = WORKS[+b.dataset.i];
-    $('#caseImg').src = w.img; $('#caseImg').alt = w.title + 'の画面';
-    $('#caseTitle').textContent = w.title; $('#caseSub').textContent = w.sub;
-    $('#caseGrid').innerHTML =
-      `<div><h4>課題</h4><p>${w.problem}</p></div>
-       <div><h4>役割</h4><p>${w.role}</p></div>
-       <div><h4>進め方・工夫</h4>${list(w.how)}</div>
-       <div class="result"><h4>成果</h4>${list(w.result)}</div>`;
-    $('#caseLink').href = w.href;
+  const ul = a => `<ul>${a.map(x => `<li>${x}</li>`).join('')}</ul>`;
+  function openCase(id) {
+    const c = CASES[id];
+    const img = $('#caseImg');
+    if (c.img) { img.src = c.img; img.alt = c.title + 'の画面'; img.hidden = false; } else { img.hidden = true; img.removeAttribute('src'); }
+    $('#caseMeta').textContent = c.meta;
+    $('#caseTitle').textContent = c.title;
+    $('#caseSteps').innerHTML = [
+      c.did && `<li><h4>担当</h4><div>${c.did}</div></li>`,
+      c.problem && `<li><h4>課題</h4><div>${c.problem}</div></li>`,
+      c.thought && `<li><h4>考えたこと</h4><div>${c.thought}</div></li>`,
+      c.craft && `<li><h4>工夫</h4><div>${ul(c.craft)}</div></li>`,
+      c.result && `<li class="res"><h4>成果</h4><div>${ul(c.result)}</div></li>`,
+    ].filter(Boolean).join('');
+    let links = '';
+    if (c.demo) links += `<a class="btn primary" href="${c.demo}" target="_blank" rel="noopener">デモを開く<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>`;
+    (c.links || []).forEach(([h, t]) => { links += `<a class="btn ghost" href="${h}" target="_blank" rel="noopener">${t}</a>`; });
+    (c.ext || []).forEach(([h, t]) => { links += `<a class="ext" href="${h}" target="_blank" rel="noopener">${t} ↗</a>`; });
+    $('#caseLinks').innerHTML = links;
     dlg.showModal();
-    say(`「${w.title}」だね。デモは実際に操作できるよ！`);
-  });
+    dlg.scrollTop = 0;
+  }
   $('#caseClose').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
 
-  /* 表示時の動き */
+  /* ---------- 表示時のフェード（0.3秒） ---------- */
   const io = new IntersectionObserver(es => es.forEach(en => {
     if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-  }), { threshold: .12, rootMargin: '0px 0px -40px 0px' });
-  $$('.reveal').forEach((el, i) => { el.style.transitionDelay = (i % 3) * 60 + 'ms'; io.observe(el); });
+  }), { threshold: .1, rootMargin: '0px 0px -30px 0px' });
+  $$('.reveal').forEach(el => io.observe(el));
 
-  /* 主役の数字：24 → 1 */
-  const cnt = $('[data-count]');
+  /* 主役の数字だけカウントダウン（24 → 1） */
+  const mc = $('#mainCount');
   if (!reduce) {
-    const t0 = performance.now() + 500, d = 1500;
-    const tick = t => { const p = Math.max(0, Math.min(1, (t - t0) / d)), e = 1 - Math.pow(1 - p, 3);
-      cnt.textContent = Math.round(24 - 23 * e); if (p < 1) requestAnimationFrame(tick); };
-    requestAnimationFrame(tick);
+    const cio = new IntersectionObserver(([en]) => {
+      if (!en.isIntersecting) return; cio.disconnect();
+      const t0 = performance.now(), d = 900;
+      const tick = t => { const p = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - p, 3); mc.textContent = Math.round(24 - 23 * e); if (p < 1) requestAnimationFrame(tick); };
+      mc.textContent = '24'; requestAnimationFrame(tick);
+    }, { threshold: .6 });
+    cio.observe(mc);
   }
 
-  /* ヘッダー・進捗 */
-  const header = $('#top'), prog = $('#progress');
-  const onScroll = () => {
-    const y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
-    header.classList.toggle('scrolled', y > 20);
-    prog.style.transform = `scaleX(${h > 0 ? y / h : 0})`;
-  };
-  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  /* ヘッダーとメニューの現在地 */
+  const header = $('#top');
+  addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 20), { passive: true });
   const navLinks = $$('.nav ul a');
+  const nio = new IntersectionObserver(es => es.forEach(en => {
+    if (en.isIntersecting) navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  ['results', 'story', 'projects', 'contact'].forEach(id => nio.observe(document.getElementById(id)));
 
-  /* 背景のネットワーク図（CCNAの題材）：線は控えめ、流れるパケットだけ主色 */
-  const cv = $('#net'), ctx = cv.getContext('2d');
-  let W, H, nodes = [], packets = [], mouse = { x: -999, y: -999 }, colNet, colAcc, heroVisible = true;
-  const readColors = () => { const s = getComputedStyle(root); colNet = s.getPropertyValue('--net').trim(); colAcc = s.getPropertyValue('--accent').trim(); };
-  const resize = () => {
-    const DPR = Math.min(devicePixelRatio || 1, 2);
-    W = cv.clientWidth; H = cv.clientHeight; cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    const n = Math.round(Math.min(70, (W * H) / 18000));
-    nodes = Array.from({ length: n }, () => ({ x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - .5) * .3, vy: (Math.random() - .5) * .3, r: Math.random() * 1.5 + 1.2 }));
-    packets = [];
-  };
-  const LINK = 130;
-  const draw = () => {
-    ctx.clearRect(0, 0, W, H);
-    for (const p of nodes) {
-      if (!reduce) { p.x += p.vx; p.y += p.vy; }
-      if (p.x < 0 || p.x > W) p.vx *= -1; if (p.y < 0 || p.y > H) p.vy *= -1;
-      const dx = mouse.x - p.x, dy = mouse.y - p.y;
-      if (Math.hypot(dx, dy) < 170 && !reduce) { p.x += dx * .006; p.y += dy * .006; }
-    }
-    ctx.lineWidth = 1; ctx.strokeStyle = colNet;
-    for (let i = 0; i < nodes.length; i++) for (let j = i + 1; j < nodes.length; j++) {
-      const a = nodes[i], b = nodes[j], d = Math.hypot(a.x - b.x, a.y - b.y);
-      if (d < LINK) {
-        ctx.globalAlpha = (1 - d / LINK) * .35;
-        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        if (!reduce && Math.random() < .0008 && packets.length < 18) packets.push({ a, b, t: 0 });
-      }
-    }
-    for (const p of nodes) {
-      const near = Math.hypot(mouse.x - p.x, mouse.y - p.y) < 170;
-      ctx.globalAlpha = near ? .9 : .5; ctx.fillStyle = near ? colAcc : colNet;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 7); ctx.fill();
-    }
-    packets = packets.filter(k => (k.t += .018) < 1);
-    ctx.globalAlpha = 1; ctx.fillStyle = colAcc;
-    for (const k of packets) {
-      ctx.beginPath(); ctx.arc(k.a.x + (k.b.x - k.a.x) * k.t, k.a.y + (k.b.y - k.a.y) * k.t, 2.6, 0, 7); ctx.fill();
-    }
-    if (heroVisible && !reduce) requestAnimationFrame(draw);
-  };
-  readColors(); resize(); draw();
-  addEventListener('resize', () => { resize(); if (reduce) draw(); });
-  new MutationObserver(() => { readColors(); if (reduce) draw(); }).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { readColors(); if (reduce) draw(); });
-  const hero = $('#hero');
-  hero.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
-  hero.addEventListener('pointerleave', () => { mouse.x = mouse.y = -999; });
-  new IntersectionObserver(([en]) => { const was = heroVisible; heroVisible = en.isIntersecting; if (heroVisible && !was && !reduce) requestAnimationFrame(draw); }).observe(hero);
-
-  /* 案内役リュウ */
+  /* ---------- 案内役リュウ ---------- */
   const bubble = $('#bubble'), bt = $('#bubbleText'), dragon = $('#dragon'), pupils = $('#pupils'), mouth = $('#mouth');
-  const LINES = {
-    hero: 'やあ！ぼくはリュウ。安住さんの「龍」から生まれたんだ。このサイトを案内するよ。',
-    works: 'カードを押すと、課題と進め方が見られるよ。デモは実際に触れるよ！',
-    about: '目的から逆算して、必要なことはその場で学ぶタイプなんだって。',
-    process: '生成AIは「速く試すための相棒」なんだ。ぼくもAIと一緒に生まれたよ。',
-    career: '営業、研修PM、そしてFDEへ。現場とお客さんの両方が分かるのが強みだね。',
-    roots: '大学時代から、人を巻き込んで形にしてきたんだ。グッドデザイン賞を受賞したお土産の開発にも関わってるよ！',
-    contact: '最後まで見てくれてありがとう！ぜひ安住さんと話してみてね。',
-  };
   const EXTRA = [
-    'ぼくはSVGとCSSだけで動いてるよ。画像ファイルは使ってないんだ。',
+    '大学時代の点と、いまの点が線でつながっているよ。点にマウスを乗せてみて。',
+    'ぼくの名前は、安住さんの「龍」から来てるんだ。',
     '右上のボタンでダークモードにできるよ。',
-    '一番上のネットワーク図、マウスを近づけると集まってくるよ。流れている点はパケットなんだ。',
-    'くすぐったいよ〜！',
   ];
-  let muted = false, last = '', extraI = 0, hideT;
+  let muted = false, extraI = 0, hideT;
   function say(text) {
-    if (muted || text === last) return; last = text;
+    if (muted) return;
     bt.textContent = text; bubble.classList.remove('hide');
     mouth.setAttribute('d', 'M53 70 q7 9 14 0');
-    setTimeout(() => mouth.setAttribute('d', 'M54 72 q6 6 12 0'), 600);
-    clearTimeout(hideT); hideT = setTimeout(() => bubble.classList.add('hide'), 8000);
+    setTimeout(() => mouth.setAttribute('d', 'M54 72 q6 6 12 0'), 500);
+    clearTimeout(hideT); hideT = setTimeout(() => bubble.classList.add('hide'), 6000);
   }
-  const sio = new IntersectionObserver(es => es.forEach(en => {
-    if (!en.isIntersecting) return;
-    const k = en.target.dataset.buddy; if (LINES[k]) say(LINES[k]);
-    navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
-  }), { rootMargin: '-45% 0px -50% 0px' });
-  $$('[data-buddy]').forEach(s => sio.observe(s));
+  hideT = setTimeout(() => bubble.classList.add('hide'), 7000);
   $('#dragonBtn').addEventListener('click', () => {
-    muted = false; last = '';
-    say(EXTRA[extraI++ % EXTRA.length]);
-    if (!reduce) { dragon.classList.remove('hop'); void dragon.getBBox(); dragon.classList.add('hop'); setTimeout(() => dragon.classList.remove('hop'), 650); }
+    muted = false; say(EXTRA[extraI++ % EXTRA.length]);
+    if (!reduce) { dragon.classList.remove('hop'); void dragon.getBBox(); dragon.classList.add('hop'); }
   });
   $('#buddyMin').addEventListener('click', () => { muted = true; bubble.classList.add('hide'); });
   addEventListener('pointermove', e => {
