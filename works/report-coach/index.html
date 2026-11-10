@@ -579,7 +579,10 @@ body.touring .main { padding-bottom: 260px; }
       return "<tr><td>" + it.name + "</td><td>" + input + '</td><td class="num">' + dayGoal + "</td><td>" + rateCell(pct(it.day, dayGoal)) +
         '</td><td class="num">' + cum + '</td><td class="num">' + it.goal + "</td><td>" + rateCell(pct(cum, pace)) + '</td><td class="num">' + landing + "</td></tr>";
     }).join("");
-    const status = state.saved || readonly ? '<span class="pill p-good">提出済み</span>' : '<span class="pill p-warn">未提出</span>';
+    // 提出状態は、チーム一覧と同じデータから出す（上長が開いたときも食い違わないように）
+    const tm = TEAM.find((p) => p.name === name);
+    const done = readonly ? (tm ? tm.sub : true) : state.saved;
+    const status = done ? '<span class="pill p-good">提出済み</span>' : '<span class="pill p-warn">未提出</span>';
     const coachCard = coachBlock(readonly);
     return '' +
       '<div class="pagehead"><div><h1>業務報告</h1><div class="sub">' + name + " · 2026-11-04（水） " + status + ' · 項目設定「' + D.setting + '」</div></div>' +
@@ -781,9 +784,33 @@ body.touring .main { padding-bottom: 260px; }
     renderTour();
   }
   function bind() {
+    // 本日の数字を変えたら、その行の達成率・累計・ペース着地をその場で計算し直す（値は保持し、保存後も戻らない）
+    curItems().forEach((it) => {
+      const el = document.getElementById("in-" + it.key);
+      if (!el) return;
+      el.addEventListener("input", () => {
+        it.day = Math.max(0, Math.floor(Number(el.value) || 0));
+        const cells = el.closest("tr").children;
+        const cum = it.prev + it.day;
+        const pace = it.goal * BD_ELAPSED / BD_TOTAL;
+        const dayGoal = it.dayGoal == null ? +(it.goal / BD_TOTAL).toFixed(1) : it.dayGoal;
+        cells[3].innerHTML = rateCell(pct(it.day, dayGoal));
+        cells[4].textContent = cum;
+        cells[6].innerHTML = rateCell(pct(cum, pace));
+        cells[7].textContent = Math.round(cum / BD_ELAPSED * BD_TOTAL);
+      });
+    });
     const save = $("#save");
     if (save) save.addEventListener("click", () => {
-      state.saved = true; state.coaching = true; state.coachDone = false; render(); toast("報告を保存しました");
+      state.saved = true; state.coaching = true; state.coachDone = false;
+      // チーム一覧の同じメンバーも、提出済みにして累計をそろえる
+      const me = TEAM.find((p) => p.name === dom().member);
+      if (me && !isExe()) {
+        if (!me.sub) { me.sub = true; me.days = Math.min(BD_ELAPSED, me.days + 1); }
+        const cum = (k) => { const it = ITEMS.find((x) => x.key === k); return it.prev + it.day; };
+        me.call = cum("call"); me.apo = cum("apo"); me.mtg = cum("mtg"); me.deal = cum("deal");
+      }
+      render(); toast("報告を保存しました");
       setTimeout(() => { state.coaching = false; state.coachDone = true; if (state.screen === "report") render(); }, 1400);
     });
     const copy = $("#copy");

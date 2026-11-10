@@ -265,37 +265,37 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
 
   /* ---------- データ（架空） ---------- */
   var ANN = [
-    {id:'a1', title:'第8章の確認テストを公開しました', body:'OSPFの確認テストを公開しました。11/13（金）までに受けてください。', imp:'重要', date:'2026-11-08', read:false, target:'全受講者', readN:9},
+    {id:'a1', title:'第4章の確認テストを公開しました', body:'OSPFの確認テストを公開しました。11/13（金）までに受けてください。', imp:'重要', date:'2026-11-08', read:false, target:'全受講者', readN:9},
     {id:'a2', title:'模試（第2回）の日程', body:'11/20（金）13:00から本番形式の模試を行います。持ち物は掲示板を見てください。', imp:'通常', date:'2026-11-06', read:true, target:'全受講者', readN:13},
     {id:'a3', title:'サブネット計算の練習会', body:'希望者向けに、放課後30分の練習会を開きます。', imp:'通常', date:'2026-11-04', read:true, target:'全受講者', readN:11}
   ];
   var EVENTS = [
-    {date:'2026-11-09', time:'10:00〜12:00', title:'第8章 OSPF（講義）', type:'研修'},
-    {date:'2026-11-11', time:'23:59', title:'宿題の締切：第8章 確認問題', type:'締切'},
-    {date:'2026-11-12', time:'10:00〜12:00', title:'第9章 IPv6（講義）', type:'研修'},
-    {date:'2026-11-16', time:'10:00〜12:00', title:'第10章 FHRP（講義）', type:'研修'},
-    {date:'2026-11-19', time:'10:00〜12:00', title:'第11章 NAT・DHCP（講義）', type:'研修'},
+    {date:'2026-11-09', time:'10:00〜12:00', title:'第4章 OSPF（講義）', type:'研修'},
+    {date:'2026-11-11', time:'23:59', title:'宿題の締切：第4章 確認問題', type:'締切'},
+    {date:'2026-11-12', time:'10:00〜12:00', title:'第5章 ACL（講義）', type:'研修'},
+    {date:'2026-11-16', time:'10:00〜12:00', title:'第6章 NAT・DHCP・DNS（講義）', type:'研修'},
+    {date:'2026-11-19', time:'10:00〜12:00', title:'第7章 スイッチ・VLAN（講義）', type:'研修'},
     {date:'2026-11-20', time:'13:00〜14:10', title:'模試（第2回）', type:'模試'},
-    {date:'2026-11-26', time:'10:00〜12:00', title:'第12章 QoS（講義）', type:'研修'}
+    {date:'2026-11-26', time:'10:00〜12:00', title:'第8章 STP（講義）', type:'研修'}
   ];
   var MY_EVENTS = [{date:'2026-11-10', time:'19:00', title:'サブネット計算 30問', type:'自分の予定'}];
   var HW = [
-    {id:'h1', title:'第8章 OSPF 確認問題', desc:'講義で扱ったOSPFの設定と確認コマンドを復習し、show ip ospf neighbor の結果を貼ってください。', due:'2026-11-11', status:'未提出', comment:'', mine:null},
-    {id:'h2', title:'第5章 STP まとめノート', desc:'ルートブリッジ選出の流れを自分の言葉でまとめる。', due:'2026-11-06', status:'承認', comment:'流れが整理できています。コストの計算例も足すとさらに良いです。', mine:'ブリッジIDの比較 → ルートポート → 指定ポートの順に決まる。'},
-    {id:'h3', title:'第4章 VLAN 設定演習', desc:'CLIシミュレーターの課題3を解き、設定を貼ってください。', due:'2026-10-30', status:'承認', comment:'正しく設定できています。', mine:'vlan 10 / name SALES …'}
+    {id:'h1', title:'第4章 OSPF 確認問題', desc:'講義で扱ったOSPFの設定と確認コマンドを復習し、show ip ospf neighbor の結果を貼ってください。', due:'2026-11-11', status:'未提出', comment:'', mine:null},
+    {id:'h2', title:'第3章 ルーティング まとめノート', desc:'スタティックルートとデフォルトルートの違いを自分の言葉でまとめる。', due:'2026-11-06', status:'承認', comment:'流れが整理できています。コストの計算例も足すとさらに良いです。', mine:'ブリッジIDの比較 → ルートポート → 指定ポートの順に決まる。'},
+    {id:'h3', title:'第2章 初期設定演習', desc:'CLIシミュレーターの課題1を解き、設定を貼ってください。', due:'2026-10-30', status:'承認', comment:'正しく設定できています。', mine:'vlan 10 / name SALES …'}
   ];
   var HW_STAFF = [
-    {id:'h1', title:'第8章 OSPF 確認問題', due:'2026-11-11', target:'全受講者'},
-    {id:'h2', title:'第5章 STP まとめノート', due:'2026-11-06', target:'全受講者'}
+    {id:'h1', title:'第4章 OSPF 確認問題', due:'2026-11-11', target:'全受講者'},
+    {id:'h2', title:'第3章 ルーティング まとめノート', due:'2026-11-06', target:'全受講者'}
   ];
-  var HW_STATUS = {}; /* 宿題ID → 受講者ID → 状態（第8章は運営情報と連動） */
+  var HW_STATUS = {}; /* 宿題ID → 受講者ID → 状態（第4章は運営情報と連動） */
   var DASH = {attempted:286, mastery:78, first:64, weak:12, progress:36,
     ch:[['ネットワーク基礎',90],['スイッチング',85],['IPv4・サブネット',70],['VLAN・トランク',82],['STP',75],['EtherChannel',80],['ルーティング',72],['OSPF',58]],
     weakTopics:[['OSPF',58,4],['サブネット計算',70,4],['STP',75,3]]};
   var WRONG = [
-    {t:'OSPFのDR選出', ch:'第8章', q:'優先度が同じとき、DRに選ばれるルーターはどれですか。', a:'ルーターIDが最も大きいルーター', exp:'優先度が同じなら、ルーターIDの大きいほうがDRになります。'},
+    {t:'OSPFのDR選出', ch:'第4章', q:'優先度が同じとき、DRに選ばれるルーターはどれですか。', a:'ルーターIDが最も大きいルーター', exp:'優先度が同じなら、ルーターIDの大きいほうがDRになります。'},
     {t:'同じサブネット', ch:'第3章', q:'172.16.5.70/27 と同じサブネットに属するアドレスはどれですか。', a:'172.16.5.95', exp:'/27 はブロックサイズ32。70 は 64〜95 の範囲です。'},
-    {t:'PortFast', ch:'第5章', q:'PortFastを設定する目的はどれですか。', a:'端末をつなぐポートを、すぐにフォワーディング状態にする', exp:'リスニングとラーニングを飛ばして、すぐに通信できるようにします。'}
+    {t:'PortFast', ch:'第8章', q:'PortFastを設定する目的はどれですか。', a:'端末をつなぐポートを、すぐにフォワーディング状態にする', exp:'リスニングとラーニングを飛ばして、すぐに通信できるようにします。'}
   ];
   var RANK = {xp:[['たろう（あなた）',1240],['受講者 B',1180],['受講者 C',990],['受講者 D',940],['受講者 E',870]], mock:[['受講者 K',82],['たろう（あなた）',79],['受講者 C',76],['受講者 A',71],['受講者 G',68]]};
 
@@ -419,7 +419,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
         '<div class="row small">'+['提出済み','承認','再提出依頼','未提出','期限切れ'].map(function(k){ return pill(k+' '+c[k], STATUS[k]); }).join('')+'</div>'+
         '<button type="button" class="btn" data-hw-review="'+h.id+'">'+(hwReview===h.id?'提出状況を閉じる':'提出状況を見る')+'</button>'+(hwReview===h.id?review(h,L):'')+'</section>'; }).join('');
     el.innerHTML = head('宿題','宿題を作って公開し、受講者ごとの提出状況を確認します。')+
-      (CAN_EDIT?'<section class="card"><h2>宿題を作る</h2><form class="form grid-form" id="hwNew"><label>タイトル<input name="title" required placeholder="例：第9章 IPv6 確認問題"></label><label>締切<input name="due" type="date" required value="2026-11-16"></label><label>公開する相手<select name="target"><option>全受講者</option><option>担当の受講者</option><option>個人を選ぶ</option></select></label><label class="wide">内容<textarea name="desc" placeholder="取り組む内容と提出のしかた"></textarea></label><div class="row wide"><button type="submit" class="btn primary">宿題を公開</button></div></form></section>':'')+
+      (CAN_EDIT?'<section class="card"><h2>宿題を作る</h2><form class="form grid-form" id="hwNew"><label>タイトル<input name="title" required placeholder="例：第5章 ACL 確認問題"></label><label>締切<input name="due" type="date" required value="2026-11-16"></label><label>公開する相手<select name="target"><option>全受講者</option><option>担当の受講者</option><option>個人を選ぶ</option></select></label><label class="wide">内容<textarea name="desc" placeholder="取り組む内容と提出のしかた"></textarea></label><div class="row wide"><button type="submit" class="btn primary">宿題を公開</button></div></form></section>':'')+
       '<div class="stack">'+list+'</div>';
     var f=$('#hwNew'); if(f) f.addEventListener('submit', function(e){ e.preventDefault(); var t=f.elements.title.value.trim(); if(!t){ toast('タイトルを入力してください'); return; }
       HW_STAFF.unshift({id:'h'+Date.now(), title:t, due:f.elements.due.value||'2026-11-16', target:f.elements.target.value}); renderHomework(); toast('宿題を公開しました（デモのため保存されません）'); });
@@ -508,7 +508,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
     var body='';
     if(adminTab==='trainees'){
       var rows=L.filter(function(u){ return !aQ || u.name.indexOf(aQ)>=0; });
-      body='<div class="toolbar"><input id="aSearch" class="search" type="search" placeholder="名前で探す" value="'+esc(aQ)+'" aria-label="名前で探す"><span class="small muted">'+rows.length+'名</span></div><div class="tablewrap"><table><thead><tr><th>研修生</th><th>担当講師</th><th>最終ログイン</th><th>確認問題の得点率</th><th>宿題（第8章）</th><th>要フォロー</th></tr></thead><tbody>'+
+      body='<div class="toolbar"><input id="aSearch" class="search" type="search" placeholder="名前で探す" value="'+esc(aQ)+'" aria-label="名前で探す"><span class="small muted">'+rows.length+'名</span></div><div class="tablewrap"><table><thead><tr><th>研修生</th><th>担当講師</th><th>最終ログイン</th><th>確認問題の得点率</th><th>宿題（第4章）</th><th>要フォロー</th></tr></thead><tbody>'+
         rows.map(function(u,i){ return '<tr><td><b>'+esc(u.name)+'</b></td><td>'+esc(u.teacher)+'</td><td>11/'+(9-(i%3))+' '+(8+(i%2))+':1'+(i%6)+'</td><td>'+bar(u.rate)+'</td><td>'+pill(u.hw,STATUS[u.hw])+'</td><td class="wrap small">'+(u.reasons.length?'<span class="bad-text">'+u.reasons.map(esc).join('／')+'</span>':'—')+'</td></tr>'; }).join('')+'</tbody></table></div>';
     } else if(adminTab==='learning'){
       var names=['ネットワーク基礎','スイッチング','IPv4・サブネット','VLAN・トランク','STP','EtherChannel','ルーティング','OSPF'];
@@ -552,7 +552,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
       (rep.made?'<section class="card slide" aria-label="報告書のプレビュー"><div class="slide-h"><div><span class="small muted">'+esc(rep.preset==='monthly'?'月次の研修報告':'受講者別の成績表')+'</span><h2>ネットワーク研修（CCNA）'+esc(rep.period)+'</h2></div><button type="button" class="btn" data-toast="デモ版ではPDFは保存できません">PDFで保存</button></div>'+
         '<div class="tiles">'+tile('研修生',L.length+'<small>名</small>')+tile('平均得点率',avg+'<small>%</small>')+tile('要フォロー',follow+'<small>名</small>','alert')+tile('受験目標日まで','72<small>日</small>')+'</div>'+
         '<h3>章別の平均得点率</h3><div class="vbars">'+chAvg.map(function(v,i){ return '<div class="vb"><i style="height:'+v+'%" class="'+(v<70?'w':'')+'"></i><b>'+v+'</b><span>'+esc(names[i])+'</span></div>'; }).join('')+'</div>'+
-        '<h3>所見</h3><ul class="bul"><li>OSPF（第8章）の平均が最も低く、次回の授業の冒頭で復習を行います。</li><li>要フォローの'+follow+'名には、今週中に面談を行います。</li><li>第2回模試（11/20）で、合格の見込みを確かめます。</li></ul></section>':'');
+        '<h3>所見</h3><ul class="bul"><li>OSPF（第4章）の平均が最も低く、次回の授業の冒頭で復習を行います。</li><li>要フォローの'+follow+'名には、今週中に面談を行います。</li><li>第2回模試（11/20）で、合格の見込みを確かめます。</li></ul></section>':'');
     $('#repForm').addEventListener('submit', function(e){ e.preventDefault(); rep.preset=e.target.elements.preset.value; rep.period=e.target.elements.period.value; rep.made=true; renderReports(); var s=$('.slide'); if(s) s.scrollIntoView({block:'start'}); });
     bindCommon(el);
   }
@@ -862,7 +862,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
         '<label class="dp-count"><input type="checkbox" id="dpOnlyFollow" '+(opsState.onlyFollow?'checked':'')+'> 要フォローのみ</label>'+
         '<select class="dp-select" id="dpSort" aria-label="並べ替え"><option value="follow"'+(opsState.sort==='follow'?' selected':'')+'>要フォロー順</option><option value="rate"'+(opsState.sort==='rate'?' selected':'')+'>得点率が低い順</option><option value="name"'+(opsState.sort==='name'?' selected':'')+'>名前順</option></select>'+
         '<span class="dp-count">'+rows.length+'名を表示</span></div>'+
-      '<div class="dp-tablewrap"><table class="dp-table"><thead><tr><th>受講者</th><th>担当講師</th><th>今日の参加予定</th><th>出席</th><th>宿題（第8章）</th><th>確認問題 得点率</th><th>次の面談</th><th>要フォローの理由</th></tr></thead><tbody>'+
+      '<div class="dp-tablewrap"><table class="dp-table"><thead><tr><th>受講者</th><th>担当講師</th><th>今日の参加予定</th><th>出席</th><th>宿題（第4章）</th><th>確認問題 得点率</th><th>次の面談</th><th>要フォローの理由</th></tr></thead><tbody>'+
         rows.map(function(u){ return '<tr data-dp-row="'+u.id+'" tabindex="0" aria-selected="'+(opsState.sel===u.id)+'"><td><b>'+esc(u.name)+'</b></td><td>'+esc(u.teacher)+'</td><td>'+esc(u.plan)+'</td><td>'+pill(u.att)+'</td><td>'+pill(u.hw)+'</td><td>'+rateBar(u.rate)+'</td><td>'+esc(u.meet)+'</td><td>'+(u.reasons.length?'<div class="dp-reason">'+u.reasons.map(esc).join('<br>')+'</div>':'<span class="dp-note">—</span>')+'</td></tr>'; }).join('')+
       '</tbody></table></div>'+
       '<p class="dp-note">行を選ぶと、その受講者の詳細を表示します。<br>出席 ＝ 出席＋遅刻（今日の参加予定がある人のうち）。要フォローの判定：確認問題の平均正答率が60%未満／宿題が期限切れ／同じ週に2回目の欠席／授業後アンケートで「理解できていない」。</p>'+
@@ -889,7 +889,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
     var evalBox = ROLE==='admin' ? '<p style="margin:0;font-size:13.5px">'+esc(u.teacherEval)+'</p>' : '<div class="dp-locked">講師評価は管理者だけが見られます（評価される講師本人には表示しません）。</div>';
     return '<section class="dp-detail" id="dpDetail" aria-label="受講者の詳細"><h3>'+esc(u.name)+' <span class="dp-note">担当：'+esc(u.teacher)+'</span></h3><div class="dp-cols">'+
       '<div class="dp-box"><h4>章別の得点率（確認問題）</h4><div class="dp-bars">'+u.chapters.map(function(v,i){ return '<div class="dp-bar"><span>第'+(i+1)+'章 '+esc(names[i].slice(0,6))+'</span><i><b class="'+(v<60?'low':'')+'" style="width:'+v+'%"></b></i><em>'+v+'%</em></div>'; }).join('')+'</div></div>'+
-      '<div class="dp-box"><h4>宿題</h4><ul class="dp-list"><li><span>第8章 OSPF 確認問題</span>'+pill(u.hw)+'</li><li><span>第5章 STP まとめノート</span>'+pill(u.hw==='期限切れ'?'期限切れ':'承認')+'</li><li><span>第4章 VLAN 設定演習</span>'+pill('承認')+'</li></ul>'+
+      '<div class="dp-box"><h4>宿題</h4><ul class="dp-list"><li><span>第4章 OSPF 確認問題</span>'+pill(u.hw)+'</li><li><span>第3章 ルーティング まとめノート</span>'+pill(u.hw==='期限切れ'?'期限切れ':'承認')+'</li><li><span>第2章 初期設定演習</span>'+pill('承認')+'</li></ul>'+
         '<h4>模試</h4><ul class="dp-list"><li><span>第1回（10/30）</span><b>'+Math.round(u.rate*7.6)+' / 1000</b></li><li><span>第2回（11/20）</span><span class="dp-note">予定</span></li></ul></div>'+
       '<div class="dp-box"><h4>面談</h4><ul class="dp-list"><li><span>次回</span><b>'+esc(u.meet)+'</b></li></ul><h4>面談メモ</h4>'+memo+'<h4>講師評価（授業後アンケート）</h4>'+evalBox+'</div>'+
       '</div></section>';
@@ -978,7 +978,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
   var st=document.createElement('style'); st.textContent=css; document.head.appendChild(st);
 
   var learnerDone = {};
-  var LESSON = {title:'第8章 OSPF（講義）', time:'10:00〜12:00', place:'オンライン', next:'第9章 IPv6（講義） 11/12 10:00〜'};
+  var LESSON = {title:'第4章 OSPF（講義）', time:'10:00〜12:00', place:'オンライン', next:'第5章 ACL（講義） 11/12 10:00〜'};
 
   function ops(){ return window.__demoOps; }
   function go(view, prep){ if(prep) prep(); if(typeof window.navigateTo==='function') window.navigateTo(view); window.scrollTo(0,0); }
@@ -1015,7 +1015,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
         '<button type="button" class="tp-link" data-tp-go="ops">受講者ごとの状況を見る →</button></section>';
     } else {
       hw = '<section class="tp-card" aria-label="確認待ちの宿題"><h3>確認待ちの宿題 <span class="tp-badge '+(queue.length?'warn':'ok')+'">'+queue.length+'件</span></h3>'+
-        (queue.length ? '<ul class="tp-list">'+queue.slice(0,3).map(function(u){ return '<li class="tp-item" data-tp-hw="'+u.id+'"><b>'+esc(u.name)+'</b><span class="tp-sub">第8章 OSPF 確認問題・提出 11/8 21:00</span>'+
+        (queue.length ? '<ul class="tp-list">'+queue.slice(0,3).map(function(u){ return '<li class="tp-item" data-tp-hw="'+u.id+'"><b>'+esc(u.name)+'</b><span class="tp-sub">第4章 OSPF 確認問題・提出 11/8 21:00</span>'+
           '<div class="tp-quote">router ospf 1 を設定し、show ip ospf neighbor で隣接が FULL になったことを確認しました。</div>'+
           '<div class="tp-row"><button type="button" class="tp-btn go" data-tp-approve="'+u.id+'">承認</button><button type="button" class="tp-btn" data-tp-return="'+u.id+'">再提出を依頼</button></div></li>'; }).join('')+'</ul>'
           : '<div class="tp-empty">確認待ちの宿題はありません。</div>')+
@@ -1027,8 +1027,8 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
 
   /* ---------- 受講者 ---------- */
   var tasks = [
-    {id:'join', title:'授業に参加する', sub:'第8章 OSPF（講義） 10:00〜12:00・オンライン', action:'参加する', view:'portal'},
-    {id:'hw', title:'宿題「第8章 OSPF 確認問題」を提出する', sub:'締切 11/11（水）23:59・あと2日', action:'提出する', view:'homework'},
+    {id:'join', title:'授業に参加する', sub:'第4章 OSPF（講義） 10:00〜12:00・オンライン', action:'参加する', view:'portal'},
+    {id:'hw', title:'宿題「第4章 OSPF 確認問題」を提出する', sub:'締切 11/11（水）23:59・あと2日', action:'提出する', view:'homework'},
     {id:'review', title:'苦手な「OSPF」を復習する', sub:'確認問題の正答率 58%・要復習 4問', action:'解説を見る', view:'portal'},
     {id:'survey', title:'授業後アンケートに回答する', sub:'授業の最後に2分ほど', action:'回答する', view:'portal'}
   ];
@@ -1039,11 +1039,11 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
       '<div class="tp-list">'+tasks.map(function(t){ var d=!!learnerDone[t.id]; return '<label class="tp-check'+(d?' done':'')+'"><input type="checkbox" data-tp-task="'+t.id+'"'+(d?' checked':'')+'><span><b>'+esc(t.title)+'</b><br><span class="tp-sub">'+esc(t.sub)+'</span></span><button type="button" class="tp-btn" data-tp-go="'+t.view+'">'+esc(t.action)+'</button></label>'; }).join('')+'</div>'+
       (done===tasks.length?'<div class="tp-empty">今日やることはすべて終わりました。おつかれさまでした。</div>':'')+'</section>';
     var due = '<section class="tp-card" aria-label="締切の近い宿題"><h3>締切の近い宿題 <span class="tp-badge warn">1件</span></h3>'+
-      '<div class="tp-item"><b>第8章 OSPF 確認問題</b><span class="tp-sub">締切 11/11（水）23:59・未提出</span></div>'+
-      '<div class="tp-item"><b>第5章 STP まとめノート</b><span class="tp-sub">承認済み・講師コメントあり</span></div>'+
+      '<div class="tp-item"><b>第4章 OSPF 確認問題</b><span class="tp-sub">締切 11/11（水）23:59・未提出</span></div>'+
+      '<div class="tp-item"><b>第3章 ルーティング まとめノート</b><span class="tp-sub">承認済み・講師コメントあり</span></div>'+
       '<button type="button" class="tp-link" data-tp-go="homework">宿題を開く →</button></section>';
     var next = '<section class="tp-card" aria-label="次の予定"><h3>次の予定</h3>'+
-      '<div class="tp-item"><b>第9章 IPv6（講義）</b><span class="tp-sub">11/12（木）10:00〜12:00・オンライン</span></div>'+
+      '<div class="tp-item"><b>第5章 ACL（講義）</b><span class="tp-sub">11/12（木）10:00〜12:00・オンライン</span></div>'+
       '<div class="tp-item"><b>模試（第2回）</b><span class="tp-sub">11/20（金）13:00・本番形式70分</span></div>'+
       '<span class="tp-sub">受験目標日まで あと72日</span>'+
       '<button type="button" class="tp-link" data-tp-go="calendar">予定を開く →</button></section>';
@@ -1298,7 +1298,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
     var nowIdx = 2;
     var path = STAGES.map(function(s,i){
       var cls = i<nowIdx?'done':(i===nowIdx?'now':'todo');
-      var sub = i<nowIdx ? '完了・確認問題の平均 '+[86,81][i]+'%' : (i===nowIdx ? '学習中・第7章まで完了、第8章 OSPF を学習中' : (i===5?'12月〜':(i===6?'受験目標日 2027/1/20':'未着手')));
+      var sub = i<nowIdx ? '完了・確認問題の平均 '+[86,81][i]+'%' : (i===nowIdx ? '学習中・第3章まで完了、第4章 OSPF を学習中' : (i===5?'12月〜':(i===6?'受験目標日 2027/1/20':'未着手')));
       return '<li class="'+cls+'"><span class="cp-dot" aria-hidden="true">'+(i<nowIdx?'✓':(i+1))+'</span><div><b>'+esc(s.name)+'</b>　<span class="cp-note">'+esc(s.range)+'</span><span class="s">'+esc(sub)+'</span>'+
         '<div class="cp-mods">'+s.mods.map(function(m,j){ var ok = i<nowIdx || (i===nowIdx && j<1); return '<span class="cp-mod'+(ok?' ok':'')+'">'+(ok?'✓ ':'')+esc(m)+'</span>'; }).join('')+'</div></div></li>';
     }).join('');
@@ -1457,7 +1457,7 @@ td select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;backgro
       replies:[{author:who('受講者 B'), at:'2026-11-09T09:02:00+09:00', body:'計算用紙は何枚まで使えますか？'},{author:T, at:'2026-11-09T09:15:00+09:00', body:'2枚までです。本番の試験と同じ条件にしています。'}]},
     {postId:'bp2', category:'質問', title:'OSPFのDRとBDRが選ばれる順番が分かりません', author:who('受講者 D'), createdAt:'2026-11-08T21:14:00+09:00',
       body:'優先度が同じとき、どのルーターがDRになりますか？ 後から優先度の高いルーターをつないだ場合も知りたいです。',
-      replies:[{author:T, at:'2026-11-08T22:01:00+09:00', body:'優先度が同じなら、ルーターIDが最も大きいルーターがDRです。DRは一度決まると、後から優先度の高いルーターが入っても入れ替わりません（プリエンプトしない）。'},{author:who('受講者 E'), at:'2026-11-08T22:20:00+09:00', body:'clear ip ospf process で選び直せると教科書の第8章にありました。'},{author:who('受講者 D'), at:'2026-11-08T22:31:00+09:00', body:'ありがとうございます、すっきりしました！'}]},
+      replies:[{author:T, at:'2026-11-08T22:01:00+09:00', body:'優先度が同じなら、ルーターIDが最も大きいルーターがDRです。DRは一度決まると、後から優先度の高いルーターが入っても入れ替わりません（プリエンプトしない）。'},{author:who('受講者 E'), at:'2026-11-08T22:20:00+09:00', body:'clear ip ospf process で選び直せると教科書の第4章にありました。'},{author:who('受講者 D'), at:'2026-11-08T22:31:00+09:00', body:'ありがとうございます、すっきりしました！'}]},
     {postId:'bp3', category:'共有', title:'show ip route の見方を1枚にまとめました', author:who('受講者 K'), createdAt:'2026-11-07T19:40:00+09:00',
       body:'先頭の記号（C・L・S・O）と、[110/2] の意味を表にしました。復習に使ってください。',
       replies:[{author:T, at:'2026-11-07T20:05:00+09:00', body:'よくまとまっています。AD値（管理距離）の一覧も足すと、さらに使いやすくなります。'}]},
