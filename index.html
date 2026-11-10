@@ -241,6 +241,26 @@ dialog.theater::backdrop{background:#0b0908}
 .call h2 .lit{color:var(--light);text-shadow:0 0 40px rgba(255,197,107,.35)}
 .call p{color:var(--muted);margin:0 0 30px;max-width:520px}
 .call .eyes{max-width:200px}
+/* アンコールの演出：暗転 → 客席のペンライト → ENCOREの電光 → スポットライト → 銀テープ */
+.call{min-height:100vh;min-height:100svh;padding-bottom:170px}
+.enc-led{position:absolute;left:50%;top:42%;translate:-50% -50%;font-family:var(--gothic);font-weight:900;font-size:clamp(84px,18vw,270px);letter-spacing:.06em;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,197,107,.5);text-shadow:0 0 34px rgba(255,197,107,.3);white-space:nowrap;pointer-events:none;z-index:0;opacity:.3}
+.enc-spot{position:absolute;left:max(-80px,calc(50% - 720px));top:-12%;width:640px;height:125%;background:linear-gradient(to bottom,rgba(255,226,175,.32),transparent 78%);clip-path:polygon(44% 0,56% 0,100% 100%,0 100%);mix-blend-mode:screen;filter:blur(4px);pointer-events:none;z-index:0;opacity:.75}
+.enc-crowd{z-index:0}
+.tapes{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.tapes i{position:absolute;bottom:-30px;left:var(--x);width:6px;height:96px;border-radius:2px;background:linear-gradient(var(--tc),#fff 50%,var(--tc));box-shadow:0 0 10px rgba(255,255,255,.35);animation:shoot var(--t) cubic-bezier(.15,.7,.3,1) var(--dl) forwards}
+@keyframes shoot{0%{transform:translate(0,0) rotate(var(--r0))}42%{transform:translate(var(--dx),var(--up)) rotate(var(--r1))}100%{transform:translate(calc(var(--dx) * 1.25),calc(var(--up) + 760px)) rotate(var(--r2));opacity:.6}}
+/* 動きを減らす設定でなければ、最初は暗転した状態から始める */
+.call.armed .call-grid{opacity:0;transform:translateY(18px);transition:opacity .8s var(--ease) 1.25s,transform .8s var(--ease) 1.25s}
+.call.armed::before,.call.armed .enc-spot{opacity:0;transition:opacity .7s var(--ease) .95s}
+.call.armed .enc-led{opacity:0}
+.call.armed .enc-crowd{opacity:0;transition:opacity .6s var(--ease)}
+.call.armed.on .call-grid{opacity:1;transform:none}
+.call.armed.on::before{opacity:1}
+.call.armed.on .enc-spot{opacity:.75}
+.call.armed.on .enc-led{animation:flick 1.1s linear .3s forwards}
+.call.armed.on .enc-crowd{opacity:1}
+@keyframes flick{0%{opacity:0}8%{opacity:.55}14%{opacity:.04}26%{opacity:.6}33%{opacity:.08}52%{opacity:.7}100%{opacity:.3}}
+@media (max-width:700px){.enc-spot{left:-180px}.enc-led{top:30%}}
 @media (max-width:760px){.call-grid{grid-template-columns:1fr}.call .eyes{order:-1;max-width:150px;justify-self:start}}
 footer{border-top:1px solid var(--line);padding:24px 0 36px;font-size:13px;color:var(--dim)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
@@ -453,6 +473,10 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 
 <!-- カーテンコール -->
 <section class="call" id="call">
+  <div class="enc-led" aria-hidden="true">ENCORE</div>
+  <div class="enc-spot" aria-hidden="true"></div>
+  <div class="crowd enc-crowd" id="crowd2" aria-hidden="true"></div>
+  <div class="tapes" id="tapes" aria-hidden="true"></div>
   <div class="confetti" id="confetti" aria-hidden="true"></div>
   <div class="wrap call-grid">
     <div class="reveal">
@@ -514,12 +538,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   /* 目：追う・まばたき・ウインク */
   const eyesList = $$('.eyes');
   /* 客席：ペンライトを振る観客を、画面幅に合わせて並べる */
-  const crowd = $('#crowd');
+  const crowd = $('#crowd'), crowd2 = $('#crowd2');
   const PEN = ['#ffc56b', '#ff9ec4', '#f6ead8', '#ff9ec4', '#ffc56b'];
   function fillCrowd() {
     const n = Math.max(8, Math.round(innerWidth / 50));
-    crowd.innerHTML = Array.from({ length: n }, (_, i) =>
+    const fans = () => Array.from({ length: n }, (_, i) =>
       `<span class="fan" style="--pc:${PEN[i % PEN.length]};--d:${(-Math.random() * 1.3).toFixed(2)}s;--y:${Math.round(Math.random() * 18)}px;--s:${(0.85 + Math.random() * 0.25).toFixed(2)}"><i></i><b></b></span>`).join('');
+    crowd.innerHTML = fans(); crowd2.innerHTML = fans();
   }
   fillCrowd();
   let crowdW = innerWidth;
@@ -530,7 +555,18 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     el.classList.remove('wink'); void el.offsetWidth; el.classList.add('wink');
     clearTimeout(el._w); el._w = setTimeout(() => el.classList.remove('wink'), 900);
     // 開演のキャラがウインクすると、客席が盛り上がる
-    if (el.id === 'eyesHero') { crowd.classList.add('hype'); clearTimeout(crowd._h); crowd._h = setTimeout(() => crowd.classList.remove('hype'), 1400); }
+    const c = el.id === 'eyesHero' ? crowd : el.id === 'eyesCall' ? crowd2 : null;
+    if (c) { c.classList.add('hype'); clearTimeout(c._h); c._h = setTimeout(() => c.classList.remove('hype'), 1400); }
+  }
+
+  /* 銀テープ：左右の下から打ち上げる */
+  function tapes() {
+    if (reduce) return;
+    const C = ['#d9dde3', '#ffc56b', '#d9dde3', '#ff9ec4'];
+    $('#tapes').innerHTML = Array.from({ length: 28 }, (_, i) => {
+      const left = i % 2 === 0, dx = (left ? 1 : -1) * (180 + Math.random() * 380);
+      return `<i style="--x:${left ? 3 + Math.random() * 6 : 91 + Math.random() * 6}%;--tc:${C[i % C.length]};--t:${(2.8 + Math.random() * 1.4).toFixed(2)}s;--dl:${(Math.random() * .25).toFixed(2)}s;--dx:${Math.round(dx)}px;--up:${-Math.round(520 + Math.random() * 260)}px;--r0:${left ? 35 : -35}deg;--r1:${Math.round(Math.random() * 360)}deg;--r2:${Math.round(Math.random() * 900)}deg"></i>`;
+    }).join('');
   }
 
   /* アンコール：銀テープと紙吹雪 */
@@ -559,7 +595,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   setTimeout(() => wink($('#eyesHero')), 1700);
   // アンコールに来たら、紙吹雪を降らせてウインク（通知が届かない環境に備えてスクロールでも判定）
   let encoreDone = false;
-  const encore = () => { if (encoreDone) return; const r = $('#call').getBoundingClientRect(); if (r.top < innerHeight * .6 && r.bottom > 0) { encoreDone = true; confetti(); setTimeout(() => wink($('#eyesCall')), 500); } };
+  // 暗転 → 客席とENCOREの電光（0〜1.1秒）→ スポットライトと見出し（1〜2秒）→ 銀テープと紙吹雪（1.6秒）→ ウインク（2.3秒）
+  const callSec = $('#call');
+  if (!reduce) callSec.classList.add('armed');
+  const encore = () => {
+    if (encoreDone) return;
+    const r = callSec.getBoundingClientRect();
+    if (r.top < innerHeight * .55 && r.bottom > 0) {
+      encoreDone = true;
+      callSec.classList.add('on');
+      setTimeout(() => { tapes(); confetti(); }, 1600);
+      setTimeout(() => wink($('#eyesCall')), 2300);
+    }
+  };
   addEventListener('scroll', encore, { passive: true }); encore();
 
   /* 登場 */
