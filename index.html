@@ -8,18 +8,17 @@
 <meta property="og:title" content="安住 龍祐 ポートフォリオ">
 <meta property="og:description" content="人が動きたくなる仕組みを、つくる。">
 <meta property="og:image" content="assets/img/learning.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='36' r='24' fill='%2346c9a0'/%3E%3Cpath d='M20 16l6 10-10 0zM44 16l-6 10 10 0z' fill='%23ffb74d'/%3E%3Ccircle cx='24' cy='34' r='5' fill='%23fff'/%3E%3Ccircle cx='40' cy='34' r='5' fill='%23fff'/%3E%3Ccircle cx='25' cy='35' r='2.6' fill='%231d2321'/%3E%3Ccircle cx='41' cy='35' r='2.6' fill='%231d2321'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 32L12 14M32 32L54 16M32 32L14 52M32 32L52 50' stroke='%23167a5b' stroke-width='4'/%3E%3Ccircle cx='12' cy='14' r='7' fill='%236f7874'/%3E%3Ccircle cx='54' cy='16' r='7' fill='%23167a5b'/%3E%3Ccircle cx='14' cy='52' r='7' fill='%236f7874'/%3E%3Ccircle cx='52' cy='50' r='7' fill='%23167a5b'/%3E%3Ccircle cx='32' cy='32' r='11' fill='%231d2321'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap">
 <style>
-/* 色は題材から：マスコット「リュウ」の緑＝現在（社会人）と強調、角の琥珀色＝数字。大学時代の点は中立の灰。背景は中立。 */
+/* 色：緑＝現在（社会人）と強調、琥珀色＝数字。大学時代の点は中立の灰。背景は中立。 */
 :root{
   --bg:#f5f5f2;--bg2:#ecece8;--surface:#ffffff;--fg:#1d2321;--muted:#5b6461;--line:#dcdfda;
   --accent:#167a5b;--accent-soft:#e2f1ea;--amber:#b86e00;
   --univ:#6f7874;--univ-soft:#eef0ed;
   --shadow:0 1px 2px rgba(29,35,33,.06),0 8px 24px -14px rgba(29,35,33,.22);
-  --dragon:#46c9a0;--dragon-dark:#2a9c7a;--belly:#fff4d6;--horn:#ffb74d;--ink:#1d2321;
   --font-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
   --font-body:"Noto Sans JP","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;
   --radius:14px;--max:1120px;--ease:cubic-bezier(.2,.8,.2,1);
@@ -211,25 +210,8 @@ dialog.case[open]{animation:pop .25s var(--ease)}
 .contact-box h2{font-family:var(--font-display);font-weight:900;font-size:clamp(24px,3vw,30px);margin:0 0 4px}
 .contact-box p{margin:0;color:var(--muted)}
 @media (max-width:700px){.contact-box{grid-template-columns:1fr;padding:24px 20px}}
-footer{padding:28px 0 120px;font-size:13px;color:var(--muted)}
+footer{padding:28px 0 40px;font-size:13px;color:var(--muted)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
-
-/* 案内役リュウ（常時の揺れはなし。まばたきと、話しかけたときだけ動く） */
-.buddy{position:fixed;right:20px;bottom:20px;z-index:40;display:flex;align-items:flex-end;gap:10px;pointer-events:none}
-.buddy>*{pointer-events:auto}
-.bubble{max-width:240px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13.5px;line-height:1.65;box-shadow:var(--shadow);transition:opacity .25s var(--ease),transform .25s var(--ease);margin:0 0 50px}
-.bubble.hide{opacity:0;transform:translateY(6px);pointer-events:none}
-.bubble .name{display:block;font-size:11px;font-weight:700;color:var(--accent)}
-.dragon-btn{width:80px;height:80px;border:none;background:none;padding:0;cursor:pointer;flex:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.16))}
-.dragon-btn svg{width:100%;height:100%;overflow:visible}
-.dragon{transform-origin:60px 110px}
-.dragon.hop{animation:hop .5s var(--ease)}
-@keyframes hop{35%{transform:translateY(-16px) rotate(-5deg)}70%{transform:translateY(0) scaleY(.94)}}
-.lids{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);animation:lid 5s infinite}
-@keyframes lid{0%,93%,100%{transform:scaleY(0)}96%{transform:scaleY(1)}}
-.buddy-min{position:absolute;top:-6px;right:-4px;width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:13px;cursor:pointer;display:grid;place-items:center;line-height:1}
-.dragon-wrap{position:relative}
-@media (max-width:600px){.bubble{max-width:180px;font-size:12.5px;margin-bottom:38px}.dragon-btn{width:62px;height:62px}.buddy{right:12px;bottom:12px}}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
@@ -383,40 +365,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     <div class="case-links" id="caseLinks"></div>
   </div>
 </dialog>
-
-<div class="buddy" id="buddy">
-  <p class="bubble" id="bubble" role="status" aria-live="polite"><span class="name">リュウ</span><span id="bubbleText">ぼくはリュウ。上の図の点を押すと、パケットが届いて詳しい話が開くよ。</span></p>
-  <div class="dragon-wrap">
-    <button class="dragon-btn" id="dragonBtn" type="button" aria-label="案内役のリュウに話しかける">
-      <svg viewBox="0 0 120 120" aria-hidden="true">
-        <g class="dragon" id="dragon">
-          <path d="M88 92 q20 -2 24 -18 q-2 10 -8 6 q-4 14 -18 18z" fill="var(--dragon-dark)"/>
-          <path d="M30 58 q-22 -12 -26 -30 q14 6 18 2 q4 10 14 10z" fill="var(--dragon-dark)"/>
-          <path d="M90 58 q22 -12 26 -30 q-14 6 -18 2 q-4 10 -14 10z" fill="var(--dragon-dark)"/>
-          <path d="M40 30 l-6 -20 l16 14z" fill="var(--horn)"/>
-          <path d="M80 30 l6 -20 l-16 14z" fill="var(--horn)"/>
-          <ellipse cx="60" cy="68" rx="38" ry="40" fill="var(--dragon)"/>
-          <ellipse cx="60" cy="84" rx="22" ry="20" fill="var(--belly)"/>
-          <path d="M50 76 h20 M48 84 h24 M50 92 h20" stroke="#f0dca8" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="44" cy="58" r="11" fill="#fff"/>
-          <circle cx="76" cy="58" r="11" fill="#fff"/>
-          <g id="pupils">
-            <circle cx="45" cy="59" r="6" fill="var(--ink)"/>
-            <circle cx="77" cy="59" r="6" fill="var(--ink)"/>
-            <circle cx="47" cy="56.5" r="2" fill="#fff"/>
-            <circle cx="79" cy="56.5" r="2" fill="#fff"/>
-          </g>
-          <rect class="lids" x="32" y="46" width="56" height="24" fill="var(--dragon)"/>
-          <ellipse cx="34" cy="72" rx="6" ry="3.5" fill="#ff8fa3" opacity=".7"/>
-          <ellipse cx="86" cy="72" rx="6" ry="3.5" fill="#ff8fa3" opacity=".7"/>
-          <path id="mouth" d="M54 72 q6 6 12 0" stroke="var(--ink)" stroke-width="2.6" fill="none" stroke-linecap="round"/>
-          <circle cx="53" cy="44" r="1.6" fill="var(--dragon-dark)"/><circle cx="67" cy="44" r="1.6" fill="var(--dragon-dark)"/>
-        </g>
-      </svg>
-    </button>
-    <button class="buddy-min" id="buddyMin" type="button" aria-label="吹き出しを閉じる">×</button>
-  </div>
-</div>
 
 <script>
 (() => {
@@ -593,18 +541,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 
   // パケットを中心から点まで流してから、事例を開く
   function send(id) {
-    const c = CASES[id];
-    if (reduce) { openCase(id); return; }
+    if (reduce || dlg.open) { if (!dlg.open) openCase(id); return; }
     const [hx, hy] = P('hub'), [x, y] = P(id);
+    let done = false;
+    const open = () => { if (done) return; done = true; openCase(id); };
     const anim = packet.animate([
       { left: hx + '%', top: hy + '%', opacity: 1 },
       { left: x + '%', top: y + '%', opacity: 1 },
     ], { duration: 300, easing: 'cubic-bezier(.2,.8,.2,1)' });
     anim.onfinish = () => {
       const e = els[id]; e.classList.remove('hit'); void e.offsetWidth; e.classList.add('hit');
-      setTimeout(() => openCase(id), 120);
+      setTimeout(open, 120);
     };
-    say(`パケットを「${c.label}」に送ったよ。`);
+    setTimeout(open, 450); // アニメーションが止まる環境でも必ず開く
   }
 
   /* ---------- プロジェクト一覧 ---------- */
@@ -674,34 +623,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     if (en.isIntersecting) navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + en.target.id));
   }), { rootMargin: '-45% 0px -50% 0px' });
   ['results', 'story', 'projects', 'contact'].forEach(id => nio.observe(document.getElementById(id)));
-
-  /* ---------- 案内役リュウ ---------- */
-  const bubble = $('#bubble'), bt = $('#bubbleText'), dragon = $('#dragon'), pupils = $('#pupils'), mouth = $('#mouth');
-  const EXTRA = [
-    '大学時代の点と、いまの点が線でつながっているよ。点にマウスを乗せてみて。',
-    'ぼくの名前は、安住さんの「龍」から来てるんだ。',
-    '右上のボタンでダークモードにできるよ。',
-  ];
-  let muted = false, extraI = 0, hideT;
-  function say(text) {
-    if (muted) return;
-    bt.textContent = text; bubble.classList.remove('hide');
-    mouth.setAttribute('d', 'M53 70 q7 9 14 0');
-    setTimeout(() => mouth.setAttribute('d', 'M54 72 q6 6 12 0'), 500);
-    clearTimeout(hideT); hideT = setTimeout(() => bubble.classList.add('hide'), 6000);
-  }
-  hideT = setTimeout(() => bubble.classList.add('hide'), 7000);
-  $('#dragonBtn').addEventListener('click', () => {
-    muted = false; say(EXTRA[extraI++ % EXTRA.length]);
-    if (!reduce) { dragon.classList.remove('hop'); void dragon.getBBox(); dragon.classList.add('hop'); }
-  });
-  $('#buddyMin').addEventListener('click', () => { muted = true; bubble.classList.add('hide'); });
-  addEventListener('pointermove', e => {
-    const r = $('#dragonBtn').getBoundingClientRect();
-    const cx = r.left + r.width / 2, cy = r.top + r.height * .48;
-    const a = Math.atan2(e.clientY - cy, e.clientX - cx), d = Math.min(1, Math.hypot(e.clientX - cx, e.clientY - cy) / 300);
-    pupils.setAttribute('transform', `translate(${Math.cos(a) * 4 * d} ${Math.sin(a) * 4 * d})`);
-  }, { passive: true });
 
   /* メールアドレスは表示時に組み立てる（収集対策） */
   const mail = ['azumi121317', 'gmail.com'].join('@');
