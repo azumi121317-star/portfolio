@@ -94,26 +94,24 @@ header.top.scrolled{background:rgba(17,14,12,.85);backdrop-filter:blur(8px);-web
 .scroll-cue i{width:1px;height:36px;background:linear-gradient(var(--dim),transparent);animation:cue 2.2s var(--ease) infinite;transform-origin:top}
 @keyframes cue{0%{transform:scaleY(0)}60%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
 
-/* キャラクター：本人のイラストをもとにしたデフォルメ。カーソルを目で追い、まばたきし、押すとウインク */
-.eyes{width:100%;max-width:280px;justify-self:center;cursor:pointer;-webkit-tap-highlight-color:transparent;background:none;border:0;padding:0;color:inherit;font:inherit}
-.eyes svg{width:100%;height:auto;overflow:visible;display:block}
-.chara .head{transform-box:view-box;transform-origin:150px 250px;transition:transform .35s var(--ease)}
-.chara:hover .head{transform:rotate(-2deg)}
-.chara.wink .head{transform:rotate(-5deg) translateY(-2px)}
-.chara .eyeball{transform-box:fill-box;transform-origin:50% 50%;transition:transform .08s ease-in}
-.chara.blink .eyeball{transform:scaleY(.08)}
-.chara .wink-arc,.chara .m-smile,.chara .burst{opacity:0}
-.chara.wink .eye.r .open{opacity:0}
-.chara.wink .wink-arc{opacity:1}
-.chara.wink .m-neutral{opacity:0}
-.chara.wink .m-smile{opacity:1}
-.chara .burst{transform-box:fill-box;transform-origin:50% 50%}
-.chara.wink .burst{animation:spark .7s var(--ease)}
-.chara .tw{transform-box:fill-box;transform-origin:50% 50%;animation:tw 3s ease-in-out infinite}
-.chara .tw:nth-of-type(2){animation-delay:-.8s}.chara .tw:nth-of-type(3){animation-delay:-1.6s}.chara .tw:nth-of-type(4){animation-delay:-2.2s}.chara .tw:nth-of-type(5){animation-delay:-.4s}
-@keyframes tw{50%{opacity:.25;transform:scale(.55)}}
-@keyframes spark{0%{opacity:0;transform:scale(.2) rotate(0)}40%{opacity:1;transform:scale(1.15) rotate(25deg)}100%{opacity:0;transform:scale(.6) rotate(60deg)}}
-.eyes .hint{display:block;text-align:center;font-size:12px;color:var(--dim);margin-top:4px}
+/* 目：カーソルを追い、ときどきまばたき、触れるとウインク */
+.eyes{width:100%;max-width:340px;justify-self:center;cursor:pointer;-webkit-tap-highlight-color:transparent;background:none;border:0;padding:0;color:inherit;font:inherit}
+.glint{display:none}
+.eyes svg{width:100%;height:auto;overflow:visible}
+.eye-white{fill:none;stroke:var(--fg);stroke-width:6}
+.pupil{fill:var(--fg)}
+.glint{fill:var(--stage)}
+.lid{fill:var(--stage)}
+.eye{transform-box:fill-box;transform-origin:50% 50%}
+.eye .lid{transform-box:fill-box;transform-origin:50% 0;transform:scaleY(0);transition:transform .09s ease-in}
+.eyes.blink .lid{transform:scaleY(1)}
+.wink-arc{fill:none;stroke:var(--light);stroke-width:8;stroke-linecap:round;opacity:0}
+.sparkle{fill:var(--light);opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.eyes.wink .eye.r .open{opacity:0}
+.eyes.wink .wink-arc{opacity:1}
+.eyes.wink .sparkle{animation:spark .6s var(--ease)}
+@keyframes spark{0%{opacity:0;transform:scale(.2) rotate(0)}40%{opacity:1;transform:scale(1.1) rotate(25deg)}100%{opacity:0;transform:scale(.6) rotate(60deg)}}
+.eyes .hint{display:block;text-align:center;font-size:12px;color:var(--dim);margin-top:6px}
 @media (max-width:860px){.hero-grid{grid-template-columns:1fr;gap:28px}.hero-side{display:contents}.hero-side .eyes{max-width:180px;order:-1;justify-self:start;align-self:flex-start}.hero-grid>div:first-child{order:0}.now-card{order:1}}
 
 /* 幕 */
@@ -320,7 +318,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
       </div>
     </div>
     <div class="hero-side">
-      <button class="eyes chara" type="button" id="eyesHero" aria-label="安住のキャラクター。押すとウインクします"><span class="hint">押すとウインクします</span></button>
+      <button class="eyes" type="button" id="eyesHero" aria-label="ウインクする">
+        <svg viewBox="0 0 300 150" aria-hidden="true">
+          <g class="eye l"><ellipse class="eye-white" cx="75" cy="75" rx="52" ry="62"/><g class="open"><circle class="pupil" cx="75" cy="80" r="27"/><circle class="glint" cx="83" cy="71" r="6"/></g><rect class="lid" x="20" y="10" width="110" height="130"/></g>
+          <g class="eye r"><g class="open"><ellipse class="eye-white" cx="225" cy="75" rx="52" ry="62"/><circle class="pupil" cx="225" cy="80" r="27"/><circle class="glint" cx="233" cy="71" r="6"/><rect class="lid" x="170" y="10" width="110" height="130"/></g><path class="wink-arc" d="M178 82 q47 -46 94 0"/></g>
+          <path class="sparkle" d="M286 20 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z"/>
+        </svg>
+      </button>
       <aside class="now-card" aria-label="いまの仕事">
         <p class="nc-when">いまの仕事 ／ 2026年7月〜</p>
         <p class="nc-role">株式会社DYMキャリア<br>内定者向けCCNA研修のPM・講師</p>
@@ -459,7 +463,13 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
         <a class="btn ghost" href="https://github.com/azumi121317-star" target="_blank" rel="noopener">GitHub</a>
       </div>
     </div>
-    <button class="eyes chara" type="button" id="eyesCall" aria-label="安住のキャラクター。押すとウインクします"></button>
+    <button class="eyes" type="button" id="eyesCall" aria-label="ウインクする">
+      <svg viewBox="0 0 300 150" aria-hidden="true">
+        <g class="eye l"><ellipse class="eye-white" cx="75" cy="75" rx="52" ry="62"/><g class="open"><circle class="pupil" cx="75" cy="80" r="27"/><circle class="glint" cx="83" cy="71" r="6"/></g><rect class="lid" x="20" y="10" width="110" height="130"/></g>
+        <g class="eye r"><g class="open"><ellipse class="eye-white" cx="225" cy="75" rx="52" ry="62"/><circle class="pupil" cx="225" cy="80" r="27"/><circle class="glint" cx="233" cy="71" r="6"/><rect class="lid" x="170" y="10" width="110" height="130"/></g><path class="wink-arc" d="M178 82 q47 -46 94 0"/></g>
+        <path class="sparkle" d="M286 20 l5 14 14 5 -14 5 -5 14 -5 -14 -14 -5 14 -5z"/>
+      </svg>
+    </button>
   </div>
 </section>
 </main>
@@ -499,45 +509,6 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   }
 
   /* 目：追う・まばたき・ウインク */
-  /* キャラクター（本人のイラストをもとにしたデフォルメ）。両方の舞台に同じ絵を入れる */
-  const STAR = 'M0 -1C.12 -.12 .12 -.12 1 0C.12 .12 .12 .12 0 1C-.12 .12 -.12 .12 -1 0C-.12 -.12 -.12 -.12 0 -1Z';
-  const CHARA = `<svg viewBox="0 0 300 330" aria-hidden="true">
-    <defs><radialGradient id="cg" cx="50%" cy="48%" r="50%"><stop offset="0" stop-color="#ffc56b" stop-opacity=".28"/><stop offset="1" stop-color="#ffc56b" stop-opacity="0"/></radialGradient></defs>
-    <circle cx="150" cy="170" r="150" fill="url(#cg)"/>
-    <g fill="#f6ead8">
-      <path class="tw" d="${STAR}" transform="translate(34 96) scale(16)"/>
-      <path class="tw" d="${STAR}" transform="translate(272 116) scale(20)"/>
-      <path class="tw" d="${STAR}" transform="translate(256 236) scale(11)" fill="#ff9ec4"/>
-      <path class="tw" d="${STAR}" transform="translate(44 216) scale(10)" fill="#ffc56b"/>
-      <path class="tw" d="${STAR}" transform="translate(284 56) scale(8)" fill="#ff9ec4"/>
-    </g>
-    <g class="head">
-      <path d="M40 330C46 270 94 246 150 246C206 246 254 270 260 330Z" fill="#221c1e" stroke="#4b4140" stroke-width="2"/>
-      <path d="M118 250L150 306L182 250Z" fill="#0d0b0a"/>
-      <path d="M118 250L104 286L132 300M182 250L196 286L168 300" fill="none" stroke="#4b4140" stroke-width="2.5" stroke-linejoin="round"/>
-      <rect x="132" y="222" width="36" height="34" rx="10" fill="#eccab6"/>
-      <ellipse cx="66" cy="174" rx="13" ry="19" fill="#f3d2c0"/>
-      <ellipse cx="234" cy="174" rx="13" ry="19" fill="#f3d2c0"/>
-      <circle cx="62" cy="196" r="7" fill="none" stroke="#dfe3e8" stroke-width="3"/>
-      <ellipse cx="150" cy="166" rx="86" ry="88" fill="#f9e1d2"/>
-      <path d="M62 178C44 96 92 40 158 40C226 40 268 92 240 180C236 152 228 130 212 114C210 138 196 152 178 130C170 150 146 158 128 130C118 152 98 162 86 142C80 156 72 166 62 178Z" fill="#2a201c"/>
-      <path d="M116 62C140 50 172 50 194 62M98 82C108 70 120 66 132 66M184 70C200 74 214 84 222 98" fill="none" stroke="#5a473f" stroke-width="3" stroke-linecap="round"/>
-      <path d="M98 146Q113 139 128 145M172 145Q187 139 202 146" fill="none" stroke="#2a201c" stroke-width="4.5" stroke-linecap="round"/>
-      <g class="eye l"><g class="open"><g class="eyeball"><ellipse cx="116" cy="178" rx="17" ry="20" fill="#2b211d"/><g class="pupil-g"><ellipse cx="116" cy="182" rx="11" ry="13" fill="#5b4a42"/><circle cx="110" cy="171" r="5.5" fill="#fff"/><circle cx="122" cy="187" r="2.5" fill="#fff"/></g></g><path d="M97 168Q116 152 136 166" fill="none" stroke="#1b1411" stroke-width="4" stroke-linecap="round"/></g></g>
-      <g class="eye r"><g class="open"><g class="eyeball"><ellipse cx="184" cy="178" rx="17" ry="20" fill="#2b211d"/><g class="pupil-g"><ellipse cx="184" cy="182" rx="11" ry="13" fill="#5b4a42"/><circle cx="178" cy="171" r="5.5" fill="#fff"/><circle cx="190" cy="187" r="2.5" fill="#fff"/></g></g><path d="M164 166Q184 152 203 168" fill="none" stroke="#1b1411" stroke-width="4" stroke-linecap="round"/></g>
-        <path class="wink-arc" d="M166 182Q184 166 202 182M168 180L162 186M200 180L206 186" fill="none" stroke="#1b1411" stroke-width="4.5" stroke-linecap="round"/></g>
-      <rect x="92" y="152" width="50" height="48" rx="15" fill="rgba(255,255,255,.07)" stroke="#c8ccd3" stroke-width="2.4"/>
-      <rect x="158" y="152" width="50" height="48" rx="15" fill="rgba(255,255,255,.07)" stroke="#c8ccd3" stroke-width="2.4"/>
-      <path d="M142 170Q150 164 158 170M92 166L72 160M208 166L228 160" fill="none" stroke="#c8ccd3" stroke-width="2.4" stroke-linecap="round"/>
-      <ellipse cx="106" cy="212" rx="13" ry="6.5" fill="#f4a3a8" opacity=".55"/>
-      <ellipse cx="194" cy="212" rx="13" ry="6.5" fill="#f4a3a8" opacity=".55"/>
-      <path d="M150 200q2.5 3.5 0 6" fill="none" stroke="#e2b9a6" stroke-width="2.4" stroke-linecap="round"/>
-      <path class="m-neutral" d="M142 224Q150 228 158 224" fill="none" stroke="#c7766f" stroke-width="3.2" stroke-linecap="round"/>
-      <path class="m-smile" d="M138 219Q150 238 162 219Z" fill="#b8504f" stroke="#a5433f" stroke-width="2" stroke-linejoin="round"/>
-      <path class="burst" d="${STAR}" transform="translate(226 132) scale(18)" fill="#ffc56b"/>
-    </g>
-  </svg>`;
-  $$('.chara').forEach(b => b.insertAdjacentHTML('afterbegin', CHARA));
   const eyesList = $$('.eyes');
   /* 客席：ペンライトを振る観客を、画面幅に合わせて並べる */
   const crowd = $('#crowd');
@@ -578,7 +549,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
       const r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
       const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
       const a = Math.atan2(e.clientY - cy, e.clientX - cx), d = Math.min(1, Math.hypot(e.clientX - cx, e.clientY - cy) / 400);
-      $$('.pupil-g', el).forEach(p => p.setAttribute('transform', `translate(${Math.cos(a) * 5 * d} ${Math.sin(a) * 5 * d})`));
+      $$('.pupil, .glint', el).forEach(p => p.setAttribute('transform', `translate(${Math.cos(a) * 18 * d} ${Math.sin(a) * 22 * d})`));
     });
   }, { passive: true });
   // 開幕直後に一度ウインク、カーテンコールに来たらもう一度
