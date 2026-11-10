@@ -343,6 +343,39 @@ main{position:relative;z-index:1}
 .has3d .stage3d{display:block}
 .has3d .beams{display:none}
 
+/* ===== ライブ演出 第3弾 ===== */
+/* イ：終演。ページの一番下の小さな舞台で緞帳が閉まる */
+.finale{position:relative;z-index:1;padding:24px 0 56px}
+.fin-stage{position:relative;height:300px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(circle at 50% 0,rgba(255,197,107,.2),transparent 60%),var(--board)}
+.fc{position:absolute;top:0;bottom:0;width:50.5%;z-index:1;background:repeating-linear-gradient(90deg,var(--curtain-dark) 0 12px,var(--curtain) 12px 34px,var(--curtain-dark) 34px 46px);box-shadow:inset 0 -50px 70px rgba(0,0,0,.5);transition:transform 1.6s cubic-bezier(.7,0,.2,1)}
+.fc.l{left:0;transform:translateX(-101%)}
+.fc.r{right:0;transform:translateX(101%)}
+.finale.closed .fc{transform:none}
+.fin-msg{position:absolute;inset:0;z-index:2;display:grid;place-content:center;justify-items:center;text-align:center;gap:6px;padding:0 20px;opacity:0;transition:opacity .8s var(--ease) 1.3s}
+.finale.closed .fin-msg{opacity:1}
+.fin-t{margin:0;font-family:var(--mincho);font-weight:900;font-size:clamp(22px,3vw,30px);color:var(--fg);text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.fin-s{margin:0 0 12px;color:#f3dcd0;font-size:14px;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.fin-msg .btn{background:rgba(17,14,12,.75)}
+
+/* ウ：ライブ配信風。● LIVE と経過時間、節が変わるとカメラが切り替わる */
+.onair{position:fixed;left:16px;bottom:16px;z-index:56;display:flex;align-items:center;gap:10px;padding:6px 12px;border-radius:999px;background:rgba(17,14,12,.85);border:1px solid var(--line);font-family:var(--gothic);font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.04em;pointer-events:none;font-variant-numeric:tabular-nums}
+.onair .rec{color:#ff5a5a;display:flex;align-items:center;gap:6px}
+.onair .rec::before{content:"";width:8px;height:8px;border-radius:50%;background:#ff3b3b;box-shadow:0 0 8px #ff3b3b;animation:recblink 1.4s steps(1) infinite}
+@keyframes recblink{50%{opacity:.25}}
+.onair .cam{color:var(--fg);transition:color .3s}
+.onair.cut .cam{color:var(--light)}
+.camframe{position:fixed;inset:10px;z-index:57;pointer-events:none;border:2px solid rgba(255,255,255,.55);border-radius:6px;opacity:0;box-shadow:inset 0 0 0 200vmax rgba(255,255,255,.04)}
+.camframe.cut{animation:camcut .55s ease-out}
+@keyframes camcut{0%{opacity:1}100%{opacity:0}}
+@media (max-width:700px){.onair{left:10px;bottom:12px;font-size:11px;padding:4px 10px}}
+
+/* エ：カーソルの光の残像（PCのみ） */
+.trail{position:fixed;inset:0;width:100%;height:100%;z-index:58;pointer-events:none;mix-blend-mode:screen}
+
+/* オ：スクロールの勢いがあるときは、ペンライトと照明を速く */
+.rush .fan i{animation-duration:.42s}
+.rush .beams i{animation-duration:2.2s}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none;filter:none}
@@ -378,6 +411,9 @@ main{position:relative;z-index:1}
 <nav class="setlist" id="setlist" aria-label="セットリスト"><div class="sl-track"><i id="slFill"></i></div></nav>
 <div class="mprog" aria-hidden="true"><i id="mpFill"></i></div>
 <div class="blackout" id="blackout" aria-hidden="true"></div>
+<div class="onair" id="onair" aria-hidden="true"><span class="rec">LIVE</span><span id="liveTime">00:00</span><span class="cam" id="camLabel">CAM 1</span></div>
+<div class="camframe" id="camframe" aria-hidden="true"></div>
+<canvas class="trail" id="trail" aria-hidden="true"></canvas>
 
 <main id="main">
 <!-- 開幕：ここだけ見れば分かるように -->
@@ -567,6 +603,13 @@ main{position:relative;z-index:1}
   </div>
   <div class="th-stage"><iframe id="thFrame" title="作品のデモ" src="about:blank"></iframe></div>
 </dialog>
+
+<section class="finale" id="finale" aria-label="終演">
+  <div class="wrap"><div class="fin-stage">
+    <i class="fc l" aria-hidden="true"></i><i class="fc r" aria-hidden="true"></i>
+    <div class="fin-msg"><p class="fin-t">本日の公演は、これにて終演です。</p><p class="fin-s">ご来場、ありがとうございました。</p><button class="btn ghost" type="button" id="replay">もう一度、最初から</button></div>
+  </div></div>
+</section>
 
 <footer>
   <div class="wrap">
@@ -774,6 +817,7 @@ main{position:relative;z-index:1}
   /* ===== G：節が変わったら、会場の照明とセットリストを切り替える ===== */
   const root = document.documentElement;
   function onSceneChange(sec) {
+    camCut(sec);
     document.documentElement.dataset.scene = sec ? sec.id : 'hero';
     const ids = $$('.setlist a').map(a => a.dataset.target), i = sec ? ids.indexOf(sec.id) : -1;
     $$('.setlist a').forEach((a, k) => { a.classList.toggle('cur', k === i); a.classList.toggle('done', i > -1 && k < i); });
@@ -829,6 +873,89 @@ main{position:relative;z-index:1}
   };
   addEventListener('scroll', flapCheck, { passive: true }); flapCheck();
 
+  /* ===== ウ：ライブ配信風。経過時間と、節が変わったときのカメラの切り替え ===== */
+  const startedAt = Date.now();
+  const tick = () => { const s = Math.floor((Date.now() - startedAt) / 1000); $('#liveTime').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+  tick(); setInterval(tick, 1000);
+  var camReady = false;
+  function camCut(sec) {
+    const ids = ['hero', 'now', 'stage', 'next', 'trophies', 'prequel', 'call'];
+    const n = sec ? ids.indexOf(sec.id) + 1 : 1;
+    const label = document.getElementById('camLabel'); if (!label) return;
+    label.textContent = 'CAM ' + Math.max(1, n);
+    if (!camReady || reduce) return;
+    const fr = document.getElementById('camframe'), oa = document.getElementById('onair');
+    fr.classList.remove('cut'); oa.classList.remove('cut'); void fr.offsetWidth;
+    fr.classList.add('cut'); oa.classList.add('cut');
+    clearTimeout(camCut._t); camCut._t = setTimeout(() => oa.classList.remove('cut'), 900);
+  }
+  setTimeout(() => { camReady = true; }, 1500);
+
+  /* ===== オ：スクロールの勢い。速く進むほど、照明とペンライトが速くなる ===== */
+  var rushV = 0;
+  let lastY = scrollY, lastT = performance.now(), rushTarget = 0, idle;
+  addEventListener('scroll', () => {
+    const now = performance.now(), v = Math.abs(scrollY - lastY) / Math.max(16, now - lastT);
+    lastY = scrollY; lastT = now;
+    rushTarget = Math.min(1, v / 2.5);
+    clearTimeout(idle); idle = setTimeout(() => { rushTarget = 0; }, 140);
+  }, { passive: true });
+  if (!reduce) setInterval(() => {
+    rushV += (rushTarget - rushV) * 0.25;
+    root.classList.toggle('rush', rushV > 0.35);
+  }, 60);
+
+  /* ===== エ：カーソルの光の残像（PCで、動きを減らす設定でないときだけ） ===== */
+  (function trail() {
+    const cv = $('#trail');
+    if (reduce || !matchMedia('(hover: hover) and (pointer: fine)').matches) { cv.remove(); return; }
+    const g = cv.getContext('2d'); let W, H, pts = [], running = false, burst = 0;
+    const size = () => { const r = Math.min(devicePixelRatio || 1, 2); W = cv.width = innerWidth * r; H = cv.height = innerHeight * r; g.setTransform(r, 0, 0, r, 0, 0); };
+    size(); addEventListener('resize', size);
+    const COLOR = { hero: '255,197,107', now: '255,197,107', stage: '246,234,216', next: '255,158,196', trophies: '255,197,107', prequel: '255,140,150', call: '255,158,196' };
+    const draw = () => {
+      g.clearRect(0, 0, W, H);
+      pts.forEach(p => { p.life -= 0.045; });
+      pts = pts.filter(p => p.life > 0);
+      const rgb = COLOR[root.dataset.scene] || COLOR.hero;
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1], b = pts[i];
+        g.strokeStyle = `rgba(${rgb},${b.life * 0.55})`; g.lineWidth = 2 + b.life * 5 + burst * 6; g.lineCap = 'round';
+        g.shadowColor = `rgba(${rgb},${b.life})`; g.shadowBlur = 14 + burst * 20;
+        g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.stroke();
+      }
+      burst *= 0.9;
+      if (pts.length > 1 || burst > 0.02) requestAnimationFrame(draw); else { g.clearRect(0, 0, W, H); running = false; }
+    };
+    const kick = () => { if (!running) { running = true; requestAnimationFrame(draw); } };
+    addEventListener('pointermove', e => { pts.push({ x: e.clientX, y: e.clientY, life: 1 }); if (pts.length > 40) pts.shift(); kick(); }, { passive: true });
+    addEventListener('pointerdown', () => { burst = 1; kick(); }, { passive: true });
+  })();
+
+  /* ===== イ：終演。一番下まで来たら緞帳が閉まり、「もう一度」で最初から再演する ===== */
+  const finale = $('#finale');
+  if (reduce) finale.classList.add('closed');
+  const finaleCheck = () => { if (finale.classList.contains('closed')) return; const r = finale.getBoundingClientRect(); if (r.top < innerHeight * .85) finale.classList.add('closed'); };
+  addEventListener('scroll', finaleCheck, { passive: true }); finaleCheck();
+  $('#replay').addEventListener('click', () => {
+    const reset = () => {
+      const prev = root.style.scrollBehavior; root.style.scrollBehavior = 'auto'; scrollTo(0, 0); root.style.scrollBehavior = prev;
+      finale.classList.remove('closed');
+      encoreDone = false; callSec.classList.remove('on'); $('#tapes').innerHTML = ''; $('#confetti').innerHTML = '';
+      flapDone = false;
+      onScroll(); progress();
+    };
+    if (reduce) { reset(); return; }
+    // 画面全体の緞帳を閉じてから最初へ戻り、もう一度開ける
+    curtain.classList.add('open'); curtain.classList.remove('gone');
+    requestAnimationFrame(() => requestAnimationFrame(() => curtain.classList.remove('open')));
+    setTimeout(() => {
+      reset();
+      setTimeout(() => curtain.classList.add('open'), 350);
+      setTimeout(() => { curtain.classList.add('gone'); wink($('#eyesHero')); }, 1600);
+    }, 1250);
+  });
+
   /* ===== D：3Dのステージ（PCで、動きを減らす設定でないときだけ読み込む） ===== */
   var fx3d = null;
   (async function stage3D() {
@@ -851,24 +978,34 @@ main{position:relative;z-index:1}
     const edge = new THREE.Mesh(new THREE.BoxGeometry(18, 0.04, 0.04), new THREE.MeshBasicMaterial({ color: 0xffc56b }));
     edge.position.set(0, 0.52, -0.5); scene.add(edge);
 
-    // 奥のLEDの壁（粒の明滅）
+    // 奥のLEDの壁：粒の明滅に、作品の画面を重ねて順番に映す（ア）
+    const loader = new THREE.TextureLoader();
+    const WORK_IMGS = ['assets/img/learning.png', 'assets/img/cli-simulator.png', 'assets/img/ccna-kaisetsu.png', 'assets/img/report-coach.png'];
+    const workTex = WORK_IMGS.map(src => { const tx = loader.load(src); tx.colorSpace = THREE.SRGBColorSpace; return tx; });
     const ledMat = new THREE.ShaderMaterial({
-      uniforms: { t: { value: 0 }, flash: { value: 0 } }, transparent: true, depthWrite: false,
+      uniforms: { t: { value: 0 }, flash: { value: 0 }, tA: { value: workTex[0] }, tB: { value: workTex[1] }, mixv: { value: 0 }, img: { value: 0 } },
+      transparent: true, depthWrite: false,
       vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-      fragmentShader: `varying vec2 vUv; uniform float t; uniform float flash;
+      fragmentShader: `varying vec2 vUv; uniform float t; uniform float flash; uniform sampler2D tA; uniform sampler2D tB; uniform float mixv; uniform float img;
         void main(){
-          vec2 grid = vUv * vec2(96.0, 36.0); vec2 f = fract(grid) - 0.5; vec2 c = floor(grid) / vec2(96.0, 36.0);
-          float d = smoothstep(0.42, 0.16, length(f));
+          vec2 cells = vec2(170.0, 31.0);
+          vec2 grid = vUv * cells; vec2 f = fract(grid) - 0.5; vec2 c = floor(grid) / cells;
+          float d = smoothstep(0.44, 0.14, length(f));
           float wave = 0.5 + 0.5 * sin(c.x * 9.0 + t * 1.2) * cos(c.y * 7.0 - t * 0.8);
           float sweep = smoothstep(0.55, 1.0, sin((c.x + c.y * 0.4) * 6.0 - t * 2.2) * 0.5 + 0.5);
           vec3 col = mix(vec3(1.0, 0.77, 0.42), vec3(1.0, 0.62, 0.77), wave) * (0.05 + 0.16 * sweep + flash * 0.5);
+          // 作品の画面は、粒ごとに1色で拾って、LEDビジョンの質感にする（画面の上側を映す）
+          vec2 cc = c + 0.5 / cells;
+          vec2 tuv = vec2(cc.x, 1.0 - (1.0 - cc.y) * 0.3);
+          vec3 shot = mix(texture2D(tA, tuv).rgb, texture2D(tB, tuv).rgb, mixv);
+          col = mix(col, shot * (0.85 + flash * 0.3) + col * 0.3, img);
           // 文字が並ぶ左側ほど暗くして、見出しを読みやすくする
-          float keep = mix(0.18, 1.0, smoothstep(0.30, 0.75, vUv.x));
+          float keep = mix(0.14, 1.0, smoothstep(0.30, 0.75, vUv.x));
           gl_FragColor = vec4(col * d * keep, d * 0.95 * keep);
         }`
     });
-    const led = new THREE.Mesh(new THREE.PlaneGeometry(20, 7.5), ledMat);
-    led.position.set(0, 4.6, -6.5); scene.add(led);
+    const led = new THREE.Mesh(new THREE.PlaneGeometry(20, 3.6), ledMat);
+    led.position.set(0, 6.2, -6.5); scene.add(led);
 
     // トラスとムービングライト
     const truss = new THREE.Mesh(new THREE.BoxGeometry(20, 0.2, 0.2), new THREE.MeshBasicMaterial({ color: 0x2b241f }));
@@ -907,10 +1044,22 @@ main{position:relative;z-index:1}
     root.classList.add('has3d');
 
     const down = new THREE.Vector3(), clock = new THREE.Clock();
+    let t3 = 0, shown = 0, since = 0;
     (function loop() {
       requestAnimationFrame(loop);
+      const dt = Math.min(clock.getDelta(), 0.1);
       const r = heroEl.getBoundingClientRect(); if (r.bottom < 0) return;
-      const t = clock.getElapsedTime(); flash *= 0.94;
+      // オ：スクロールの勢いがあるほど、照明の動きを速くする
+      t3 += dt * (1 + rushV * 2.5);
+      const t = t3; flash *= 0.94;
+      // ア：作品の画面を5秒ごとに切り替える（1秒かけて重ねる）
+      ledMat.uniforms.img.value = Math.min(1, ledMat.uniforms.img.value + dt * 0.6);
+      since += dt;
+      if (since > 5) {
+        const m = ledMat.uniforms.mixv.value + dt;
+        ledMat.uniforms.mixv.value = Math.min(1, m);
+        if (m >= 1) { shown = (shown + 1) % workTex.length; ledMat.uniforms.tA.value = workTex[shown]; ledMat.uniforms.tB.value = workTex[(shown + 1) % workTex.length]; ledMat.uniforms.mixv.value = 0; since = 0; }
+      }
       const p = Math.min(1, Math.max(0, scrollY / heroEl.offsetHeight));
       cam.position.x += (mx * 1.4 - cam.position.x) * 0.05;
       cam.position.y += (2.4 - my * 0.5 + p * 1.2 - cam.position.y) * 0.05;
