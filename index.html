@@ -294,7 +294,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 
 /* ===== ライブ演出 第2弾 ===== */
 main{position:relative;z-index:1}
-.stage{background:rgba(26,21,18,.55)}
+.stage{background:transparent}
 
 /* G：会場の照明。節ごとに色と位置を切り替える */
 .house{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -344,6 +344,15 @@ main{position:relative;z-index:1}
 .has3d .beams{display:none}
 
 /* ===== ライブ演出 第3弾 ===== */
+/* CAMごとに、天井から差す光の色を切り替える（本文の後ろではなく、画面の上の縁から） */
+.wash{position:fixed;inset:0;z-index:0;pointer-events:none;color:transparent;background:radial-gradient(135% 70% at 50% -16%,currentColor,transparent 72%);opacity:.48;transition:color 1s var(--ease)}
+[data-scene="now"] .wash{color:#ffc56b}
+[data-scene="stage"] .wash{color:#9fd4ff}
+[data-scene="next"] .wash{color:#ff7fb6}
+[data-scene="trophies"] .wash{color:#ffd76a}
+[data-scene="prequel"] .wash{color:#d23a52}
+[data-scene="call"] .wash{color:#ff8fae}
+
 /* イ：終演。ページの一番下の小さな舞台で緞帳が閉まる */
 .finale{position:relative;z-index:1;padding:24px 0 56px}
 .fin-stage{position:relative;height:300px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(circle at 50% 0,rgba(255,197,107,.2),transparent 60%),var(--board)}
@@ -407,6 +416,7 @@ main{position:relative;z-index:1}
 
 <div class="nowbar" id="nowbar" aria-hidden="true"><div class="wrap"><span class="n" id="nbN"></span><b id="nbName"></b><span class="w" id="nbWhen"></span><span class="t" id="nbWhat"></span></div></div>
 
+<div class="wash" aria-hidden="true"></div>
 <div class="house" aria-hidden="true"><i class="l-amber"></i><i class="l-pink"></i><i class="l-white"></i><i class="l-red"></i></div>
 <nav class="setlist" id="setlist" aria-label="セットリスト"><div class="sl-track"><i id="slFill"></i></div></nav>
 <div class="mprog" aria-hidden="true"><i id="mpFill"></i></div>
