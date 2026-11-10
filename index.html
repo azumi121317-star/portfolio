@@ -45,7 +45,7 @@ p,li{text-wrap:pretty}
 .curtain.gone{display:none}
 
 /* スポットライト：カーソルの周りだけ明るく、外側を少し落とす */
-.spot{position:fixed;inset:0;z-index:30;pointer-events:none;background:radial-gradient(520px circle at var(--x,50%) var(--y,40%),transparent 0,transparent 45%,rgba(8,6,5,.28) 100%);transition:background .08s linear}
+.spot{position:fixed;inset:0;z-index:30;pointer-events:none;background:radial-gradient(520px circle at var(--x,50%) var(--y,40%),transparent 0,transparent 45%,rgba(8,6,5,.2) 100%);transition:background .08s linear}
 @media (hover:none){.spot{background:radial-gradient(120% 80% at 50% 30%,transparent 45%,rgba(8,6,5,.25) 100%)}}
 
 /* ヘッダー */
@@ -266,7 +266,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 36px;font-size:13px;color
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 
 /* 登場（照明が入るように） */
-.reveal{opacity:0;transform:translateY(18px);filter:blur(4px);transition:opacity .7s var(--ease),transform .7s var(--ease),filter .7s var(--ease)}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
 .reveal.in{opacity:1;transform:none;filter:none}
 
 /* ライブ演出：ステージ照明・ペンライトの客席・アンコールの紙吹雪 */
@@ -299,10 +299,10 @@ main{position:relative;z-index:1}
 /* G：会場の照明。節ごとに色と位置を切り替える */
 .house{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .house i{position:absolute;width:80vmax;height:80vmax;border-radius:50%;opacity:0;transition:opacity 1.2s var(--ease),transform 1.8s var(--ease)}
-.house .l-amber{left:-30vmax;top:-25vmax;background:radial-gradient(circle,rgba(255,197,107,.24),transparent 62%)}
-.house .l-pink{right:-30vmax;top:-15vmax;background:radial-gradient(circle,rgba(255,158,196,.2),transparent 62%)}
-.house .l-white{left:calc(50% - 40vmax);top:-45vmax;background:radial-gradient(circle,rgba(246,234,216,.16),transparent 62%)}
-.house .l-red{left:calc(50% - 40vmax);bottom:-48vmax;background:radial-gradient(circle,rgba(143,29,44,.32),transparent 62%)}
+.house .l-amber{left:-30vmax;top:-25vmax;background:radial-gradient(circle,rgba(255,197,107,.16),transparent 62%)}
+.house .l-pink{right:-30vmax;top:-15vmax;background:radial-gradient(circle,rgba(255,158,196,.13),transparent 62%)}
+.house .l-white{left:calc(50% - 40vmax);top:-45vmax;background:radial-gradient(circle,rgba(246,234,216,.1),transparent 62%)}
+.house .l-red{left:calc(50% - 40vmax);bottom:-48vmax;background:radial-gradient(circle,rgba(143,29,44,.22),transparent 62%)}
 [data-scene="now"] .house .l-amber{opacity:1}
 [data-scene="stage"] .house .l-white{opacity:1;transform:translateY(12vmax)}
 [data-scene="next"] .house .l-pink{opacity:1;transform:translateY(8vmax)}
@@ -364,7 +364,7 @@ main{position:relative;z-index:1}
 @keyframes recblink{50%{opacity:.25}}
 .onair .cam{color:var(--fg);transition:color .3s}
 .onair.cut .cam{color:var(--light)}
-.camframe{position:fixed;inset:10px;z-index:57;pointer-events:none;border:2px solid rgba(255,255,255,.55);border-radius:6px;opacity:0;box-shadow:inset 0 0 0 200vmax rgba(255,255,255,.04)}
+.camframe{position:fixed;inset:10px;z-index:57;pointer-events:none;border:1px solid rgba(255,255,255,.22);border-radius:6px;opacity:0}
 .camframe.cut{animation:camcut .55s ease-out}
 @keyframes camcut{0%{opacity:1}100%{opacity:0}}
 @media (max-width:700px){.onair{left:10px;bottom:12px;font-size:11px;padding:4px 10px}}
@@ -915,13 +915,13 @@ main{position:relative;z-index:1}
     const COLOR = { hero: '255,197,107', now: '255,197,107', stage: '246,234,216', next: '255,158,196', trophies: '255,197,107', prequel: '255,140,150', call: '255,158,196' };
     const draw = () => {
       g.clearRect(0, 0, W, H);
-      pts.forEach(p => { p.life -= 0.045; });
+      pts.forEach(p => { p.life -= 0.08; });
       pts = pts.filter(p => p.life > 0);
       const rgb = COLOR[root.dataset.scene] || COLOR.hero;
       for (let i = 1; i < pts.length; i++) {
         const a = pts[i - 1], b = pts[i];
-        g.strokeStyle = `rgba(${rgb},${b.life * 0.55})`; g.lineWidth = 2 + b.life * 5 + burst * 6; g.lineCap = 'round';
-        g.shadowColor = `rgba(${rgb},${b.life})`; g.shadowBlur = 14 + burst * 20;
+        g.strokeStyle = `rgba(${rgb},${b.life * 0.3})`; g.lineWidth = 1.5 + b.life * 2.5 + burst * 4; g.lineCap = 'round';
+        g.shadowColor = `rgba(${rgb},${b.life})`; g.shadowBlur = 8 + burst * 14;
         g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.stroke();
       }
       burst *= 0.9;
@@ -1017,7 +1017,7 @@ main{position:relative;z-index:1}
       vertexShader: `varying float vY; varying vec3 vN; varying vec3 vV;
         void main(){ vY = uv.y; vec4 mv = modelViewMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }`,
       fragmentShader: `uniform vec3 color; uniform float k; varying float vY; varying vec3 vN; varying vec3 vV;
-        void main(){ float edgeF = pow(abs(dot(vN, vV)), 1.5); float a = pow(vY, 1.3) * edgeF * 0.34 * k; gl_FragColor = vec4(color * a, a); }`
+        void main(){ float edgeF = pow(abs(dot(vN, vV)), 1.5); float a = pow(vY, 1.3) * edgeF * 0.27 * k; gl_FragColor = vec4(color * a, a); }`
     });
     const spotTex = (() => {
       const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
