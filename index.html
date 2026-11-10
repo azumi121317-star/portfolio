@@ -102,10 +102,24 @@ header.top.scrolled{background:rgba(17,14,12,.85);backdrop-filter:blur(8px);-web
 
 /* 幕 */
 .act{position:relative;padding:120px 0;border-top:1px solid var(--line)}
-.act-head{display:flex;align-items:baseline;gap:16px;margin-bottom:22px}
-.act-no{font-family:var(--mincho);font-weight:900;font-size:15px;color:var(--curtain);background:var(--fg);padding:2px 10px;border-radius:4px;white-space:nowrap}
-.act-name{font-family:var(--gothic);font-weight:700;color:var(--muted);font-size:15px}
-.act-when{font-size:13px;color:var(--dim)}
+/* 幕の頭：いつ・どこで・何を を、見出しより先に読めるように */
+.act-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:26px;padding-bottom:18px;border-bottom:1px solid var(--line);max-width:860px}
+.act-no{font-family:var(--mincho);font-weight:900;font-size:15px;color:var(--curtain);background:var(--fg);padding:2px 10px;border-radius:4px;white-space:nowrap;margin-top:5px}
+.ctx{min-width:0}
+.ctx-top{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px}
+.act-name{font-family:var(--gothic);font-weight:900;color:var(--fg);font-size:24px;line-height:1.3}
+.when{font-family:var(--gothic);font-size:16px;font-weight:700;color:var(--light)}
+.what{margin:4px 0 0;font-size:15.5px;color:var(--muted);line-height:1.6}
+
+/* いま何幕か：スクロール中に上部へ出る帯 */
+.nowbar{position:fixed;top:60px;left:0;right:0;z-index:55;background:rgba(17,14,12,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line);transform:translateY(-110%);opacity:0;transition:transform .3s var(--ease),opacity .3s var(--ease);pointer-events:none}
+.nowbar.show{transform:none;opacity:1}
+.nowbar .wrap{display:flex;align-items:baseline;gap:12px;height:42px;white-space:nowrap;overflow:hidden}
+.nowbar .n{font-family:var(--mincho);font-weight:900;color:var(--curtain);background:var(--fg);padding:0 8px;border-radius:3px;font-size:13px}
+.nowbar b{font-family:var(--gothic);font-size:15px}
+.nowbar .w{color:var(--light);font-weight:700;font-size:14px}
+.nowbar .t{color:var(--muted);font-size:13.5px;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:640px){.nowbar .t{display:none}.act-name{font-size:21px}}
 .line-big{font-family:var(--mincho);font-weight:900;font-size:clamp(32px,5vw,64px);line-height:1.3;margin:0 0 28px;max-width:16em}
 .line-big .lit{color:var(--light)}
 .act-body{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:start}
@@ -213,6 +227,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   </div>
 </header>
 
+<div class="nowbar" id="nowbar" aria-hidden="true"><div class="wrap"><span class="n" id="nbN"></span><b id="nbName"></b><span class="w" id="nbWhen"></span><span class="t" id="nbWhat"></span></div></div>
+
 <main id="main">
 <!-- 開幕 -->
 <section class="hero" id="hero" aria-label="開幕">
@@ -242,7 +258,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 <!-- 第1幕 -->
 <section class="act" id="act1">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">第1幕</span><span class="act-name">研究室</span><span class="act-when">〜2025年3月 ／ 大学</span></div>
+    <div class="act-head reveal"><span class="act-no">第1幕</span><div class="ctx"><p class="ctx-top"><b class="act-name">大学時代</b><span class="when">〜2025年3月</span></p><p class="what">地域・企業・行政と組んだプロジェクト（オープンラボの立ち上げ、卒業研究など）</p></div></div>
     <h2 class="line-big reveal">業界の違う社会人に声をかけて、<span class="lit">毎週</span>集まる場をつくりました。</h2>
     <div class="act-body">
       <div class="act-text reveal">
@@ -271,7 +287,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 <!-- 第2幕 -->
 <section class="act" id="act2">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">第2幕</span><span class="act-name">店頭</span><span class="act-when">インターン ／ 2025年4月〜2026年3月 株式会社ノジマ</span></div>
+    <div class="act-head reveal"><span class="act-no">第2幕</span><div class="ctx"><p class="ctx-top"><b class="act-name">営業</b><span class="when">大学時代のインターン、2025年4月〜2026年3月</span></p><p class="what">内定者インターンでの買取営業と、株式会社ノジマでの家電の提案営業</p></div></div>
     <h2 class="line-big reveal">お客さんの「欲しい」を引き出して、<span class="lit">1位</span>を取り続けました。</h2>
     <div class="act-body">
       <div class="act-text reveal">
@@ -289,7 +305,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 <!-- 第3幕 -->
 <section class="act" id="act3">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">第3幕</span><span class="act-name">茶畑</span><span class="act-when">2026年5〜6月 ／ 茶葉生産農家（アルバイト）</span></div>
+    <div class="act-head reveal"><span class="act-no">第3幕</span><div class="ctx"><p class="ctx-top"><b class="act-name">茶畑</b><span class="when">2026年5〜6月</span></p><p class="what">茶葉生産農家でのアルバイト</p></div></div>
     <h2 class="line-big reveal">次の舞台の前に、<span class="lit">茶畑</span>に立ちました。</h2>
     <div class="act-text reveal" style="max-width:640px">
       <p>茶園の除草、遮光シートの管理、収穫の補助と運搬を担当しました。</p>
@@ -300,7 +316,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 <!-- 第4幕 -->
 <section class="act" id="act4">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">第4幕</span><span class="act-name">研修</span><span class="act-when">2026年7月〜 ／ 株式会社DYMキャリア</span></div>
+    <div class="act-head reveal"><span class="act-no">第4幕</span><div class="ctx"><p class="ctx-top"><b class="act-name">研修</b><span class="when">2026年7月〜現在</span></p><p class="what">株式会社DYMキャリアで、内定者向けCCNA研修のPM・講師と、教育基盤の内製化</p></div></div>
     <h2 class="line-big reveal">やらなくてもいい学生が、<span class="lit">続けたくなる</span>仕組みをつくりました。</h2>
     <div class="act-body">
       <div class="act-text reveal">
@@ -325,7 +341,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 <!-- 第5幕 -->
 <section class="act" id="act5">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">第5幕</span><span class="act-name">次の舞台</span><span class="act-when">2026年10月〜</span></div>
+    <div class="act-head reveal"><span class="act-no">第5幕</span><div class="ctx"><p class="ctx-top"><b class="act-name">次の舞台</b><span class="when">2026年10月〜</span></p><p class="what">社内DX・業務自動化と、社外FDE案件（2026年11月から参加予定）</p></div></div>
     <h2 class="line-big reveal">入社4か月で、<span class="lit">社内初のFDE</span>に選ばれました。</h2>
     <div class="act-body">
       <div class="act-text reveal">
@@ -339,7 +355,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 <!-- 1位の記録 -->
 <section class="act" id="trophies">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">幕間</span><span class="act-name">1位の記録</span></div>
+    <div class="act-head reveal"><span class="act-no">幕間</span><div class="ctx"><p class="ctx-top"><b class="act-name">1位の記録</b><span class="when">大学時代〜現在</span></p><p class="what">これまでに取った1位をまとめました</p></div></div>
     <h2 class="line-big reveal">人の前に立つたびに、<span class="lit">1位</span>を取ってきました。</h2>
     <div class="trophies">
       <div class="trophy reveal"><div class="rank">1<small>位</small></div><h3>講師評価</h3><p>受講生による評価<br>13人中</p></div>
@@ -354,7 +370,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 <!-- 作品の舞台 -->
 <section class="act stage" id="stage">
   <div class="wrap">
-    <div class="act-head reveal"><span class="act-no">特別公演</span><span class="act-name">作品</span></div>
+    <div class="act-head reveal"><span class="act-no">特別公演</span><div class="ctx"><p class="ctx-top"><b class="act-name">作品</b><span class="when">2026年8月〜</span></p><p class="what">研修と社内DXのために自分で作ったシステム。この場で操作できます</p></div></div>
     <h2 class="line-big reveal">企画するだけではありません。<span class="lit">自分で作ります。</span></h2>
     <div class="tabs reveal" role="tablist" aria-label="作品" id="tabs"></div>
     <div class="screen reveal" id="screen">
@@ -453,11 +469,29 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
   }, { threshold: .7 }).observe(mc);
 
   /* ヘッダーと現在地 */
-  const header = $('#top'), navLinks = $$('.nav ul a');
-  addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 30), { passive: true });
-  const map = { act1: '#act1', act2: '#act1', act3: '#act1', act4: '#act1', act5: '#act1', trophies: '#trophies', stage: '#stage', call: '#call' };
-  const navObs = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === map[en.target.id])); }), { rootMargin: '-45% 0px -50% 0px' });
-  Object.keys(map).forEach(id => { const s = document.getElementById(id); if (s) navObs.observe(s); });
+  /* ヘッダー・メニューの現在地・「いま何幕か」の帯：スクロールのたびに、画面中央にある節を計算する */
+  const header = $('#top'), navLinks = $$('.nav ul a'), nowbar = $('#nowbar');
+  const SECTIONS = ['hero', 'act1', 'act2', 'act3', 'act4', 'act5', 'trophies', 'stage', 'call'].map(id => document.getElementById(id));
+  const NAV = { act1: '#act1', act2: '#act1', act3: '#act1', act4: '#act1', act5: '#act1', trophies: '#trophies', stage: '#stage', call: '#call' };
+  let current = null;
+  function onScroll() {
+    header.classList.toggle('scrolled', scrollY > 30);
+    const mid = innerHeight / 2;
+    const sec = SECTIONS.find(s => { const r = s.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }) || null;
+    if (sec === current) return;
+    current = sec;
+    navLinks.forEach(a => a.classList.toggle('active', !!sec && a.getAttribute('href') === NAV[sec.id]));
+    const h = sec && $('.act-head', sec);
+    if (!h || !$('.when', h)) { nowbar.classList.remove('show'); return; }
+    $('#nbN').textContent = $('.act-no', h).textContent;
+    $('#nbName').textContent = $('.act-name', h).textContent;
+    $('#nbWhen').textContent = $('.when', h).textContent;
+    $('#nbWhat').textContent = $('.what', h).textContent;
+    nowbar.classList.add('show');
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  onScroll();
 
   /* 作品の舞台 */
   const WORKS = [
