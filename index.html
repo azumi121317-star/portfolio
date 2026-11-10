@@ -292,6 +292,57 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 .call>.wrap{position:relative;z-index:1}
 @media (max-width:700px){.crowd{height:120px}.fan{width:36px}.beams i{width:180px}}
 
+/* ===== ライブ演出 第2弾 ===== */
+main{position:relative;z-index:1}
+.stage{background:rgba(26,21,18,.55)}
+
+/* G：会場の照明。節ごとに色と位置を切り替える */
+.house{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.house i{position:absolute;width:80vmax;height:80vmax;border-radius:50%;opacity:0;transition:opacity 1.2s var(--ease),transform 1.8s var(--ease)}
+.house .l-amber{left:-30vmax;top:-25vmax;background:radial-gradient(circle,rgba(255,197,107,.24),transparent 62%)}
+.house .l-pink{right:-30vmax;top:-15vmax;background:radial-gradient(circle,rgba(255,158,196,.2),transparent 62%)}
+.house .l-white{left:calc(50% - 40vmax);top:-45vmax;background:radial-gradient(circle,rgba(246,234,216,.16),transparent 62%)}
+.house .l-red{left:calc(50% - 40vmax);bottom:-48vmax;background:radial-gradient(circle,rgba(143,29,44,.32),transparent 62%)}
+[data-scene="now"] .house .l-amber{opacity:1}
+[data-scene="stage"] .house .l-white{opacity:1;transform:translateY(12vmax)}
+[data-scene="next"] .house .l-pink{opacity:1;transform:translateY(8vmax)}
+[data-scene="trophies"] .house .l-amber{opacity:1;transform:translateX(30vmax)}
+[data-scene="trophies"] .house .l-white{opacity:.8}
+[data-scene="prequel"] .house .l-red{opacity:.55}
+[data-scene="prequel"] .house .l-amber{opacity:.4;transform:translate(12vmax,35vmax)}
+[data-scene="call"] .house .l-red{opacity:1}
+[data-scene="call"] .house .l-amber{opacity:.55}
+
+/* ①：セットリスト型の進行バー（広い画面のみ）と、狭い画面の進行バー */
+.setlist{position:fixed;right:18px;top:50%;translate:0 -50%;z-index:56;display:flex;flex-direction:column;gap:14px;padding:8px 0}
+.sl-track{position:absolute;right:16px;top:12px;bottom:12px;width:2px;background:var(--line);z-index:-1;border-radius:2px;overflow:hidden}
+.sl-track i{display:block;width:100%;height:var(--p,0%);background:var(--light);box-shadow:0 0 8px var(--light)}
+.setlist a{position:relative;display:flex;justify-content:flex-end;text-decoration:none}
+.setlist b{display:grid;place-items:center;width:34px;height:22px;border:1px solid var(--line);border-radius:4px;background:rgba(17,14,12,.92);color:var(--dim);font-family:var(--gothic);font-size:11px;font-weight:900;letter-spacing:.02em;transition:all .25s var(--ease)}
+.setlist span{position:absolute;right:44px;top:50%;translate:0 -50%;white-space:nowrap;background:rgba(17,14,12,.94);border:1px solid var(--line);color:var(--fg);font-size:12.5px;font-weight:700;padding:3px 11px;border-radius:999px;opacity:0;transform:translateX(6px);transition:opacity .2s var(--ease),transform .2s var(--ease);pointer-events:none}
+.setlist a:hover span,.setlist a:focus-visible span{opacity:1;transform:none}
+.setlist a:hover b{border-color:var(--light);color:var(--fg)}
+.setlist a.done b{color:var(--light);border-color:color-mix(in srgb,var(--light) 40%,var(--line))}
+.setlist a.cur b{background:var(--light);color:#1c140b;border-color:var(--light);box-shadow:0 0 16px rgba(255,197,107,.6)}
+.mprog{position:fixed;left:0;right:0;bottom:0;height:3px;z-index:56;background:rgba(255,255,255,.06);display:none}
+.mprog i{display:block;height:100%;width:var(--p,0%);background:var(--light)}
+@media (max-width:1239px){.setlist{display:none}.mprog{display:block}}
+.blackout{position:fixed;inset:0;background:#050403;z-index:140;opacity:0;pointer-events:none;transition:opacity .22s ease}
+.blackout.on{opacity:1}
+
+/* ②：1位のパタパタ表示 */
+.trophy .rank.flap{display:inline-flex;gap:6px;perspective:420px;font-size:inherit}
+.tile{position:relative;display:inline-grid;place-items:center;width:56px;height:68px;border-radius:8px;background:linear-gradient(#2c241f 50%,#221c18 50%);box-shadow:inset 0 0 0 1px var(--line),0 8px 16px -8px rgba(0,0,0,.9);font-family:var(--mincho);font-weight:900;font-size:48px;line-height:1;color:var(--light);transform-origin:50% 50%}
+.tile::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.7)}
+.tile.small{width:44px;font-size:28px;color:var(--fg)}
+.tile.flip{animation:flip .1s linear}
+@keyframes flip{0%{transform:rotateX(0)}50%{transform:rotateX(-90deg)}100%{transform:rotateX(0)}}
+
+/* D：3Dのステージ（PCのみ。読み込めたときだけ表示し、CSSの照明を隠す） */
+.stage3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:none}
+.has3d .stage3d{display:block}
+.has3d .beams{display:none}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
   .reveal{opacity:1;transform:none;filter:none}
@@ -323,9 +374,15 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
 
 <div class="nowbar" id="nowbar" aria-hidden="true"><div class="wrap"><span class="n" id="nbN"></span><b id="nbName"></b><span class="w" id="nbWhen"></span><span class="t" id="nbWhat"></span></div></div>
 
+<div class="house" aria-hidden="true"><i class="l-amber"></i><i class="l-pink"></i><i class="l-white"></i><i class="l-red"></i></div>
+<nav class="setlist" id="setlist" aria-label="セットリスト"><div class="sl-track"><i id="slFill"></i></div></nav>
+<div class="mprog" aria-hidden="true"><i id="mpFill"></i></div>
+<div class="blackout" id="blackout" aria-hidden="true"></div>
+
 <main id="main">
 <!-- 開幕：ここだけ見れば分かるように -->
 <section class="hero" id="hero" aria-label="開演">
+  <canvas class="stage3d" id="stage3d" aria-hidden="true"></canvas>
   <div class="beams" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
   <div class="crowd" id="crowd" aria-hidden="true"></div>
   <div class="wrap hero-grid">
@@ -422,11 +479,11 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     <div class="act-head reveal"><span class="act-no">M4</span><div class="ctx"><p class="ctx-top"><b class="act-name">1位の記録</b><span class="when">大学時代〜現在</span></p><p class="what">これまでに取った1位をまとめました</p></div></div>
     <h2 class="line-big reveal">人の前に立つたびに、<span class="lit">1位</span>を取ってきました。</h2>
     <div class="trophies">
-      <div class="trophy reveal"><div class="rank">1<small>位</small></div><h3>講師評価</h3><p>受講生による評価<br>13人中</p></div>
-      <div class="trophy reveal"><div class="rank">1<small>位</small></div><h3>ロールプレイング大会</h3><p>内定者インターン<br>約30人中</p></div>
-      <div class="trophy reveal"><div class="rank">1<small>位</small></div><h3>新規アプリ会員獲得</h3><p>ノジマ<br>静岡・神奈川西エリア</p></div>
-      <div class="trophy reveal"><div class="rank">1<small>位</small></div><h3>新規会員獲得</h3><p>ノジマ<br>店舗</p></div>
-      <div class="trophy reveal"><div class="rank">1<small>位</small></div><h3>ゲーム機保証加入率</h3><p>ノジマ<br>店舗</p></div>
+      <div class="trophy reveal"><div class="rank flap" aria-label="1位"><span class="tile" aria-hidden="true">1</span><span class="tile small" aria-hidden="true">位</span></div><h3>講師評価</h3><p>受講生による評価<br>13人中</p></div>
+      <div class="trophy reveal"><div class="rank flap" aria-label="1位"><span class="tile" aria-hidden="true">1</span><span class="tile small" aria-hidden="true">位</span></div><h3>ロールプレイング大会</h3><p>内定者インターン<br>約30人中</p></div>
+      <div class="trophy reveal"><div class="rank flap" aria-label="1位"><span class="tile" aria-hidden="true">1</span><span class="tile small" aria-hidden="true">位</span></div><h3>新規アプリ会員獲得</h3><p>ノジマ<br>静岡・神奈川西エリア</p></div>
+      <div class="trophy reveal"><div class="rank flap" aria-label="1位"><span class="tile" aria-hidden="true">1</span><span class="tile small" aria-hidden="true">位</span></div><h3>新規会員獲得</h3><p>ノジマ<br>店舗</p></div>
+      <div class="trophy reveal"><div class="rank flap" aria-label="1位"><span class="tile" aria-hidden="true">1</span><span class="tile small" aria-hidden="true">位</span></div><h3>ゲーム機保証加入率</h3><p>ノジマ<br>店舗</p></div>
     </div>
   </div>
 </section>
@@ -555,6 +612,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     el.classList.remove('wink'); void el.offsetWidth; el.classList.add('wink');
     clearTimeout(el._w); el._w = setTimeout(() => el.classList.remove('wink'), 900);
     // 開演のキャラがウインクすると、客席が盛り上がる
+    if (el.id === 'eyesHero' && typeof fx3d === 'function') fx3d();
     const c = el.id === 'eyesHero' ? crowd : el.id === 'eyesCall' ? crowd2 : null;
     if (c) { c.classList.add('hype'); clearTimeout(c._h); c._h = setTimeout(() => c.classList.remove('hype'), 1400); }
   }
@@ -635,6 +693,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     const sec = SECTIONS.find(s => { const r = s.getBoundingClientRect(); return r.top <= mid && r.bottom > mid; }) || null;
     if (sec === current) return;
     current = sec;
+    onSceneChange(sec);
     navLinks.forEach(a => a.classList.toggle('active', !!sec && a.getAttribute('href') === NAV[sec.id]));
     const h = sec && $('.act-head', sec);
     if (!h || !$('.when', h)) { nowbar.classList.remove('show'); return; }
@@ -711,6 +770,167 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { const n = (i + (e.key === 'ArrowRight' ? 1 : -1) + list.length) % list.length; list[n].focus(); show(n); e.preventDefault(); }
   });
   show(0);
+
+  /* ===== G：節が変わったら、会場の照明とセットリストを切り替える ===== */
+  const root = document.documentElement;
+  function onSceneChange(sec) {
+    document.documentElement.dataset.scene = sec ? sec.id : 'hero';
+    const ids = $$('.setlist a').map(a => a.dataset.target), i = sec ? ids.indexOf(sec.id) : -1;
+    $$('.setlist a').forEach((a, k) => { a.classList.toggle('cur', k === i); a.classList.toggle('done', i > -1 && k < i); });
+  }
+
+  /* ===== ①：セットリスト型の進行バー。押すと暗転してから、その節へ移動する ===== */
+  const SETLIST = [['hero', 'OP', 'OPENING'], ['now', 'M1', 'いまの仕事'], ['stage', 'M2', '作品'], ['next', 'M3', '次の舞台'], ['trophies', 'M4', '1位の記録'], ['prequel', 'MC', 'これまで'], ['call', 'EN', 'ENCORE　アンコール']];
+  $('#setlist').insertAdjacentHTML('beforeend', SETLIST.map(([id, n, name]) => `<a href="#${id}" data-target="${id}" aria-label="${n} ${name}"><b>${n}</b><span>${name}</span></a>`).join(''));
+  onSceneChange(current);
+  const progress = () => {
+    const h = document.documentElement.scrollHeight - innerHeight, p = h > 0 ? Math.min(100, scrollY / h * 100) : 0;
+    $('#slFill').style.height = p + '%'; $('#mpFill').style.width = p + '%';
+  };
+  addEventListener('scroll', progress, { passive: true }); progress();
+  const blackout = $('#blackout');
+  function jumpTo(el) {
+    if (reduce) { el.scrollIntoView(); return; }
+    blackout.classList.add('on');
+    setTimeout(() => {
+      const prev = root.style.scrollBehavior; root.style.scrollBehavior = 'auto';
+      el.scrollIntoView(); root.style.scrollBehavior = prev;
+      onScroll(); progress();
+      setTimeout(() => blackout.classList.remove('on'), 80);
+    }, 240);
+  }
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a || a.closest('dialog')) return;
+    const el = document.getElementById(a.getAttribute('href').slice(1)); if (!el || el.id === 'main') return;
+    e.preventDefault(); jumpTo(el);
+  });
+
+  /* ===== ②：1位のパタパタ表示。1位の記録まで来たら、文字がめくれて「1位」にそろう ===== */
+  let flapDone = false;
+  function flipTo(tile, seq, step, done) {
+    seq.forEach((ch, k) => setTimeout(() => {
+      tile.classList.remove('flip'); void tile.offsetWidth; tile.classList.add('flip');
+      setTimeout(() => { tile.textContent = ch; }, 50);
+      if (k === seq.length - 1) setTimeout(done || (() => {}), 120);
+    }, k * step));
+  }
+  function runFlaps() {
+    $$('.flap').forEach((f, n) => {
+      const [d, u] = $$('.tile', f);
+      const digits = Array.from({ length: 7 + n }, () => String(2 + Math.floor(Math.random() * 8))).concat('1');
+      const units = Array.from({ length: 5 + n }, () => '人名回点組'[Math.floor(Math.random() * 5)]).concat('位');
+      setTimeout(() => { flipTo(d, digits, 95); flipTo(u, units, 120); }, n * 140);
+    });
+  }
+  const flapCheck = () => {
+    if (flapDone || reduce) return;
+    const r = $('#trophies').getBoundingClientRect();
+    if (r.top < innerHeight * .7 && r.bottom > 0) { flapDone = true; runFlaps(); }
+  };
+  addEventListener('scroll', flapCheck, { passive: true }); flapCheck();
+
+  /* ===== D：3Dのステージ（PCで、動きを減らす設定でないときだけ読み込む） ===== */
+  var fx3d = null;
+  (async function stage3D() {
+    if (reduce || !matchMedia('(min-width: 900px) and (hover: hover)').matches) return;
+    let THREE;
+    try { THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'); } catch (e) { return; }
+    const canvas = $('#stage3d'), heroEl = $('#hero');
+    let renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' }); } catch (e) { return; }
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x110e0c, 12, 30);
+    const cam = new THREE.PerspectiveCamera(46, 1, 0.1, 100);
+
+    // 床とステージ
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(80, 40), new THREE.MeshBasicMaterial({ color: 0x0c0908 }));
+    floor.rotation.x = -Math.PI / 2; scene.add(floor);
+    const riser = new THREE.Mesh(new THREE.BoxGeometry(18, 0.5, 6), new THREE.MeshBasicMaterial({ color: 0x1b1613 }));
+    riser.position.set(0, 0.25, -3.5); scene.add(riser);
+    const edge = new THREE.Mesh(new THREE.BoxGeometry(18, 0.04, 0.04), new THREE.MeshBasicMaterial({ color: 0xffc56b }));
+    edge.position.set(0, 0.52, -0.5); scene.add(edge);
+
+    // 奥のLEDの壁（粒の明滅）
+    const ledMat = new THREE.ShaderMaterial({
+      uniforms: { t: { value: 0 }, flash: { value: 0 } }, transparent: true, depthWrite: false,
+      vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
+      fragmentShader: `varying vec2 vUv; uniform float t; uniform float flash;
+        void main(){
+          vec2 grid = vUv * vec2(96.0, 36.0); vec2 f = fract(grid) - 0.5; vec2 c = floor(grid) / vec2(96.0, 36.0);
+          float d = smoothstep(0.42, 0.16, length(f));
+          float wave = 0.5 + 0.5 * sin(c.x * 9.0 + t * 1.2) * cos(c.y * 7.0 - t * 0.8);
+          float sweep = smoothstep(0.55, 1.0, sin((c.x + c.y * 0.4) * 6.0 - t * 2.2) * 0.5 + 0.5);
+          vec3 col = mix(vec3(1.0, 0.77, 0.42), vec3(1.0, 0.62, 0.77), wave) * (0.05 + 0.16 * sweep + flash * 0.5);
+          // 文字が並ぶ左側ほど暗くして、見出しを読みやすくする
+          float keep = mix(0.18, 1.0, smoothstep(0.30, 0.75, vUv.x));
+          gl_FragColor = vec4(col * d * keep, d * 0.95 * keep);
+        }`
+    });
+    const led = new THREE.Mesh(new THREE.PlaneGeometry(20, 7.5), ledMat);
+    led.position.set(0, 4.6, -6.5); scene.add(led);
+
+    // トラスとムービングライト
+    const truss = new THREE.Mesh(new THREE.BoxGeometry(20, 0.2, 0.2), new THREE.MeshBasicMaterial({ color: 0x2b241f }));
+    truss.position.set(0, 8.4, -2.5); scene.add(truss);
+    const beamGeo = new THREE.ConeGeometry(1.5, 11, 40, 1, true); beamGeo.translate(0, -5.5, 0);
+    const beamMat = c => new THREE.ShaderMaterial({
+      uniforms: { color: { value: new THREE.Color(c) }, k: { value: 1 } },
+      transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, side: THREE.DoubleSide,
+      vertexShader: `varying float vY; varying vec3 vN; varying vec3 vV;
+        void main(){ vY = uv.y; vec4 mv = modelViewMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }`,
+      fragmentShader: `uniform vec3 color; uniform float k; varying float vY; varying vec3 vN; varying vec3 vV;
+        void main(){ float edgeF = pow(abs(dot(vN, vV)), 1.5); float a = pow(vY, 1.3) * edgeF * 0.34 * k; gl_FragColor = vec4(color * a, a); }`
+    });
+    const spotTex = (() => {
+      const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d');
+      const gr = g.createRadialGradient(64, 64, 0, 64, 64, 64); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c);
+    })();
+    const COLORS = [0xffc56b, 0xff9ec4, 0xf6ead8, 0xff9ec4, 0xffc56b, 0xf6ead8];
+    const fixtures = [-7, -4.2, -1.4, 1.4, 4.2, 7].map((x, i) => {
+      const g = new THREE.Group(); g.position.set(x, 8.3, -2.5);
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.45, 0.5), new THREE.MeshBasicMaterial({ color: 0x1d1814 }));
+      const mat = beamMat(COLORS[i]); const cone = new THREE.Mesh(beamGeo, mat);
+      g.add(body, cone); scene.add(g);
+      const spot = new THREE.Mesh(new THREE.CircleGeometry(1, 32), new THREE.MeshBasicMaterial({ map: spotTex, color: COLORS[i], transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false }));
+      spot.rotation.x = -Math.PI / 2; scene.add(spot);
+      return { g, mat, spot, ph: i * 1.1, sp: 0.35 + (i % 3) * 0.08 };
+    });
+
+    // 大きさ・マウス・スクロール
+    const resize = () => { const w = heroEl.clientWidth, h = heroEl.clientHeight; renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); };
+    resize(); addEventListener('resize', resize);
+    let mx = 0, my = 0, flash = 0;
+    addEventListener('pointermove', e => { mx = e.clientX / innerWidth * 2 - 1; my = e.clientY / innerHeight * 2 - 1; }, { passive: true });
+    fx3d = () => { flash = 1; };
+    root.classList.add('has3d');
+
+    const down = new THREE.Vector3(), clock = new THREE.Clock();
+    (function loop() {
+      requestAnimationFrame(loop);
+      const r = heroEl.getBoundingClientRect(); if (r.bottom < 0) return;
+      const t = clock.getElapsedTime(); flash *= 0.94;
+      const p = Math.min(1, Math.max(0, scrollY / heroEl.offsetHeight));
+      cam.position.x += (mx * 1.4 - cam.position.x) * 0.05;
+      cam.position.y += (2.4 - my * 0.5 + p * 1.2 - cam.position.y) * 0.05;
+      cam.position.z = 12 - p * 6;
+      cam.lookAt(0, 3.2, -3);
+      fixtures.forEach(f => {
+        f.g.rotation.z = Math.sin(t * f.sp + f.ph) * 0.5;
+        f.g.rotation.x = -(0.25 + 0.22 * Math.sin(t * f.sp * 0.7 + f.ph));
+        f.mat.uniforms.k.value = 1 + flash * 1.6;
+        // 光が床に当たる位置に、光の円を置く
+        down.set(0, -1, 0).applyQuaternion(f.g.quaternion);
+        const d = -f.g.position.y / down.y;
+        f.spot.position.set(f.g.position.x + down.x * d, 0.02, f.g.position.z + down.z * d);
+        f.spot.scale.setScalar(1.3 + d * 0.12);
+        f.spot.material.opacity = 0.3 + flash * 0.4;
+      });
+      ledMat.uniforms.t.value = t; ledMat.uniforms.flash.value = flash;
+      renderer.render(scene, cam);
+    })();
+  })();
 
   /* メールアドレスは表示時に組み立てる */
   const mail = ['azumi121317', 'gmail.com'].join('@');
